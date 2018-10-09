@@ -1,0 +1,624 @@
+<!DOCTYPE HTML >
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+    <base href="C:/Users/ZF.Zhang/Desktop/pppms/" />
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/bootstrap-datepicker.css">
+    <link rel="stylesheet" href="css/fileinput.min.css">
+
+    <script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript"src="js/bootstrap-datepicker.js"></script>
+    <script type="text/javascript" src="js/bootstrap-datepicker.zh-CN.js"></script>
+    <script type="text/javascript" src="js/fileinput.min.js"></script>
+    <script type="text/javascript" src="js/zh.js"></script>
+
+    <style type="text/css">
+    .navbar-default .navbar-nav>.active>a{
+            color: #fff;
+            background-color: #337ab7;
+        }
+        .table-hover > tbody > tr:hover > td,
+        .table-hover > tbody > tr:hover > th {
+            background-color: #337ab7;
+        }
+        .table>tbody>tr>th,.table>tbody>tr>td{
+            border:0px;
+            border-top: 0px;
+        }
+    </style>
+	<title>需求管理</title>
+</head>
+<body>
+<!-- 导航栏 -->
+    <nav id="header" class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aris-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="#" class="navbar-brand">&nbsp;<span class="glyphicon glyphicon-road"></span>&nbsp;&nbsp;ProductMS</a>
+            </div>
+            <div id="navbar" class="collapse navbar-collapse ">
+                <ul class="nav navbar-nav navbar-right " style="margin-right: -100px">
+                    <li class="dropdown">
+                        <a href="#" id="dlabel" data-toggle="dropdown">Admin <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="dlabel">
+                            <li><a href="html/demand/index.html"><span class="glyphicon glyphicon-screenshot"></span>&nbsp;&nbsp;我的首页</a></li>
+                            <li><a href="html/demand/index.html"><span class="glyphicon glyphicon-user"></span>&nbsp;&nbsp;个人主页</a></li>
+                            <li><a href="html/demand/index.html"><span class="glyphicon glyphicon-cog"></span>&nbsp;&nbsp;个人设置</a></li>
+                            <li><a href="html/demand/index.html"><span class="glyphicon glyphicon-credit-card"></span>&nbsp;&nbsp;账户中心</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="login.html"><span class="glyphicon glyphicon-off"></span>&nbsp;&nbsp;退出</a></li>
+                </ul>
+                <div class="nav navbar-nav  navbar-right" style="margin-top: 10px ;margin-right:10px">
+                    <div class="div-inline pull-left">
+                        <form action="#" class="div-inline" role="form">
+                            <div class="input-group input-group-lg">
+                                <input type="text" class="form-control" placeholder="请输入需求标题" style="width: 300px ;border-radius: 30px" onkeydown="onKeyDown(event)">
+                                
+                            </div>
+                        </form>    
+                    </div>
+                    <div class="div-inline pull-right" style="margin:12px">
+                        <a href="" class="" data-toggle="modal" data-target="#myModal2" style="">高级搜索</a>
+                    </div>    
+                </div> 
+            </div>
+        </div>
+    </nav>
+<!-- 导航栏结束 -->
+
+    <div id="wrapper" style="margin-top:70px;">
+        <!-- 侧边栏 -->
+        <div class="sidebar navbar-nav" style="margin-top:-10px;">
+            <div class="panel-group" role="tablist" style="margin-top:20px;width: 204px;position: fixed">
+                <div class="panel panel-primary leftMenu">
+                    <div class="panel-heading" id="collapseListGroupHeading1" data-toggle="collapse" data-target="#collapseListGroup1" role="tab" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;
+                            需求管理
+                            <span class="glyphicon glyphicon-chevron-up right"  id="menu1"></span>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="collapseListGroupHeading1">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a class="menu-item-left" href="html/demand/index.html">
+                                    <span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;需求列表
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" data-toggle="modal" data-target="#myModal">
+                                    <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;需求创建
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" href="html/demand/function-manage.html">
+                                    <span class="glyphicon glyphicon-cloud"></span>&nbsp;&nbsp;功能点管理
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" href="html/demand/demand-audit.html">
+                                    <span class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp;需求审查
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary leftMenu">
+                    <div class="panel-heading" id="collapseListGroupHeading2" data-toggle="collapse" data-target="#collapseListGroup2" role="tab" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-list-alt"></span>&nbsp;&nbsp;
+                            设计管理
+                            <span class="glyphicon glyphicon-chevron-down right" id="menu1"></span>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup2" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading2">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a class="menu-item-left" href="html/design/design.html">
+                                    <span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;设计列表
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" style="color: grey;">
+                                    <span class="glyphicon glyphicon-cloud"></span>&nbsp;&nbsp;功能点
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" style="color: grey;">
+                                    <span class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp;设计审查
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary leftMenu">
+                    <div class="panel-heading" id="collapseListGroupHeading3" data-toggle="collapse" data-target="#collapseListGroup3" role="tab" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;
+                            开发管理
+                            <span class="glyphicon glyphicon-chevron-down right" id="menu1"></span>
+                         </h4>
+                    </div>
+                    <div id="collapseListGroup3" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading3">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a class="menu-item-left" href="html/develop/develop.html">
+                                    <span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;开发列表
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" style="color: grey;">
+                                    <span class="glyphicon glyphicon-cloud"></span>&nbsp;&nbsp;功能点管理
+                                </a>
+                            </li>
+                            <li class="list-group-item" style="color: grey;">
+                                <a class="menu-item-left" style="color: grey;">
+                                    <span class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp;需求审查
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary leftMenu">
+                    <div class="panel-heading" id="collapseListGroupHeading4" data-toggle="collapse" data-target="#collapseListGroup4" role="tab" >
+                        <h4 class="panel-title">
+                            <span class="glyphicon glyphicon-leaf"></span>&nbsp;&nbsp;
+                            测试管理
+                            <span class="glyphicon glyphicon-chevron-down right" id="menu1"></span>
+                        </h4>
+                    </div>
+                    <div id="collapseListGroup4" class="panel-collapse collapse" role="tabpanel" aria-labelledby="collapseListGroupHeading2">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a class="menu-item-left" href="html/test/test.html">
+                                    <span class="glyphicon glyphicon-send"></span>&nbsp;&nbsp;测试列表
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" style="color: grey;">
+                                    <span class="glyphicon glyphicon-cloud"></span>&nbsp;&nbsp;功能点管理
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="menu-item-left" style="color: grey;">
+                                    <span class="glyphicon glyphicon-fire"></span>&nbsp;&nbsp;测试审查
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>  
+            </div>
+        </div>
+
+        <div id="content-wrapper">
+            <div class="container-fluid">
+                <div class="panel panel-primary" >
+                    <div class="panel-heading">
+                        <span>需求审核</span>
+                    </div>
+                    <div class="panel-body">
+                        <form action="#">
+                            <div class="form-group">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <th style="width: 15%">需求审核结果</th>
+                                            <td>
+                                                <select id=" " class="form-control">
+                                                    <option>请选择 审核结果</option>
+                                                    <option>需求审核通过</option>
+                                                    <option>不实施</option>
+                                                    <option>需求变更</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>提交后续受理人</th>
+                                            <td>
+                                                <select id=" " class="form-control">
+                                                    <option>请选择 后续受理人</option>
+                                                    <option>111</option>
+                                                    <option>222</option>
+                                                    <option>333</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th>需求审核意见</th>
+                                            <td>
+                                                <textarea name="textarea" class="form-control" rows="4" placeholder="请输入需求审核意见"></textarea>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group pull-right" style="margin-right: 10px">
+                                <button type="button" class="btn btn-primary btn-lg">提&nbsp;&nbsp;交</button">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary" style="margin-top: 10px">   
+                    <div class="panel-heading">
+                        <span>审核历史记录</span>
+                    </div>
+                    <div class="panel-body">
+                        <form action="#" class="">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>团队审核</th>
+                                        <th>审核状态</th>
+                                        <th>审核意见</th>
+                                        <th>审核人</th>
+                                        <th>审核时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th>需求审核</th>
+                                        <td>需求审核通过</td>
+                                        <td>该需求具有XXX意义，同意纳入开发，请设计团队审核。</td>
+                                        <td>张XX</td>
+                                        <td>2018/08/25</td>
+                                    </tr>
+                                    <tr>
+                                        <th>设计审核</th>
+                                        <td>提出需求变更</td>
+                                        <td>需求中关于XXX将对XXX产生影响，建议对需求的XX进行优化。</td>
+                                        <td>张XX</td>
+                                        <td>2018/08/25</td>
+                                    </tr>
+                                    <tr>
+                                        <th>需求审核</th>
+                                        <td>需求审核通过</td>
+                                        <td>已对需求XXX进行优化，请设计团队审核。</td>
+                                        <td>张XX</td>
+                                        <td>2018/08/25</td>
+                                    </tr>
+                                    <tr>
+                                        <th>设计审核</th>
+                                        <td>设计审核通过</td>
+                                        <td>同意。</td>
+                                        <td>张XX</td>
+                                        <td>2018/08/25</td>
+                                    </tr>
+                                    <tr>
+                                        <th>开发审核</th>
+                                        <td>开发审核通过</td>
+                                        <td>同意。</td>
+                                        <td>张XX</td>
+                                        <td>2018/08/25</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                                <!-- <div align="center">
+                                    
+                                    <button type="button" class="btn btn-primary">提&nbsp;&nbsp;交</button>
+                                    <button type="button" class="btn btn-default">取&nbsp;&nbsp;消</button>
+                                    <button type="button" class="btn btn-primary" onclick="javascrtpt:window.location.href='task-search.html'">新建开发任务</button>
+                                </div> -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+       
+            <footer class="sticky-footer">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright&nbsp;©&nbsp;2018&nbsp;&nbsp;产品开发团队</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- content-wrapper -->
+
+    </div>
+</body>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 400px height: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">创建需求</h4>
+            </div>
+            <div class="modal-body " >
+                <form action="#" >
+                    <div class="form-group col-sm-12">
+                        <!-- <label for="addtitle" class="col-sm-3 control-label">需求标题</label> -->
+                        <div class="">
+                            <input type="text" id="addname"  class="form-control" placeholder="请输入需求标题">
+                        </div> 
+                    </div>
+                    
+                    <div class="form-group col-sm-4">
+                       <!--  <label for="addpassword">需求来源</label> -->
+                        <select id="addyonghuzu" class="form-control ">
+                            <option>请选择需求来源</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择提出部门</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <!-- <label for="addemail">实施方式</label> -->
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择实施方式</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <!-- <label for="addyonghuzu">牵头项目组</label> -->
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择牵头项目组</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <!-- <label for="addyonghuzu">配合项目组</label> -->
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择配合项目组</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <!-- <label for="addshouliren">提交后续受理人</label> -->
+                        <select id="addshouliren" class="form-control ">
+                            <option>请选择后续受理人</option>
+                            <option>111</option>
+                            <option>111</option>
+                            <option>111</option>
+                            <option>111</option>
+                            <option>111</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <!-- <label for="inputfile">文件输入</label> -->
+                         <input class="form-control" type="file" id="cardFiles" multiple="multiple" name="file"/>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关&nbsp;&nbsp;&nbsp;闭</button>
+                <button type="button" class="btn btn-primary">提&nbsp;&nbsp;&nbsp;交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document" style="width: 400px height: 800px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">需求查询</h4>
+            </div>
+            <div class="modal-body " >
+                <form action="#" >
+                    <div class="form-group col-sm-12">
+                        <!-- <label for="addtitle" class="col-sm-3 control-label">需求标题</label> -->
+                        <div class="">
+                            <input type="text" id="addname"  class="form-control" placeholder="请输入需求标题">
+                        </div> 
+                    </div>
+                    
+                    <div class="form-group form-inline col-sm-12">
+                        <div class="input-group date selectData " data-provide="datepicker">
+                            <input type="text" id="datepicker_start" class="form-control" placeholder="开始日期">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </div>
+                        </div>
+                        <div class="input-group date selectData" data-provide="datepicker" style="margin-left: 62px">
+                            <input type="text" id="datepicker_end" class="form-control"placeholder="结束日期" >
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </div>
+                        </div>
+                    </div>     
+              
+                   
+                    <div class="form-group col-sm-6">
+                       <!--  <label for="addpassword">需求来源</label> -->
+                        <select id="addyonghuzu" class="form-control ">
+                            <option>请选择需求来源</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择提出部门</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- <label for="addemail">实施方式</label> -->
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择受理状态</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- <label for="addyonghuzu">牵头项目组</label> -->
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择牵头项目组</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- <label for="addyonghuzu">配合项目组</label> -->
+                        <select id="addyonghuzu" class="form-control">
+                            <option>请选择受理人</option>
+                            <option>个人部</option>
+                            <option>运维</option>
+                            <option>金融科技部</option>
+                            <option>网络金融部</option>
+                            <option>托管业务部</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-6">
+                        <!-- <label for="addshouliren">提交后续受理人</label> -->
+                        <select id="addshouliren" class="form-control ">
+                            <option>请选择实施方式</option>
+                            <option>111</option>
+                            <option>111</option>
+                            <option>111</option>
+                            <option>111</option>
+                            <option>111</option>
+                        </select>
+                    </div>
+                    
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关&nbsp;&nbsp;&nbsp;闭</button>
+                <button type="button" class="btn btn-primary">提&nbsp;&nbsp;&nbsp;交</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#datepicker_start').parent().datepicker({
+        "autoclose":true,"format":"yyyy-mm-dd","language":"zh-CN"
+    });
+    $('#datepicker_end').parent().datepicker({
+        "autoclose":true,"format":"yyyy-mm-dd","language":"zh-CN"
+    });
+
+
+    $('.selectData').datepicker({
+        autoclose: true, //自动关闭
+        beforeShowDay: $.noop,    //在显示日期之前调用的函数
+        calendarWeeks: false,     //是否显示今年是第几周
+        clearBtn: true,          //显示清除按钮
+        daysOfWeekDisabled: [],   //星期几不可选
+        endDate: Infinity,        //日历结束日期
+        forceParse: true,         //是否强制转换不符合格式的字符串
+        format: 'yyyy-mm-dd',     //日期格式
+        keyboardNavigation: false, //是否显示箭头导航
+        language: 'cn',           //语言
+        minViewMode: 0,
+        orientation: "auto",      //方向
+        rtl: false,
+        startDate: -Infinity,     //日历开始日期
+        startView: 0,             //开始显示
+        todayBtn: false,          //今天按钮
+        todayHighlight: false,    //今天高亮
+        weekStart: 0              //星期几是开始
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#cardFiles").fileinput({  
+            language: 'zh', //设置语言 
+            uploadUrl:'http://C:/Users/ZF.Zhang/Desktop',
+            enctype: 'multipart/form-data',
+            //allowedFileExtensions : ['jpg', 'png','bmp','jpeg','pdf'],//接收的文件后缀
+            showUpload: false, //是否显示上传按钮
+            showPreview: true, //展前预览
+            showCaption: true,//是否显示标题
+            maxFileSize : 10000,//上传文件最大的尺寸
+            maxFileCount: 10,
+            dropZoneEnabled: true,//是否显示拖拽区域
+            browseClass: "btn btn-primary", //按钮样式
+            uploadAsync: true,
+            allowedPreviewTypes: ['image'],
+            layoutTemplates :{                  
+                actionUpload:'',//去除上传预览缩略图中的上传图片；                 
+            },
+            uploadExtraData:function (previewId, index) {
+                //向后台传递type,nameStr作为额外参数
+                var obj = {};
+                obj.type = "card";
+                obj.nameStr = "HL0093"
+                return obj;
+            }
+
+            }).on("filebatchselected", function(event, files) {
+                $(this).fileinput("upload");
+            }).on("filebatchuploadsuccess", function(event, data) {
+                $("#check1").val("done");
+            }).on('fileerror', function(event, data, msg) {  //一个文件上传失败
+                console.log('文件上传失败！'+msg);
+            });
+  
+        });
+</script>
+
+<script>
+    $(function(){
+        $(".panel-heading").click(function(e){
+            /*切换折叠指示图标*/
+            $(this).find("#menu1").toggleClass("glyphicon-chevron-down");
+            $(this).find("#menu1").toggleClass("glyphicon-chevron-up");
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    function onKeyDown(event){
+        var e = event || window.event || arguments.callee.caller.arguments[0];        
+        if(e && e.keyCode==13){ // enter 键
+            alert("此处回车触发搜索事件");
+        }     
+    }         
+</script> 
+</html>

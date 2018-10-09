@@ -1,0 +1,100 @@
+
+body{
+	font-family: 'Droid Sans', sans-serif;
+	background: url(../images/bg2.jpg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
+}
+
+.login-head {
+	padding: 2em 0;
+	background: #00688B;
+	
+}
+.login-head h1 {
+	color: #fff;
+	font-size: 2em;
+	font-family: 'Droid Sans', sans-serif;
+	text-align: left;
+	margin: 0 20px;
+}
+form {
+	padding: 3em 2em;
+	background: rgba(255,255,255,0.5);
+	height: 300px;
+}
+form li{
+	border: 2px ridge rgba(187, 185, 189, 0.11);
+	border-radius: 0.3em;
+	-webkit-border-radius:0.3em;
+	-moz-border-radius:0.3em;
+	-o-border-radius:0.3em;
+	list-style:none;
+	margin-bottom:12px;
+	background:#F0EEF0;
+
+}
+
+input[type="text"], input[type="password"] {
+	font-family: 'Droid Sans', sans-serif;
+	width:70%;
+	padding: 0.5em 2em 0.5em 1em;
+	color: #B8B8B8;
+	font-size:20px;
+	outline: none;
+	background: none;
+	border:none;
+}
+input[type="text"]:hover, input[type="password"]:hover{
+	color:#337ab7;
+	
+}
+.submit h4 a{
+	float:left;
+	font-size: 18px;
+	color: #00688B;
+	font-weight: 400;
+	font-family: 'Droid Sans', sans-serif;
+	margin-top: 5px;
+	margin-left: 80px;
+}
+.submit h4 a:hover{
+	color:#337ab7;
+}
+/*************************/
+.submit{
+	padding-top:3em;
+}
+input[type="button"] {
+	float: left;
+	color: #fff;
+	cursor: pointer;
+	font-weight: 900;
+	outline: none;
+	font-family: 'Raleway', sans-serif;
+	padding: 12px 0px;
+	width: 35%;
+	font-size: 18px;
+	background:#00688B;
+	
+}
+input[type="submit"]:hover {
+	background: #337ba1;
+	color:#fff;
+}
+/*----*/
+
+@media (max-width:1366px){
+	.container{
+		/* margin: 120px 950px; */
+		margin-top: 120px;
+		align: center;
+		width: 25%;
+	}
+}
+
+
+
+

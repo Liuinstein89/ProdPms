@@ -1,4 +1,4 @@
 package com.ccb.ProdPms.controller;
 
-public class controller {
+public class LoginController {
 }
