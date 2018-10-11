@@ -1,20 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost_3306
-Source Server Version : 50718
-Source Host           : localhost:3306
-Source Database       : pms
-
-Target Server Type    : MYSQL
-Target Server Version : 50718
-File Encoding         : 65001
-
-Date: 2018-10-08 15:30:36
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
-
 -- ----------------------------
 -- Table structure for `audit_result`
 -- ----------------------------
@@ -22,45 +5,178 @@ DROP TABLE IF EXISTS `audit_result`;
 CREATE TABLE `audit_result` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `req_id` int(11) DEFAULT NULL,
-  `req_result` int(11) DEFAULT NULL,
+  `req_result` varchar(255) DEFAULT NULL,
   `req_comment` varchar(255) DEFAULT NULL,
-  `req_person` int(11) DEFAULT NULL,
+  `req_person` varchar(255) DEFAULT NULL,
   `req_time` datetime DEFAULT NULL,
-  `desi_result` int(11) DEFAULT NULL,
+  `desi_result` varchar(255) DEFAULT NULL,
   `desi_comment` varchar(255) DEFAULT NULL,
-  `desi_person` int(11) DEFAULT NULL,
+  `desi_person` varchar(255) DEFAULT NULL,
   `desi_time` datetime DEFAULT NULL,
-  `dev_result` int(11) DEFAULT NULL,
+  `dev_result` varchar(255) DEFAULT NULL,
   `dev_comment` varchar(255) DEFAULT NULL,
-  `dev_person` int(11) DEFAULT NULL,
+  `dev_person` varchar(255) DEFAULT NULL,
   `dev_time` datetime DEFAULT NULL,
   `change_time` datetime DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `req_person` (`req_person`),
-  KEY `desi_person` (`desi_person`),
-  KEY `dev_person` (`dev_person`),
-  KEY `req_result` (`req_result`),
-  KEY `desi_result` (`desi_result`),
-  KEY `dev_result` (`dev_result`),
-  KEY `req_id` (`req_id`),
-  CONSTRAINT `audit_result_ibfk_1` FOREIGN KEY (`req_person`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `audit_result_ibfk_2` FOREIGN KEY (`desi_person`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `audit_result_ibfk_3` FOREIGN KEY (`dev_person`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `audit_result_ibfk_4` FOREIGN KEY (`req_result`) REFERENCES `state` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `audit_result_ibfk_5` FOREIGN KEY (`desi_result`) REFERENCES `state` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `audit_result_ibfk_6` FOREIGN KEY (`dev_result`) REFERENCES `state` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `audit_result_ibfk_7` FOREIGN KEY (`req_id`) REFERENCES `req` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
-
+  `is_deleted` int(1) DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 -- ----------------------------
 -- Records of audit_result
 -- ----------------------------
-INSERT INTO `audit_result` VALUES ('1', '1', '2', '该需求具有重要意义，同意纳入开发，请设计团队审核。', '1', '2018-09-17 14:00:40', null, null, null, null, null, null, null, null, null, '0');
-INSERT INTO `audit_result` VALUES ('2', '1', null, null, null, null, '12', '需求中关于XXX将对XXX产生影响，建议对需求的XX进行优化。', '3', '2018-09-17 14:02:13', null, null, null, null, null, '0');
-INSERT INTO `audit_result` VALUES ('3', '1', '2', '已对需求XXX进行优化，请设计团队审核。', '1', '2018-09-17 14:02:48', null, null, null, null, null, null, null, null, null, '0');
-INSERT INTO `audit_result` VALUES ('4', '1', null, null, null, null, '4', '同意。', '3', '2018-09-17 14:03:31', null, null, null, null, null, '0');
-INSERT INTO `audit_result` VALUES ('5', '1', null, null, null, null, null, null, null, null, '6', '同意。', '2', '2018-09-17 14:04:13', null, '0');
+--INSERT INTO `audit_result` VALUES ('1', '1', '2', '该需求具有重要意义，同意纳入开发，请设计团队审核。', '1', '2018-09-17 14:00:40', null, null, null, null, null, null, null, null, null, '0');
+--INSERT INTO `audit_result` VALUES ('2', '1', null, null, null, null, '12', '需求中关于XXX将对XXX产生影响，建议对需求的XX进行优化。', '3', '2018-09-17 14:02:13', null, null, null, null, null, '0');
+--INSERT INTO `audit_result` VALUES ('3', '1', '2', '已对需求XXX进行优化，请设计团队审核。', '1', '2018-09-17 14:02:48', null, null, null, null, null, null, null, null, null, '0');
+--INSERT INTO `audit_result` VALUES ('4', '1', null, null, null, null, '4', '同意。', '3', '2018-09-17 14:03:31', null, null, null, null, null, '0');
+--INSERT INTO `audit_result` VALUES ('5', '1', null, null, null, null, null, null, null, null, '6', '同意。', '2', '2018-09-17 14:04:13', null, '0');
+
+-- ----------------------------
+-- Table structure for `upload_file`
+-- ----------------------------
+DROP TABLE IF EXISTS `upload_file`;
+CREATE TABLE `upload_file` (
+  `id` int(11) NOT NULL,
+  `file_name` varchar(255) DEFAULT NULL,
+  `add` varchar(255) DEFAULT NULL,
+  `user` varchar(255) DEFAULT NULL,
+  `datetime` datetime DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT NULL,
+  `req_id` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `req_id` (`req_id`),
+  CONSTRAINT `upload_file_ibfk_1` FOREIGN KEY (`req_id`) REFERENCES `req` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Table structure for `req`
+-- ----------------------------
+DROP TABLE IF EXISTS `req`;
+CREATE TABLE `req` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `req_no` int(11) DEFAULT NULL,
+  `req_name` varchar(255) DEFAULT NULL,
+  `req_source` varchar(255) DEFAULT NULL,
+  `dept` varchar(255) DEFAULT NULL,
+  `exec_type` varchar(255) DEFAULT NULL,
+  `lead_team` varchar(255) DEFAULT NULL,
+  `coo_team` varchar(255) DEFAULT NULL,
+  `now_user` varchar(255) DEFAULT NULL,
+  `latter_user` varchar(255) DEFAULT NULL,
+  `create_uesr` varchar(255) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `modi_date` datetime DEFAULT NULL,
+  `req_status` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `multi` (`id`,`req_no`,`req_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Records of req
+-- ----------------------------
+--INSERT INTO `req` VALUES ('1', '1', '《GRB18050402龙钱宝支持多产品业务需求说明》', '1', '2', '1', '1', null, null, '1', null, '2018-09-17 14:16:04', null, '7', '0', null, null);
+--INSERT INTO `req` VALUES ('2', '2', '增加对信用卡不能办理基金业务的校验', '2', '3', '1', '2', null, null, null, null, '2018-09-17 14:17:58', null, '2', '0', null, null);
+
+-- ----------------------------
+-- Table structure for `req_func`
+-- ----------------------------
+DROP TABLE IF EXISTS `req_func`;
+CREATE TABLE `req_func` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `req_id` int(11) DEFAULT NULL,
+  `func_id` int(11) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `modi_date` datetime DEFAULT NULL,
+  `create_user` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  CONSTRAINT `req_func_ibfk_1` FOREIGN KEY (`req_id`) REFERENCES `req` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `req_func_ibfk_2` FOREIGN KEY (`func_id`) REFERENCES `func` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Records of req_func
+-- ----------------------------
+--INSERT INTO `req_func` VALUES ('1', '1', '1', '2018-09-17 14:33:51', null, null, '0');
+--INSERT INTO `req_func` VALUES ('2', '1', '2', '2018-09-17 14:34:04', null, null, '0');
+--INSERT INTO `req_func` VALUES ('3', '2', '3', '2018-09-17 14:34:17', null, null, '0');
+
+-- ----------------------------
+-- Table structure for `func`
+-- ----------------------------
+DROP TABLE IF EXISTS `func`;
+CREATE TABLE `func` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `func_name` varchar(255) DEFAULT NULL,
+  `dev_user` int(11) DEFAULT NULL,
+  `test_user` int(11) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `online_date` datetime DEFAULT NULL,
+  `modi_date` datetime DEFAULT NULL,
+  `dev_id` int(11) DEFAULT NULL,
+  `test_id` int(11) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT '0',
+  `create_user` varchar(255) DEFAULT NULL,
+  `func_status` varchar(255) DEFAULT NULL,
+  `upload` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `dev_user` (`dev_user`),
+  KEY `test_user` (`test_user`),
+  KEY `dev_id` (`dev_id`),
+  KEY `test_id` (`test_id`),
+  CONSTRAINT `func_ibfk_1` FOREIGN KEY (`dev_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `func_ibfk_2` FOREIGN KEY (`test_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `func_ibfk_3` FOREIGN KEY (`dev_id`) REFERENCES `dev` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `func_ibfk_4` FOREIGN KEY (`test_id`) REFERENCES `test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Records of func
+-- ----------------------------
+--INSERT INTO `func` VALUES ('1', 'XX功能点1', '5', '8', '2018-09-17 14:32:15', null, null, null, '0', null, null);
+--INSERT INTO `func` VALUES ('2', 'XX功能点2', '6', '8', '2018-09-17 14:32:59', null, null, null, '0', null, null);
+--INSERT INTO `func` VALUES ('3', 'XX功能点3', '5', '8', '2018-09-17 14:33:16', null, null, null, '0', null, null);
+
+-- ----------------------------
+-- Table structure for `exec_type`
+-- ----------------------------
+DROP TABLE IF EXISTS `exec_type`;
+CREATE TABLE `exec_type` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_name` varchar(255) DEFAULT NULL,
+  `create_date` datetime DEFAULT NULL,
+  `modi_date` datetime DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT '0',
+  `op_person` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Records of exec_type
+-- ----------------------------
+--INSERT INTO `exec_type` VALUES ('1', '日常优化', '2018-09-17 10:21:11', null, '0', null);
+--INSERT INTO `exec_type` VALUES ('2', '项目', '2018-09-17 10:21:22', null, '0', null);
+
+-- ----------------------------
+-- Table structure for `req_source`
+-- ----------------------------
+DROP TABLE IF EXISTS `req_source`;
+CREATE TABLE `req_source` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `souce_name` varchar(255) DEFAULT NULL,
+  `create_time` datetime DEFAULT NULL,
+  `change_time` datetime DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT '0',
+  `op_person` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+-- ----------------------------
+-- Records of req_source
+-- ----------------------------
+--INSERT INTO `req_source` VALUES ('1', 'ITDM', '2018-09-17 10:19:50', null, '0', null);
+--INSERT INTO `req_source` VALUES ('2', '功能优化', '2018-09-17 10:20:03', null, '0', null);
+--INSERT INTO `req_source` VALUES ('3', 'DCM单', '2018-09-17 10:20:15', null, '0', null);
+--INSERT INTO `req_source` VALUES ('4', '任务书', '2018-09-17 10:20:25', null, '0', null);
+--INSERT INTO `req_source` VALUES ('5', '配合任务', '2018-09-17 10:20:37', null, '0', null);
+--INSERT INTO `req_source` VALUES ('6', 'PIO', '2018-09-17 10:20:49', null, '0', null);
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 -- ----------------------------
 -- Table structure for `authority`
@@ -180,41 +296,7 @@ CREATE TABLE `dev_func` (
 INSERT INTO `dev_func` VALUES ('1', '1', '1', '2018-09-17 14:41:13', null, '1', '0');
 INSERT INTO `dev_func` VALUES ('2', '1', '2', '2018-09-17 14:41:31', null, '2', '0');
 
--- ----------------------------
--- Table structure for `func`
--- ----------------------------
-DROP TABLE IF EXISTS `func`;
-CREATE TABLE `func` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `func_name` varchar(255) DEFAULT NULL,
-  `dev_user` int(11) DEFAULT NULL,
-  `test_user` int(11) DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `modi_date` datetime DEFAULT NULL,
-  `dev_id` int(11) DEFAULT NULL,
-  `test_id` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT '0',
-  `create_user` int(11) DEFAULT NULL,
-  `upload` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `dev_user` (`dev_user`),
-  KEY `test_user` (`test_user`),
-  KEY `dev_id` (`dev_id`),
-  KEY `test_id` (`test_id`),
-  KEY `create_user` (`create_user`),
-  CONSTRAINT `func_ibfk_1` FOREIGN KEY (`dev_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `func_ibfk_2` FOREIGN KEY (`test_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `func_ibfk_3` FOREIGN KEY (`dev_id`) REFERENCES `dev` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `func_ibfk_4` FOREIGN KEY (`test_id`) REFERENCES `test` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `func_ibfk_5` FOREIGN KEY (`create_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
--- ----------------------------
--- Records of func
--- ----------------------------
-INSERT INTO `func` VALUES ('1', 'XX功能点1', '5', '8', '2018-09-17 14:32:15', null, null, null, '0', null, null);
-INSERT INTO `func` VALUES ('2', 'XX功能点2', '6', '8', '2018-09-17 14:32:59', null, null, null, '0', null, null);
-INSERT INTO `func` VALUES ('3', 'XX功能点3', '5', '8', '2018-09-17 14:33:16', null, null, null, '0', null, null);
 
 -- ----------------------------
 -- Table structure for `project_team`
@@ -244,128 +326,6 @@ CREATE TABLE `project_team` (
 INSERT INTO `project_team` VALUES ('1', '代理基金', '1', '2', '10', null, '2018-09-17 13:54:03', null, '0', null);
 INSERT INTO `project_team` VALUES ('2', '个人资产管理', '1', '2', '10', null, '2018-09-17 13:55:58', null, '0', null);
 
--- ----------------------------
--- Table structure for `req`
--- ----------------------------
-DROP TABLE IF EXISTS `req`;
-CREATE TABLE `req` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `req_id` int(11) DEFAULT NULL,
-  `req_name` varchar(255) DEFAULT NULL,
-  `req_source` int(11) DEFAULT NULL,
-  `dept` int(11) DEFAULT NULL,
-  `impl_type` int(11) DEFAULT NULL,
-  `lead_team` int(11) DEFAULT NULL,
-  `coo_team` int(255) DEFAULT NULL,
-  `now_user` int(11) DEFAULT NULL,
-  `latter_user` int(11) DEFAULT NULL,
-  `create_uesr` int(11) DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `modi_date` datetime DEFAULT NULL,
-  `state` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT '0',
-  `upload` varchar(255) DEFAULT NULL,
-  `review_result` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `req_source` (`req_source`),
-  KEY `dept` (`dept`),
-  KEY `impl_type` (`impl_type`),
-  KEY `lead_team` (`lead_team`),
-  KEY `coo_team` (`coo_team`),
-  KEY `now_user` (`now_user`),
-  KEY `latter_user` (`latter_user`),
-  KEY `create_uesr` (`create_uesr`),
-  KEY `state` (`state`),
-  KEY `review_result` (`review_result`),
-  CONSTRAINT `req_ibfk_1` FOREIGN KEY (`req_source`) REFERENCES `req_source` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_10` FOREIGN KEY (`review_result`) REFERENCES `audit_result` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_2` FOREIGN KEY (`dept`) REFERENCES `department` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_3` FOREIGN KEY (`impl_type`) REFERENCES `req_impl_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_4` FOREIGN KEY (`lead_team`) REFERENCES `project_team` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_5` FOREIGN KEY (`coo_team`) REFERENCES `project_team` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_6` FOREIGN KEY (`now_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_7` FOREIGN KEY (`latter_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_8` FOREIGN KEY (`create_uesr`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_ibfk_9` FOREIGN KEY (`state`) REFERENCES `state` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of req
--- ----------------------------
-INSERT INTO `req` VALUES ('1', '1', '《GRB18050402龙钱宝支持多产品业务需求说明》', '1', '2', '1', '1', null, null, '1', null, '2018-09-17 14:16:04', null, '7', '0', null, null);
-INSERT INTO `req` VALUES ('2', '2', '增加对信用卡不能办理基金业务的校验', '2', '3', '1', '2', null, null, null, null, '2018-09-17 14:17:58', null, '2', '0', null, null);
-
--- ----------------------------
--- Table structure for `req_func`
--- ----------------------------
-DROP TABLE IF EXISTS `req_func`;
-CREATE TABLE `req_func` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `req_id` int(11) DEFAULT NULL,
-  `func_id` int(11) DEFAULT NULL,
-  `create_date` datetime DEFAULT NULL,
-  `modi_date` datetime DEFAULT NULL,
-  `create_user` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `req_id` (`req_id`),
-  KEY `func_id` (`func_id`),
-  KEY `create_user` (`create_user`),
-  CONSTRAINT `req_func_ibfk_1` FOREIGN KEY (`req_id`) REFERENCES `req` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_func_ibfk_2` FOREIGN KEY (`func_id`) REFERENCES `func` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `req_func_ibfk_3` FOREIGN KEY (`create_user`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of req_func
--- ----------------------------
-INSERT INTO `req_func` VALUES ('1', '1', '1', '2018-09-17 14:33:51', null, null, '0');
-INSERT INTO `req_func` VALUES ('2', '1', '2', '2018-09-17 14:34:04', null, null, '0');
-INSERT INTO `req_func` VALUES ('3', '2', '3', '2018-09-17 14:34:17', null, null, '0');
-
--- ----------------------------
--- Table structure for `req_impl_type`
--- ----------------------------
-DROP TABLE IF EXISTS `req_impl_type`;
-CREATE TABLE `req_impl_type` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `req_impl_type_name` varchar(255) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `change_time` datetime DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT '0',
-  `op_person` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of req_impl_type
--- ----------------------------
-INSERT INTO `req_impl_type` VALUES ('1', '日常优化', '2018-09-17 10:21:11', null, '0', null);
-INSERT INTO `req_impl_type` VALUES ('2', '项目', '2018-09-17 10:21:22', null, '0', null);
-
--- ----------------------------
--- Table structure for `req_source`
--- ----------------------------
-DROP TABLE IF EXISTS `req_source`;
-CREATE TABLE `req_source` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `req_souce_name` varchar(255) DEFAULT NULL,
-  `create_time` datetime DEFAULT NULL,
-  `change_time` datetime DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT '0',
-  `op_person` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of req_source
--- ----------------------------
-INSERT INTO `req_source` VALUES ('1', 'ITDM', '2018-09-17 10:19:50', null, '0', null);
-INSERT INTO `req_source` VALUES ('2', '功能优化', '2018-09-17 10:20:03', null, '0', null);
-INSERT INTO `req_source` VALUES ('3', 'DCM单', '2018-09-17 10:20:15', null, '0', null);
-INSERT INTO `req_source` VALUES ('4', '任务书', '2018-09-17 10:20:25', null, '0', null);
-INSERT INTO `req_source` VALUES ('5', '配合任务', '2018-09-17 10:20:37', null, '0', null);
-INSERT INTO `req_source` VALUES ('6', 'PIO', '2018-09-17 10:20:49', null, '0', null);
 
 -- ----------------------------
 -- Table structure for `role`
