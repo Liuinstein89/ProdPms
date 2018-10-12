@@ -6,23 +6,21 @@ public class DmdManageEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private Long reqId;
-  `req_id` int(11) DEFAULT NULL,
+    private Long reqNo;
+
   `req_name` varchar(255) DEFAULT NULL,
-  `req_source` int(11) DEFAULT NULL,
-  `dept` int(11) DEFAULT NULL,
-  `impl_type` int(11) DEFAULT NULL,
-  `lead_team` int(11) DEFAULT NULL,
-  `coo_team` int(255) DEFAULT NULL,
-  `now_user` int(11) DEFAULT NULL,
-  `latter_user` int(11) DEFAULT NULL,
-  `create_uesr` int(11) DEFAULT NULL,
+  `req_source` varchar(255) DEFAULT NULL,
+  `dept` varchar(255) DEFAULT NULL,
+  `exec_type` varchar(255) DEFAULT NULL,
+  `lead_team` varchar(255) DEFAULT NULL,
+  `coo_team` varchar(255) DEFAULT NULL,
+  `now_user` varchar(255) DEFAULT NULL,
+  `latter_user` varchar(255) DEFAULT NULL,
+  `create_uesr` varchar(255) DEFAULT NULL,
   `create_date` datetime DEFAULT NULL,
             `modi_date` datetime DEFAULT NULL,
-            `state` int(11) DEFAULT NULL,
-  `is_deleted` tinyint(4) DEFAULT '0',
-            `upload` varchar(255) DEFAULT NULL,
-  `review_result` int(11) DEFAULT NULL,
+            `req_status` varchar(255) DEFAULT NULL,
+  `is_deleted` tinyint(1) DEFAULT '0',
 }
 
 
