@@ -21,5 +21,6 @@ public class DmTest {
     public void testQuery() throws Exception {
         List<DmdManageEntity> dmd = dmdManageMapper.getAll();
         System.out.println(dmd.toString());
+        System.out.println("111");
     }
 }
