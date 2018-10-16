@@ -32,14 +32,27 @@ public interface DmdManageMapper {
             @Result(property = "modiDate", column = "modi_date")
     })
     List<DmdManageEntity> getAll();
-/*
-    @Select("SELECT * FROM users WHERE id = #{id}")
-    @Results({
-            @Result(property = "nickName", column = "nick_name")
-    })
-    UserEntity getOne(Long id);
 
-    @Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
+    /*@Select("SELECT * FROM users WHERE id = #{id}")
+    @Results({
+            @Result(property = "id", column = "id"),
+            @Result(property = "reqNo", column = "req_no"),
+            @Result(property = "reqName", column = "req_name"),
+            @Result(property = "reqSource", column = "req_source"),
+            @Result(property = "dept", column = "dept"),
+            @Result(property = "execType", column = "exec_type"),
+            @Result(property = "leadTeam", column = "lead_team"),
+            @Result(property = "cooTeam", column = "coo_team"),
+            @Result(property = "nowUser", column = "now_user"),
+            @Result(property = "nextUser", column = "next_user"),
+            @Result(property = "createUesr", column = "create_uesr"),
+            @Result(property = "reqStatus", column = "req_status"),
+            @Result(property = "createDate", column = "create_date"),
+            @Result(property = "modiDate", column = "modi_date")
+    })*/
+    List<DmdManageEntity> getByParams(Long id);
+
+   /* @Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
     void insert(UserEntity user);
 
     @Update("UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}")

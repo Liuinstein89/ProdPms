@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<!-- ==================代理方式=================
+ 由mapper标签开始，由/mapper结束，可以把它想成一个空间，是映射文件
+ 属性namespace：空间名，主要在代理中使用。这个namespace是唯一的。
+ 这里把mapper标签和接口联系在一起了，namespace=写接口路径，映射文件要和接口在同一目录下?
+-->
+<mapper namespace="com.ccb.ProdPms.mapper.DmdManageMapper">
+
+    <!-- =============映射关系标签=============
+     属性type:写po类的包名类名，由于之前定义了po类的别名，这里就写这个别名
+     属性id：是这个映射标签的唯一标识
+     id标签是查询结果集中的唯一标识
+     属性column：查询出来的列名
+     属性property：是po类里所指定的列名
+     通常会在原列名后面加下划线，这是固定的，这里就是id后面
+    -->
+    <!--column不做限制，可以为任意表的字段，而property须为type 定义的pojo属性-->
+    <resultMap id="DmdManageMap" type="com.ccb.ProdPms.entity.DmdManageEntity">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="req_no" property="reqNo" jdbcType="VARCHAR"/>
+        <result column="req_name" property="reqName" jdbcType="VARCHAR"/>
+        <result column="req_source" property="reqSource" jdbcType="VARCHAR"/>
+        <result column="dept" property="dept" jdbcType="VARCHAR"/>
+        <result column="exec_type" property="execType" jdbcType="VARCHAR"/>
+        <result column="lead_team" property="leadTeam" jdbcType="VARCHAR"/>
+        <result column="coo_team" property="cooTeam" jdbcType="VARCHAR"/>
+        <result column="now_user" property="nowUser" jdbcType="VARCHAR"/>
+        <result column="next_user" property="nextUser" jdbcType="VARCHAR"/>
+        <result column="create_uesr" property="createUesr" jdbcType="VARCHAR"/>
+        <result column="req_status" property="reqStatus" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="DATE"/>
+        <result column="modi_date" property="modiDate" jdbcType="DATE"/>
+    </resultMap>
+
+    <!-- ==================定义sql片段==============
+     sql:是sql片段标签属性,可被其他语句引用的可重用语句块  id是该片段的唯一标识
+    -->
+    <sql id="Basic_Req_Columns">
+        id, req_no, req_name, req_source,dept,exec_type,lead_team,coo_team,next_user,req_status,create_date,create_uesr,modi_date
+    </sql>
+
+    <!-- 增删改查标签里的id:一定要和接口里对应的方法名一致，
+33          resultMap输出类型里写映射标签里的id
+34          parameterType：输入类型，规范输入数据类型，指明查询时使用的参数类型
+    -->
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Basic_Req_Columns"/>
+        from t_user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </select>
+    <!--这个方法是我自己加的-->
+    <select id="selectAllUser" resultMap="BaseResultMap">
+        select
+        <include refid="Basic_Req_Columns"/>
+        from t_user
+    </select>
+    <!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete from t_user
+        where user_id = #{userId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.winter.model.User">
+        insert into t_user (user_id, user_name, password,
+        phone)
+        values (#{userId,jdbcType=INTEGER}, #{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR},
+        #{phone,jdbcType=VARCHAR})
+    </insert>
+    <insert id="insertSelective" parameterType="com.winter.model.User">
+        insert into t_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="userName != null">
+                user_name,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId,jdbcType=INTEGER},
+            </if>
+            <if test="userName != null">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.winter.model.User">
+        update t_user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                password = #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="phone != null">
+                phone = #{phone,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.winter.model.User">
+        update t_user
+        set user_name = #{userName,jdbcType=VARCHAR},
+        password = #{password,jdbcType=VARCHAR},
+        phone = #{phone,jdbcType=VARCHAR}
+        where user_id = #{userId,jdbcType=INTEGER}
+    </update>-->
+</mapper>
