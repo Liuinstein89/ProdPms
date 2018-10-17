@@ -29,7 +29,7 @@ public class DmTest {
     	//DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity(null, null, null, null, null, null, null, null, null, null);
     	//List<DmdManageEntity> dmd = 
     			//dmdManageMapper.getByParams("","", "", "", "", "", "", "", null, null);
-    	dmdManageMapper.getAll();
+    	//dmdManageMapper.getAll();
     	/*for (int i = 0; i < dmd.size(); i++) {
 			System.out.println(dmd);
 		}*/

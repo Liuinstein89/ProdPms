@@ -30,7 +30,7 @@
 		<result column="create_date" property="createDate" jdbcType="DATE" />
 		<result column="modi_date" property="modiDate" jdbcType="DATE" />
 	</resultMap>
-
+      
 	<!-- ==================定义sql片段============== 
 		sql:是sql片段标签属性,可被其他语句引用的可重用语句块 
 		id是该片段的唯一标识 
@@ -54,8 +54,8 @@
 		 parameterType：输入类型，规范输入数据类型，指明查询时使用的参数类型
 	 --> 
 	<select id="getAll" resultMap="DmdManageMap">
-		select *
-		<!-- <include refid="Basic_Req_Columns" /> -->
+		select 
+		<include refid="Basic_Req_Columns" />
 		from req
 		where is_deleted = 0
 	</select>

@@ -6,6 +6,7 @@ import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 //@Mapper
 public interface DmdManageMapper {
 
- /*   @Select("SELECT * FROM req where is_deleted = 0")
+    @Select("SELECT * FROM req where is_deleted = 0")
     @Results({
             //@Result(property = "userSex", column = "user_sex", javaType = UserSexType.class),
             @Result(property = "id", column = "id"),
@@ -30,7 +31,7 @@ public interface DmdManageMapper {
             @Result(property = "reqStatus", column = "req_status"),
             @Result(property = "createDate", column = "create_date"),
             @Result(property = "modiDate", column = "modi_date")
-    })*/
+    })
     List<DmdManageEntity> getAll();
 
     /*@Select("SELECT * FROM users WHERE id = #{id}")
