@@ -6,7 +6,7 @@
 <mapper namespace="com.ccb.ProdPms.mapper.DmdManageMapper">
 
 	<!-- =============映射关系标签============= 属性type:写po类的包名类名，由于之前定义了po类的别名，这里就写这个别名 
-		属性id：是这个映射标签的唯一标识 id标签是查询结果集中的唯一标识 属性column：查询出来的列名 属性property：是po类里所指定的列名 
+		属性id：是这个映射标签的唯一标识 id标签是查询结果集中的唯一标识，多列组成唯一标识则配置多个id 属性column：查询出来的列名 属性property：是po类里所指定的列名 
 		通常会在原列名后面加下划线，这是固定的，这里就是id后面 column不做限制，可以为任意表的字段，而property须为type 定义的pojo属性 -->
 	<resultMap id="DmdManageMap" type="com.ccb.ProdPms.entity.DmdManageEntity">
 		<id column="id" property="id" jdbcType="BIGINT" />
@@ -31,8 +31,20 @@
 		id, req_no, req_name,req_source,dept,exec_type,lead_team,
 		coo_team,next_user,req_status,create_date,create_uesr,modi_date
 	</sql>
-
-	<!-- 增删改查标签里的id:一定要和接口里对应的方法名一致 resultMap输出类型里写映射标签里的id parameterType：输入类型，规范输入数据类型，指明查询时使用的参数类型 -->
+	
+	<!--mybatis进行数据库连接操作时对于SQL语句返回结果的处理有两种方式，resultType和resultMap 
+		resultType：对于SQL语句查询出的字段在相应的pojo中必须有和它相同的字段对应，而resultType中的内容就是pojo在本项目中的位置，适合单标查询 
+		但是，如果在写pojo时，不想用数据库表中定义的字段名称，也是可以使用resultMap进行处理对应的。
+		多表连接查询时，若是一对一的查询，需要新建一个pojo，包括两个表中需要查询出的所有的字段，处理方式通常为创建一个继承一个表字段的pojo，在里面添加另
+		一个表内需要查询出的字段。既mapper.xml中采用association节点元素进行对另一个表的连接处理。若是一对多查询，若是使用内连接查询，则很可能出现
+		查询出的字段有重复。使用双重for循环嵌套处理。 extends+collection。
+		resultMap：需要在XxxMapper.xml中定义resultMap进行pojo和相应表字段的对应。 
+	-->
+	
+	<!-- 增删改查标签里的id:一定要和接口里对应的方法名一致  
+		 resultMap输出类型里写映射标签里的id 
+		 parameterType：输入类型，规范输入数据类型，指明查询时使用的参数类型
+	 -->
 	<select id="getAll" resultMap="DmdManageMap">
 		select
 		<include refid="Basic_Req_Columns" />
@@ -40,21 +52,56 @@
 		where is_deleted = 0
 	</select>
 	
+	<!-- 什么时候用where，什么时候用<where>标签？
+		   查询的时候如果某些条件没有，可能sql拼装会有问题
+		   解决办法：
+		 1.给where 后面加上1=1，以后的条件都and  
+		 2.mybatis 使用where标签将所有的查询条件包括在内。mybatis会将where标签后面第一个and去掉，只会去掉第一个多出来的and或者or。 
+	-->
 	<select id="getByParams" resultMap="DmdManageMap"
-		parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
+		parameterType="com.ccb.ProdPms.entity.DmdQueryParamsEntity">
 		<!-- 用include标签引入sql片段，refid写定义sql片段的id，where标签不要写在片段里 -->
 		select
 		<include refid="Basic_Req_Columns" />
 		from req
 		<where>
-		<!-- 当页面没有输入用户名和选择权限，就让它的条件永远为真，就变成全查询了 -->
-		<if test="username == null and username = '' and upower == -1">
+			<!-- 当页面没有输入用户名和选择权限，就让它的条件永远为真，就变成全查询了，这里后面看管理页面能不能合并查询和初始化的sql用？ -->
+			<!-- <if test="username == null and username = '' and upower == -1">
 				and 1=1
+			</if> -->
+			<if test="reqNo != null and reqNo !=''">
+				and req_no LIKE '%${reqNo}%'
 			</if>
-		<if test="username != null and username !=''">
-			and username LIKE '%${username}%'
-		</if>
-		user_id = #{userId,jdbcType=INTEGER}
+			<if test="reqName != null and reqName !=''">
+				and req_name LIKE '%${reqName}%'
+			</if>
+			<if test="reqSource != null and reqSource !=''">
+				and req_source LIKE '%${reqSource}%'
+			</if>
+			<if test="dept != null and dept !=''">
+				and dept LIKE '%${dept}%'
+			</if>
+			<if test="execType != null and execType !=''">
+				and exec_type LIKE '%${execType}%'
+			</if>
+			<if test="leadTeam != null and leadTeam !=''">
+				and lead_team LIKE '%${leadTeam}%'
+			</if>
+			<if test="nextUser != null and nextUser !=''">
+				and next_user LIKE '%${nextUser}%'
+			</if>
+			<if test="reqStatus != null and reqStatus !=''">
+				and req_status LIKE '%${reqStatus}%'
+			</if>
+			<if test="reqStatus != null and reqStatus !=''">
+				and req_status LIKE '%${reqStatus}%'
+			</if>
+			<if test="reqStatus != null and reqStatus !=''">
+				and req_status LIKE '%${reqStatus}%'
+			</if>
+			
+			
+			is_deleted = 0
 		</where>
 	</select>
 
