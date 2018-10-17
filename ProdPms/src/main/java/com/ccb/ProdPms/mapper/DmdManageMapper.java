@@ -1,6 +1,8 @@
 package com.ccb.ProdPms.mapper;
 
 import com.ccb.ProdPms.entity.DmdManageEntity;
+import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
+
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
@@ -11,7 +13,7 @@ import java.util.List;
 //@Mapper
 public interface DmdManageMapper {
 
-    @Select("SELECT * FROM req where is_deleted = 0")
+ /*   @Select("SELECT * FROM req where is_deleted = 0")
     @Results({
             //@Result(property = "userSex", column = "user_sex", javaType = UserSexType.class),
             @Result(property = "id", column = "id"),
@@ -28,7 +30,7 @@ public interface DmdManageMapper {
             @Result(property = "reqStatus", column = "req_status"),
             @Result(property = "createDate", column = "create_date"),
             @Result(property = "modiDate", column = "modi_date")
-    })
+    })*/
     List<DmdManageEntity> getAll();
 
     /*@Select("SELECT * FROM users WHERE id = #{id}")
@@ -48,7 +50,7 @@ public interface DmdManageMapper {
             @Result(property = "createDate", column = "create_date"),
             @Result(property = "modiDate", column = "modi_date")
     })*/
-    List<DmdManageEntity> getByParams(Long id);
+    List<DmdManageEntity> getByParams(String reqNo,String reqName,String reqSource,String dept,String execType,String leadTeam,String nextUser,String reqStatus,String beginDate,String endDate);
 
    /* @Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
     void insert(UserEntity user);

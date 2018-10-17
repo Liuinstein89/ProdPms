@@ -90,4 +90,19 @@ public class DmdQueryParamsEntity implements Serializable {
 		this.endDate = endDate;
 	}
 
+	public DmdQueryParamsEntity(Long reqNo, String reqName, String reqSource, String dept, String execType,
+			String leadTeam, String nextUser, String reqStatus, Date beginDate, Date endDate) {
+		super();
+		this.reqNo = reqNo;
+		this.reqName = reqName;
+		this.reqSource = reqSource;
+		this.dept = dept;
+		this.execType = execType;
+		this.leadTeam = leadTeam;
+		this.nextUser = nextUser;
+		this.reqStatus = reqStatus;
+		this.beginDate = beginDate;
+		this.endDate = endDate;
+	}
+
 }
