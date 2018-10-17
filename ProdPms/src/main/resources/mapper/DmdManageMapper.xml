@@ -7,54 +7,76 @@
 
 	<!-- =============映射关系标签============= 属性type:写po类的包名类名，由于之前定义了po类的别名，这里就写这个别名 
 		属性id：是这个映射标签的唯一标识 id标签是查询结果集中的唯一标识 属性column：查询出来的列名 属性property：是po类里所指定的列名 
-		通常会在原列名后面加下划线，这是固定的，这里就是id后面 -->
-	<!--column不做限制，可以为任意表的字段，而property须为type 定义的pojo属性 -->
-	<resultMap id="DmdManageMap"
-		type="com.ccb.ProdPms.entity.DmdManageEntity">
+		通常会在原列名后面加下划线，这是固定的，这里就是id后面 column不做限制，可以为任意表的字段，而property须为type 定义的pojo属性 -->
+	<resultMap id="DmdManageMap" type="com.ccb.ProdPms.entity.DmdManageEntity">
 		<id column="id" property="id" jdbcType="BIGINT" />
 		<result column="req_no" property="reqNo" jdbcType="VARCHAR" />
 		<result column="req_name" property="reqName" jdbcType="VARCHAR" />
-		<result column="req_source" property="reqSource"
-			jdbcType="VARCHAR" />
+		<result column="req_source" property="reqSource" jdbcType="VARCHAR" />
 		<result column="dept" property="dept" jdbcType="VARCHAR" />
-		<result column="exec_type" property="execType"
-			jdbcType="VARCHAR" />
-		<result column="lead_team" property="leadTeam"
-			jdbcType="VARCHAR" />
+		<result column="exec_type" property="execType" jdbcType="VARCHAR" />
+		<result column="lead_team" property="leadTeam" jdbcType="VARCHAR" />
 		<result column="coo_team" property="cooTeam" jdbcType="VARCHAR" />
 		<result column="now_user" property="nowUser" jdbcType="VARCHAR" />
-		<result column="next_user" property="nextUser"
-			jdbcType="VARCHAR" />
-		<result column="create_uesr" property="createUesr"
-			jdbcType="VARCHAR" />
-		<result column="req_status" property="reqStatus"
-			jdbcType="VARCHAR" />
-		<result column="create_date" property="createDate"
-			jdbcType="DATE" />
+		<result column="next_user" property="nextUser" jdbcType="VARCHAR" />
+		<result column="create_uesr" property="createUesr" jdbcType="VARCHAR" />
+		<result column="req_status" property="reqStatus" jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate" jdbcType="DATE" />
 		<result column="modi_date" property="modiDate" jdbcType="DATE" />
 	</resultMap>
 
 	<!-- ==================定义sql片段============== sql:是sql片段标签属性,可被其他语句引用的可重用语句块 
 		id是该片段的唯一标识 -->
 	<sql id="Basic_Req_Columns">
-		id, req_no, req_name,
-		req_source,dept,exec_type,lead_team,coo_team,next_user,req_status,create_date,create_uesr,modi_date
+		id, req_no, req_name,req_source,dept,exec_type,lead_team,
+		coo_team,next_user,req_status,create_date,create_uesr,modi_date
 	</sql>
 
-	<!-- 增删改查标签里的id:一定要和接口里对应的方法名一致， 33 resultMap输出类型里写映射标签里的id 34 parameterType：输入类型，规范输入数据类型，指明查询时使用的参数类型 -->
-	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
-		parameterType="java.lang.Integer">
+	<!-- 增删改查标签里的id:一定要和接口里对应的方法名一致 resultMap输出类型里写映射标签里的id parameterType：输入类型，规范输入数据类型，指明查询时使用的参数类型 -->
+	<select id="getAll" resultMap="DmdManageMap">
 		select
 		<include refid="Basic_Req_Columns" />
-		from t_user
-		where user_id = #{userId,jdbcType=INTEGER}
+		from req
+		where is_deleted = 0
 	</select>
-	<!--这个方法是我自己加的 -->
-	<select id="selectAllUser" resultMap="BaseResultMap">
+	
+	<select id="getByParams" resultMap="DmdManageMap"
+		parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
+		<!-- 用include标签引入sql片段，refid写定义sql片段的id，where标签不要写在片段里 -->
 		select
 		<include refid="Basic_Req_Columns" />
-		from t_user
+		from req
+		<where>
+		<!-- 当页面没有输入用户名和选择权限，就让它的条件永远为真，就变成全查询了 -->
+		<if test="username == null and username = '' and upower == -1">
+				and 1=1
+			</if>
+		<if test="username != null and username !=''">
+			and username LIKE '%${username}%'
+		</if>
+		user_id = #{userId,jdbcType=INTEGER}
+		</where>
 	</select>
+
+	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+	<!-- 修改用户信息 -->
+	<update id="update" parameterType="com.po.UserinfoPO">
+		update userinfo
+		set
+		loginname=#{loginname},loginpass=#{loginpass},username=#{username},
+		upower=#{upower},birthday=#{birthday},sex=#{sex}
+		where userid=#{userid}
+	</update>
+
+	<!-- 添加用户信息 -->
+	<insert id="insert" parameterType="com.po.UserinfoPO">
+		insert into userinfo(
+		<include refid="zd" />
+		)
+		values
+		(#{userid},#{loginname},#{loginpass},#{username},#{upower},#{birthday},#{sex})
+	</insert>
+
 	<!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer"> delete 
 		from t_user where user_id = #{userId,jdbcType=INTEGER} </delete> <insert 
 		id="insert" parameterType="com.winter.model.User"> insert into t_user (user_id, 

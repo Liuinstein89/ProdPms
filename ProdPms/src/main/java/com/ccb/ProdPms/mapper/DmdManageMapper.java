@@ -1,14 +1,12 @@
 package com.ccb.ProdPms.mapper;
 
 import com.ccb.ProdPms.entity.DmdManageEntity;
-import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Results;
 import org.apache.ibatis.annotations.Select;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 //@Component
 //@Mapper
 public interface DmdManageMapper {
