@@ -36,7 +36,7 @@ public class DmTest {
 		// System.out.println("####################"+dmdManageMapper.getByParams(reqNo,
 		// reqName, reqSource, dept, execType, leadTeam, nextUser, reqStatus, beginDate,
 		// endDate).toString());
-		System.out.println("####################" + dmdManageMapper.getByParams(dmdQueryParamsEntity).toString());
+		System.out.println("###" + dmdManageMapper.getByParams(dmdQueryParamsEntity).toString());
 		/*
 		 * for (int i = 0; i < dmd.size(); i++) { System.out.println(dmd); }
 		 */

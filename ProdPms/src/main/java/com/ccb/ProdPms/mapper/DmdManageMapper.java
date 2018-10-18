@@ -43,9 +43,9 @@ public interface DmdManageMapper {
     void insert(UserEntity user);
 
     @Update("UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}")
-    void update(UserEntity user);
+    void update(UserEntity user);*/
 
-    @Delete("DELETE FROM users WHERE id =#{id}")
-    void delete(Long id);*/
+    //@Delete("DELETE FROM users WHERE id =#{id}")
+    void delete(Long id);
 
 }
