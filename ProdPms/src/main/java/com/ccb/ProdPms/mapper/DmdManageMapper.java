@@ -13,9 +13,9 @@ import java.util.List;
 //@Component
 //@Mapper
 public interface DmdManageMapper {
-
-    @Select("SELECT * FROM req where is_deleted = 0")
-    @Results({
+//注解和xml两者能否共存？怎么共存？
+    /*@Select("SELECT * FROM req where is_deleted = 0")
+    @Results(id="123",value = {
             //@Result(property = "userSex", column = "user_sex", javaType = UserSexType.class),
             @Result(property = "id", column = "id"),
             @Result(property = "reqNo", column = "req_no"),
@@ -31,27 +31,13 @@ public interface DmdManageMapper {
             @Result(property = "reqStatus", column = "req_status"),
             @Result(property = "createDate", column = "create_date"),
             @Result(property = "modiDate", column = "modi_date")
-    })
+    })*/
     List<DmdManageEntity> getAll();
 
     /*@Select("SELECT * FROM users WHERE id = #{id}")
-    @Results({
-            @Result(property = "id", column = "id"),
-            @Result(property = "reqNo", column = "req_no"),
-            @Result(property = "reqName", column = "req_name"),
-            @Result(property = "reqSource", column = "req_source"),
-            @Result(property = "dept", column = "dept"),
-            @Result(property = "execType", column = "exec_type"),
-            @Result(property = "leadTeam", column = "lead_team"),
-            @Result(property = "cooTeam", column = "coo_team"),
-            @Result(property = "nowUser", column = "now_user"),
-            @Result(property = "nextUser", column = "next_user"),
-            @Result(property = "createUesr", column = "create_uesr"),
-            @Result(property = "reqStatus", column = "req_status"),
-            @Result(property = "createDate", column = "create_date"),
-            @Result(property = "modiDate", column = "modi_date")
-    })*/
-    List<DmdManageEntity> getByParams(String reqNo,String reqName,String reqSource,String dept,String execType,String leadTeam,String nextUser,String reqStatus,String beginDate,String endDate);
+    @ResultMap("123")*/
+    //List<DmdManageEntity> getByParams(String reqNo,String reqName,String reqSource,String dept,String execType,String leadTeam,String nextUser,String reqStatus,String beginDate,String endDate);
+    List<DmdManageEntity> getByParams(DmdQueryParamsEntity dmdQueryParamsEntity);
 
    /* @Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
     void insert(UserEntity user);

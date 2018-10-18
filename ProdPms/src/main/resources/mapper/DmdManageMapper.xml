@@ -53,25 +53,26 @@
 		 resultMap输出类型里写映射标签里的id 
 		 parameterType：输入类型，规范输入数据类型，指明查询时使用的参数类型
 	 --> 
-	<select id="getAll" resultMap="DmdManageMap">
+	 <select id="getAll" resultMap="DmdManageMap">
 		select 
 		<include refid="Basic_Req_Columns" />
 		from req
 		where is_deleted = 0
-	</select>
+	</select> 
 	
 	<!-- 什么时候用where，什么时候用<where>标签？
 		   查询的时候如果某些条件没有，可能sql拼装会有问题
 		   解决办法：
 		 1.给where 后面加上1=1，以后的条件都and  
-		 2.mybatis 使用where标签将所有的查询条件包括在内。mybatis会将where标签后面第一个and去掉，只会去掉第一个多出来的and或者or。 
+		 2.mybatis 使用where标签将所有的查询条件包括在内。where元素知道只有在一个以上的if条件有值的情况下才去插入“WHERE”子句。
+		 mybatis会将where标签后面第一个and去掉，只会去掉第一个多出来的and或者or。 
 	-->
 	<select id="getByParams" resultMap="DmdManageMap"
 		parameterType="com.ccb.ProdPms.entity.DmdQueryParamsEntity">
-		<!-- 用include标签引入sql片段，refid写定义sql片段的id，where标签不要写在片段里 -->
+		<!-- 用include标签引入sql片段，refid写定义sql片段的id，where标签不要写在片段里，如果refid指定的id不在本mapper文件中，需要前边加namespace -->
 		select
 		<include refid="Basic_Req_Columns" />
-		from req
+		from req 
 		<where>
 			<!-- 当页面没有输入用户名和选择权限，就让它的条件永远为真，就变成全查询了，这里后面看管理页面能不能合并查询和初始化的sql用？ -->
 			<!-- <if test="username == null and username = '' and upower == -1">
@@ -104,13 +105,13 @@
 			<if test="beginDate != null and endDate !=null">
 				and createDate between #{beginDate,jdbcType="Date"} and #{beginDate,jdbcType="Date"}
 			</if>
-			is_deleted = 0
+			and is_deleted = 0
 		</where>
 	</select>
 
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- 修改用户信息 -->
-	<update id="update" parameterType="com.po.UserinfoPO">
+	<!-- <update id="update" parameterType="com.po.UserinfoPO">
 		update userinfo
 		set
 		loginname=#{loginname},loginpass=#{loginpass},username=#{username},
@@ -118,14 +119,14 @@
 		where userid=#{userid}
 	</update>
 
-	<!-- 添加用户信息 -->
+	添加用户信息
 	<insert id="insert" parameterType="com.po.UserinfoPO">
 		insert into userinfo(
 		<include refid="zd" />
 		)
 		values
 		(#{userid},#{loginname},#{loginpass},#{username},#{upower},#{birthday},#{sex})
-	</insert>
+	</insert> -->
 
 	<!--<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer"> delete 
 		from t_user where user_id = #{userId,jdbcType=INTEGER} </delete> <insert 

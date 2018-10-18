@@ -6,15 +6,15 @@ import java.util.Date;
 public class DmdQueryParamsEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long reqNo;
+	private String reqNo;
 	private String reqName, reqSource, dept, execType, leadTeam, nextUser, reqStatus;
 	private Date beginDate, endDate;
 
-	public Long getReqNo() {
+	public String getReqNo() {
 		return reqNo;
 	}
 
-	public void setReqNo(Long reqNo) {
+	public void setReqNo(String reqNo) {
 		this.reqNo = reqNo;
 	}
 
@@ -90,7 +90,7 @@ public class DmdQueryParamsEntity implements Serializable {
 		this.endDate = endDate;
 	}
 
-	public DmdQueryParamsEntity(Long reqNo, String reqName, String reqSource, String dept, String execType,
+	public DmdQueryParamsEntity(String reqNo, String reqName, String reqSource, String dept, String execType,
 			String leadTeam, String nextUser, String reqStatus, Date beginDate, Date endDate) {
 		super();
 		this.reqNo = reqNo;
@@ -105,4 +105,7 @@ public class DmdQueryParamsEntity implements Serializable {
 		this.endDate = endDate;
 	}
 
+	public DmdQueryParamsEntity() {
+		super();
+	}
 }

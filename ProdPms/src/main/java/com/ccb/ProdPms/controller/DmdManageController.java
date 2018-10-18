@@ -16,4 +16,24 @@ public class DmdManageController {
         List<DmdManageEntity> demandList = new ArrayList();
         return demandList;
     }*/
+	
+/*	@Autowired
+	private UserService userService;
+	
+	
+	 @RequestMapping("/hello")  
+     public String index() {  
+          return"Hello World";  
+     } 
+	 
+	 
+	 @RequestMapping("/get")  
+	 @ResponseBody
+     public String get(User user) {  
+		 User u=userService.getNameById(user);
+		 
+         return JSONObject.toJSONString(u);     
+     }
+*/
+
 }
