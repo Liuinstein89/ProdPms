@@ -29,14 +29,15 @@ public class DmTest {
 	 */
 	@Test
 	public void testQueryParams() {
-		DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity("", "", "", "", "", "", "", "", null,
-				null);
+		//DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity("", "", "", "", "", "", "", "", null,
+				//null);
 		// List<DmdManageEntity> dmd =
 		// dmdManageMapper.getByParams("","", "", "", "", "", "", "", null, null);
 		// System.out.println("####################"+dmdManageMapper.getByParams(reqNo,
 		// reqName, reqSource, dept, execType, leadTeam, nextUser, reqStatus, beginDate,
 		// endDate).toString());
-		System.out.println("###" + dmdManageMapper.getByParams(dmdQueryParamsEntity).toString());
+		//System.out.println("###" + dmdManageMapper.getByParams(dmdQueryParamsEntity).toString());
+		//dmdManageMapper.deleteById(1);
 		/*
 		 * for (int i = 0; i < dmd.size(); i++) { System.out.println(dmd); }
 		 */

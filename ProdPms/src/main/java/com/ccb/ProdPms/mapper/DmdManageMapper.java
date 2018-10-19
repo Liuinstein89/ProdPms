@@ -46,6 +46,6 @@ public interface DmdManageMapper {
     void update(UserEntity user);*/
 
     //@Delete("DELETE FROM users WHERE id =#{id}")
-    void delete(Long id);
+    void deleteById(Integer id);
 
 }
