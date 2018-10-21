@@ -34,10 +34,10 @@ public interface DmdManageMapper {
     //List<DmdManageEntity> getByParams(String reqNo,String reqName,String reqSource,String dept,String execType,String leadTeam,String nextUser,String reqStatus,String beginDate,String endDate);
     List<DmdManageEntity> getByParams(DmdQueryParamsEntity dmdQueryParamsEntity);
 
-   /* @Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
-    void insert(UserEntity user);
+  //@Insert("INSERT INTO users(userName,passWord,user_sex) VALUES(#{userName}, #{passWord}, #{userSex})")
+    void insert(DmdManageEntity dmdManageEntity);
 
-    @Update("UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}")
+  /* @Update("UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}")
     void update(UserEntity user);*/
 
     //@Delete("DELETE FROM users WHERE id =#{id}")
