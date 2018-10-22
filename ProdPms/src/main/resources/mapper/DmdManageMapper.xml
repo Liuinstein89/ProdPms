@@ -9,7 +9,7 @@
 		属性id：是这个映射标签的唯一标识 id标签是查询结果集中的唯一标识，多列组成唯一标识则配置多个id 属性column：查询出来的列名 属性property：是po类里所指定的列名 
 		通常会在原列名后面加下划线，这是固定的，这里就是id后面 column不做限制，可以为任意表的字段，而property须为type 定义的pojo属性 -->
 	<resultMap id="DmdManageMap" type="com.ccb.ProdPms.entity.DmdManageEntity">
-		<id column="id" property="id" jdbcType="BIGINT" />
+		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="req_no" property="reqNo" jdbcType="VARCHAR" />
 		<result column="req_name" property="reqName" jdbcType="VARCHAR" />
 		<result column="req_source" property="reqSource" jdbcType="VARCHAR" />
@@ -19,7 +19,7 @@
 		<result column="coo_team" property="cooTeam" jdbcType="VARCHAR" />
 		<result column="now_user" property="nowUser" jdbcType="VARCHAR" />
 		<result column="next_user" property="nextUser" jdbcType="VARCHAR" />
-		<result column="create_uesr" property="createUesr" jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
 		<result column="req_status" property="reqStatus" jdbcType="VARCHAR" />
 		<result column="create_date" property="createDate" jdbcType="DATE" />
 		<result column="modi_date" property="modiDate" jdbcType="DATE" />
@@ -29,7 +29,7 @@
 		id是该片段的唯一标识 -->
 	<sql id="Basic_Req_Columns">
 		id, req_no, req_name,req_source,dept,exec_type,lead_team,
-		coo_team,next_user,req_status,create_date,create_uesr,modi_date
+		coo_team,next_user,req_status,create_date,create_user,modi_date
 	</sql>
 
 	<!--mybatis进行数据库连接操作时对于SQL语句返回结果的处理有两种方式，resultType和resultMap resultType：对于SQL语句查询出的字段在相应的pojo中必须有和它相同的字段对应，而resultType中的内容就是pojo在本项目中的位置，适合单标查询 
@@ -92,48 +92,42 @@
 		</where>
 	</select>
 
+	<!-- 添加需求信息，参数的初始值在代码中做处理 -->
+	<insert id="insert" parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
+		insert into
+		req (req_no,req_name,req_source,dept,exec_type,lead_team,coo_team,now_user,next_user,req_status,create_date,create_uesr,modi_date,is_deleted)
+		values (#{reqNo,jdbcType=VARCHAR}, #{reqName,jdbcType=VARCHAR},#{reqSource,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR},
+		#{execType,jdbcType=VARCHAR},#{leadTeam,jdbcType=VARCHAR},#{cooTeam,jdbcType=VARCHAR}, #{nowUser,jdbcType=VARCHAR},
+		#{nextUser,jdbcType=VARCHAR}, #{reqStatus,jdbcType=VARCHAR},now(), #{createUser,jdbcType=VARCHAR}, null, #{isDeleted,jdbcType=INTEGER})
+	</insert>
+	<!-- <insert id="insertSelective" parameterType="com.winter.model.User">
+		insert into t_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="userId != null"> user_id, </if>
+			<if test="userName != null"> user_name, </if>
+			<if test="password != null"> password, </if>
+			<if test="phone != null"> phone, </if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="userId != null"> #{userId,jdbcType=INTEGER}, </if>
+			<if test="userName != null"> #{userName,jdbcType=VARCHAR}, </if>
+			<if test="password != null"> #{password,jdbcType=VARCHAR}, </if>
+			<if test="phone != null"> #{phone,jdbcType=VARCHAR}, </if>
+		</trim>
+	</insert> -->
+
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- 修改用户信息 -->
 	<!-- <update id="update" parameterType="com.po.UserinfoPO"> update userinfo 
 		set loginname=#{loginname},loginpass=#{loginpass},username=#{username}, upower=#{upower},birthday=#{birthday},sex=#{sex} 
 		where userid=#{userid} </update> -->
-	<!-- 添加用户信息 -->
-	<!-- <insert id="insert" parameterType="com.po.UserinfoPO"> insert into 
-		userinfo( <include refid="zd" /> ) values (#{userid},#{loginname},#{loginpass},#{username},#{upower},#{birthday},#{sex}) 
-		</insert> -->
-
-	<!-- <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer"> 
-		delete from t_user where user_id = #{userId,jdbcType=INTEGER} </delete> -->
-		
-	<!-- <insert id="insert" parameterType="com.winter.model.User"> insert into 
-		t_user (user_id, user_name, password, phone) values (#{userId,jdbcType=INTEGER}, 
-		#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}) 
-		</insert> 
-		<insert id="insertSelective" parameterType="com.winter.model.User"> 
-		insert into t_user <trim prefix="(" suffix=")" suffixOverrides=","> 
-		<if test="userId 
-		!= null"> user_id, </if>
-		<if test="userName != null"> user_name, </if> 
-		<if 
-		test="password != null"> password, </if> 
-		<if test="phone != null"> phone, 
-		</if> </trim> <trim prefix="values (" suffix=")" suffixOverrides=","> 
-		<if 
-		test="userId != null"> #{userId,jdbcType=INTEGER}, </if> 
-		<if test="userName 
-		!= null"> #{userName,jdbcType=VARCHAR}, </if> 
-		<if test="password != null"> 
-		#{password,jdbcType=VARCHAR}, </if> 
-		<if test="phone != null"> #{phone,jdbcType=VARCHAR}, 
-		</if> </trim> </insert> -->
-		
 	<!-- <update id="updateByPrimaryKeySelective" parameterType="com.winter.model.User"> 
 		update t_user <set> <if test="userName != null"> user_name = #{userName,jdbcType=VARCHAR}, 
 		</if> <if test="password != null"> password = #{password,jdbcType=VARCHAR}, 
 		</if> <if test="phone != null"> phone = #{phone,jdbcType=VARCHAR}, </if> 
 		</set> where user_id = #{userId,jdbcType=INTEGER} </update> -->
-	<!-- 假删除需求 -->	
-	<update id="deleteById" parameterType="java.lang.Integer"> 
+	<!-- 假删除需求 -->
+	<update id="deleteById" parameterType="java.lang.Integer">
 		update req set
 		is_deleted = 1
 		where

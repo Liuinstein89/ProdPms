@@ -3,7 +3,7 @@ package com.ccb.ProdPms.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class ExecTpyeEntity implements Serializable {
+public class ExecTypeEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;

@@ -7,12 +7,29 @@ public class DmdManageEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
-    private Long reqNo;
-    private String reqName, reqSource, dept, execType, leadTeam, cooTeam, nowUser, nextUser, createUesr, reqStatus;
+    private String reqNo;
+    private String reqName, reqSource, dept, execType, leadTeam, cooTeam, nowUser, nextUser, createUser, reqStatus;
     private Date createDate, modiDate;
     private int isDeleted;
 
-    @Override
+    public DmdManageEntity(String reqNo, String reqName, String reqSource, String dept, String execType, String leadTeam,
+			String cooTeam, String nowUser, String nextUser, String createUser, String reqStatus, int isDeleted) {
+		super();
+		this.reqNo = reqNo;
+		this.reqName = reqName;
+		this.reqSource = reqSource;
+		this.dept = dept;
+		this.execType = execType;
+		this.leadTeam = leadTeam;
+		this.cooTeam = cooTeam;
+		this.nowUser = nowUser;
+		this.nextUser = nextUser;
+		this.createUser = createUser;
+		this.reqStatus = reqStatus;
+		this.isDeleted = isDeleted;
+	}
+
+	@Override
     public String toString() {
         return "DmdManageEntity{" +
                 "id=" + id +
@@ -25,7 +42,7 @@ public class DmdManageEntity implements Serializable {
                 ", cooTeam='" + cooTeam + '\'' +
                 ", nowUser='" + nowUser + '\'' +
                 ", nextUser='" + nextUser + '\'' +
-                ", createUesr='" + createUesr + '\'' +
+                ", createUesr='" + createUser + '\'' +
                 ", reqStatus='" + reqStatus + '\'' +
                 ", createDate=" + createDate +
                 ", modiDate=" + modiDate +
@@ -37,7 +54,11 @@ public class DmdManageEntity implements Serializable {
         return id;
     }
 
-    public void setReqNo(Long reqNo) {
+    public String getReqNo() {
+		return reqNo;
+	}
+
+	public void setReqNo(String reqNo) {
         this.reqNo = reqNo;
     }
 
@@ -105,12 +126,12 @@ public class DmdManageEntity implements Serializable {
         this.nextUser = nextUser;
     }
 
-    public String getCreateUesr() {
-        return createUesr;
+    public String getCreateUser() {
+        return createUser;
     }
 
-    public void setCreateUesr(String createUesr) {
-        this.createUesr = createUesr;
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
     }
 
     public String getReqStatus() {
