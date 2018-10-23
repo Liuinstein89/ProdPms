@@ -41,9 +41,6 @@ public class UploadFileController {
 	}
 
 	// 需求新建处文件上传
-	// @RequestMapping(value="/uploadfile",method=RequestMethod.POST)，发送的请求路径为uploadfile，但是操作还是在upload页面
-	@PostMapping("/uploadfile")
-	@ResponseBody
 	/*
 	 * 在controller上加注解@Controller和@RestController都可以在前端调通接口，但是二者的区别在于，
 	 * 当用前者的时候在方法上必须添加注解@ResponseBody，
@@ -51,13 +48,18 @@ public class UploadFileController {
 	 * 而加上@ResponseBody，则方法返回的就是具体对象了。@RestController的作用就相当于@Controller+@
 	 * ResponseBody的结合体
 	 */
+	// @RequestMapping(value="/uploadfile",method=RequestMethod.POST)，发送的请求路径为uploadfile，但是操作还是在upload页面
+	@PostMapping("/uploadFile")
+	@ResponseBody
 	public String singleFileUpload(@RequestParam("file") MultipartFile file) {
 		if (file.isEmpty()) {
 			return "no upload file!";
 		}
 		String fileName = file.getOriginalFilename();
 		log.info(fileName);
-
+		// 上传文件名
+		//String fileName = new Date().getTime() + new Random().nextInt(100) + "." + fileSuffix;
+		//File savefile = new File(uploadPath + fileName);
 		File dest = new File(UPLOADED_FILEPATH + fileName);
 		// System.out.println(dest.getName() + "-->" + dest.getPath() + "-->" +
 		// dest.getParentFile() + "-->" + dest);
@@ -71,58 +73,78 @@ public class UploadFileController {
 			return dest.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
-			return "upload failed!";
+			return "upload file failed!";
 		}
 	}
 
-	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 	// 上传文件下载，主要是需求查看的时候
-	@RequestMapping("download.htm")
-	public String downLoad(HttpServletResponse response, @RequestParam Integer id) {
-		// TjrFile tjrFile = fileService.findOne(id);
-		// UUID name
-		String uuidname = null;// = tjrFile.getUuidname();
+	@RequestMapping("/downloadFile")
+	//@ResponseBody
+	public String downloadFile(HttpServletResponse response, @RequestParam String filename) {
+		 if (filename != null) {
 		// 文件名
-		String filename = null;// = tjrFile.getFilename();
-		File file = new File(UPLOADED_FILEPATH + uuidname);
-		if (file.exists()) { // 判断文件父目录是否存在
+			 log.info(filename);
+		File file = new File("E:/temp/" ,filename);
+		if (file.exists()) { // E:\temp\test.sql
 			response.setContentType("application/force-download");
-			// 修改下载文件的文件名
-			response.setHeader("Content-Disposition", "attachment;fileName=" + filename);
-
+			response.addHeader("Content-Disposition", "attachment;fileName=" + filename);// 修改下载文件的文件名
+			//response.addHeader("Content-Disposition", "attachment;fileName=" + fileName); 设置文件名
 			byte[] buffer = new byte[1024];
 			FileInputStream fis = null; // 文件输入流
 			BufferedInputStream bis = null;
 
-			OutputStream os = null; // 输出流
 			try {
-				os = response.getOutputStream();
+				OutputStream os = response.getOutputStream();// 输出流
 				fis = new FileInputStream(file);
 				bis = new BufferedInputStream(fis);
 				int i = bis.read(buffer);
 				while (i != -1) {
-					os.write(buffer);
+					//os.write(buffer);
+					os.write(buffer,0,i);
 					i = bis.read(buffer);
 				}
-
+				log.info("=========================文件下载" + filename);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
-			log.info("=========================文件下载" + filename);
-			try {
-				bis.close();
-				fis.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			}finally {
+				if(bis != null) {
+					try {
+						bis.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				if (fis != null) {
+                    try {
+                        fis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
 			}
 		}
-		return null;
 	}
-
-	// 上传文件删除
-	@PostMapping("del.json")
+		return "no file download!";
+}
+	
+	// 上传文件删除,这里主要考虑直接删除服务器文件，在修改需求页面删除，则需要直接调用删库sql及删除服务器文件两个步骤
+	@PostMapping("/deleteFile")
+    public String delFile(String filename) {
+    	String resultInfo = null;
+		String filePath = "E:/temp/" + filename;
+		File dest = new File(filePath);
+		if (dest.exists()) {
+			if (dest.delete()) {
+				resultInfo =  "1-删除成功";
+			} else {
+				resultInfo =  "0-删除失败";
+			}
+		} else {
+			resultInfo = "文件不存在！";
+		}
+		return resultInfo;
+	}
+	/*@PostMapping("del.json")
 	@ResponseBody
 	public String delfile(@RequestParam Integer id) {
 		// TjrFile tjrFile = fileService.findOne(id);
@@ -141,5 +163,5 @@ public class UploadFileController {
 			e.printStackTrace();
 			return "false";
 		}
-	}
+	}*/
 }

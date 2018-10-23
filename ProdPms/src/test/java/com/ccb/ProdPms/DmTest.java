@@ -1,11 +1,14 @@
 package com.ccb.ProdPms;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.ccb.ProdPms.controller.UploadFileController;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 
 @RunWith(SpringRunner.class)
@@ -14,7 +17,8 @@ import com.ccb.ProdPms.mapper.DmdManageMapper;
 public class DmTest {
 	@Autowired
 	private DmdManageMapper dmdManageMapper;
-
+@Autowired
+private UploadFileController uploadFileController;
 	/*
 	 * @Test public void testQuery() throws Exception { List<DmdManageEntity> dmd =
 	 * dmdManageMapper.getAll(); 
@@ -23,6 +27,7 @@ public class DmTest {
 	 */
 	@Test
 	public void testQueryParams() {
+		HttpServletResponse response = null;
 		//DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity("", "", "", "", "", "", "", "", null,
 				//null);
 		// List<DmdManageEntity> dmd =
@@ -35,10 +40,12 @@ public class DmTest {
 		//new DmdQueryParamsEntity(555,"mingzi","laiyuan","dept","fangshi","nwipo","wip","design","dev","req","good",,2222-22-22,0);		
 		//DmdManageEntity dmdManageEntity = new DmdManageEntity("33", "mingzi","laiyuan","dept","fangshi","nwipo","wip","design","dev","req","good",0);
 		//dmdManageMapper.insert(dmdManageEntity);
-		
+		//uploadFileController.delFile("test.sql");
+		uploadFileController.downloadFile(response, "idea快捷键.txt");
 		/*
 		 * for (int i = 0; i < dmd.size(); i++) { System.out.println(dmd); }
 		 */
+		
 	}
 
 }
