@@ -5,8 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.ProcessBuilder.Redirect;
-import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,48 +34,45 @@ public class UploadFileController {
 	// 上传默认路径
 	private static String UPLOADED_FILEPATH = "E://temp//";
 
+	// 页面跳转，地址栏路径为addReq，跳转到静态页面upload
+	@GetMapping("/addReq")
+	public String index() {
+		return "upload";
+	}
+
 	// 需求新建处文件上传
-	// @RequestMapping(value="/upload",method=RequestMethod.POST)
+	// @RequestMapping(value="/uploadfile",method=RequestMethod.POST)，发送的请求路径为uploadfile，但是操作还是在upload页面
 	@PostMapping("/uploadfile")
+	@ResponseBody
+	/*
+	 * 在controller上加注解@Controller和@RestController都可以在前端调通接口，但是二者的区别在于，
+	 * 当用前者的时候在方法上必须添加注解@ResponseBody，
+	 * 如果不添加@ResponseBody，就会报错，因为当使用@Controller注解时，spring默认方法返回的是view对象（页面）。
+	 * 而加上@ResponseBody，则方法返回的就是具体对象了。@RestController的作用就相当于@Controller+@
+	 * ResponseBody的结合体
+	 */
 	public String singleFileUpload(@RequestParam("file") MultipartFile file) {
 		if (file.isEmpty()) {
-			log.info("no upload file!");
-			return "redirect:/upload123";
+			return "no upload file!";
 		}
-		// String uuidname = UUID.randomUUID().toString().replace("-",
-		// "").toLowerCase();
 		String fileName = file.getOriginalFilename();
-		// idea快捷键.txt
-		int size = (int) file.getSize();
-		String type = file.getContentType();
-		System.out.println("#####################" + type);
-		// text/plain
-		// application/octet-stream
-		// #####################application/pdf
-		// #####################application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-		log.info(fileName + "-->" + size);
+		log.info(fileName);
+
 		File dest = new File(UPLOADED_FILEPATH + fileName);
-		System.out.println("@@@@@@" + dest.getName() + "-->" + dest.getPath() + "-->" + dest.getParent() + "-->"
-				+ dest.getParentFile() + "-->" + dest + "-->" + dest.toString());
-		// @@@@@@docker_practice.pdf-->E:\temp\docker_practice.pdf-->E:\temp-->E:\temp
-		// @@@@@@交接文档_180927_lhy.xlsx-->E:\temp\交接文档_180927_lhy.xlsx-->E:\temp-->E:\temp
+		// System.out.println(dest.getName() + "-->" + dest.getPath() + "-->" +
+		// dest.getParentFile() + "-->" + dest);
+		// test.sql-->E:\temp\test.sql-->E:\temp-->E:\temp\test.sql
 		// 判断文件父目录是否存在
 		if (!dest.getParentFile().exists()) {
 			dest.getParentFile().mkdir();
 		}
 		try {
 			file.transferTo(dest);
-			String str = UPLOADED_FILEPATH + fileName;
-			return str;
+			return dest.toString();
 		} catch (IOException e) {
 			e.printStackTrace();
+			return "upload failed!";
 		}
-		return "upload";
-	}
-
-	@GetMapping("/upload123")
-	public String index() {
-		return "upload";
 	}
 
 	// +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -125,7 +120,7 @@ public class UploadFileController {
 		}
 		return null;
 	}
-  
+
 	// 上传文件删除
 	@PostMapping("del.json")
 	@ResponseBody
