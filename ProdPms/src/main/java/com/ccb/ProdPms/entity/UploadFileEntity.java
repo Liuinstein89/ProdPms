@@ -4,88 +4,94 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class UploadFileEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private Long id, reqId;
-    private String fileName, add, type, user;
-    private Date dateTime;
-    private int isDeleted;
+	private Long id;
+	private String fileName, path, type, user,reqNo;
+	private Date dateTime;
+	private int isDeleted;
 
-    @Override
-    public String toString() {
-        return "UploadFileEntity{" +
-                "id=" + id +
-                ", reqId=" + reqId +
-                ", fileName='" + fileName + '\'' +
-                ", add='" + add + '\'' +
-                ", type='" + type + '\'' +
-                ", user='" + user + '\'' +
-                ", dateTime=" + dateTime +
-                ", isDeleted=" + isDeleted +
-                '}';
-    }
+	@Override
+	public String toString() {
+		return "UploadFileEntity{" + "id=" + id + ", reqId=" + reqNo + ", fileName='" + fileName + '\'' + ", path='"
+				+ path + '\'' + ", type='" + type + '\'' + ", user='" + user + '\'' + ", dateTime=" + dateTime
+				+ ", isDeleted=" + isDeleted + '}';
+	}
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getReqId() {
-        return reqId;
-    }
+	public UploadFileEntity(String fileName, String path, String type, String user, String reqNo, int isDeleted) {
+		this.fileName = fileName;
+		this.path = path;
+		this.type = type;
+		this.user = user;
+		this.reqNo = reqNo;
+		this.isDeleted = isDeleted;
+	}
 
-    public void setReqId(Long reqId) {
-        this.reqId = reqId;
-    }
 
-    public String getFileName() {
-        return fileName;
-    }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public String getAdd() {
-        return add;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setAdd(String add) {
-        this.add = add;
-    }
+	public String getReqNo() {
+		return reqNo;
+	}
 
-    public String getType() {
-        return type;
-    }
+	public void setReqNo(String reqNo) {
+		this.reqNo = reqNo;
+	}
 
-    public void setType(String type) {
-        this.type = type;
-    }
+	public String getFileName() {
+		return fileName;
+	}
 
-    public String getUser() {
-        return user;
-    }
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
-    public void setUser(String user) {
-        this.user = user;
-    }
+	public String getPath() {
+		return path;
+	}
 
-    public Date getDateTime() {
-        return dateTime;
-    }
+	public void setPath(String path) {
+		this.path = path;
+	}
 
-    public void setDateTime(Date dateTime) {
-        this.dateTime = dateTime;
-    }
+	public String getType() {
+		return type;
+	}
 
-    public int getIsDeleted() {
-        return isDeleted;
-    }
+	public void setType(String type) {
+		this.type = type;
+	}
 
-    public void setIsDeleted(int isDeleted) {
-        this.isDeleted = isDeleted;
-    }
+	public String getUser() {
+		return user;
+	}
+
+	public void setUser(String user) {
+		this.user = user;
+	}
+
+	public Date getDateTime() {
+		return dateTime;
+	}
+
+	public void setDateTime(Date dateTime) {
+		this.dateTime = dateTime;
+	}
+
+	public int getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(int isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 }

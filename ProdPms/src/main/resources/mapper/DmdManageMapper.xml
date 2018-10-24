@@ -100,6 +100,14 @@
 		#{execType,jdbcType=VARCHAR},#{leadTeam,jdbcType=VARCHAR},#{cooTeam,jdbcType=VARCHAR}, #{nowUser,jdbcType=VARCHAR},
 		#{nextUser,jdbcType=VARCHAR}, #{reqStatus,jdbcType=VARCHAR},now(), #{createUser,jdbcType=VARCHAR}, null, #{isDeleted,jdbcType=INTEGER})
 	</insert>
+	
+	<!-- 添加新增需求时候的上传文档, 多份-->
+	<insert id="insertUpload" parameterType="com.ccb.ProdPms.entity.UploadFileEntity">
+		insert into
+		upload_file (file_name,path,type,user,is_deleted,req_no,datetime)
+		values (#{fileName,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}, 
+		#{user,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER},#{reqNo,jdbcType=VARCHAR},now())
+	</insert>
 	<!-- <insert id="insertSelective" parameterType="com.winter.model.User">
 		insert into t_user
 		<trim prefix="(" suffix=")" suffixOverrides=",">

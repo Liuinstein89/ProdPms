@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -20,7 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @ClassName: UploadFileController
- * @Description: 上传、下载和删除文件接口
+ * @Description: 上传、下载和删除文件接口,文件类型多种，pdf、office、图片均可
  * @author lhy-pc
  * @date 2018年10月22日
  * 
@@ -77,18 +78,19 @@ public class UploadFileController {
 		}
 	}
 
-	// 上传文件下载，主要是需求查看的时候
+	// 上传文件下载，主要是需求查看的时候,前端发请求的时候附带一个文件名参数
 	@RequestMapping("/downloadFile")
 	//@ResponseBody
-	public String downloadFile(HttpServletResponse response, @RequestParam String filename) {
+	public String downloadFile(HttpServletResponse response, @RequestParam String filename) throws IOException{
 		 if (filename != null) {
 		// 文件名
 			 log.info(filename);
 		File file = new File("E:/temp/" ,filename);
 		if (file.exists()) { // E:\temp\test.sql
 			response.setContentType("application/force-download");
-			response.addHeader("Content-Disposition", "attachment;fileName=" + filename);// 修改下载文件的文件名
-			//response.addHeader("Content-Disposition", "attachment;fileName=" + fileName); 设置文件名
+			//setHeader(name, value)：如果Header中没有定义则添加，如果已定义则用新的value覆盖; addHeader(name, value)：如果Header中没有定义则添加，如果已定义则保持原有value。
+			response.setHeader("Content-Disposition", "attachment;fileName=" + new String(filename.getBytes("UTF-8"),"iso-8859-1"));// 修改下载文件的文件名,解决中文乱码
+			
 			byte[] buffer = new byte[1024];
 			FileInputStream fis = null; // 文件输入流
 			BufferedInputStream bis = null;
@@ -124,7 +126,7 @@ public class UploadFileController {
 			}
 		}
 	}
-		return "no file download!";
+		return null;//"no file download!";???这里为什么这么处理就不会报错？
 }
 	
 	// 上传文件删除,这里主要考虑直接删除服务器文件，在修改需求页面删除，则需要直接调用删库sql及删除服务器文件两个步骤

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
+import com.ccb.ProdPms.entity.UploadFileEntity;
 
 //@Component
 //@Mapper
@@ -35,9 +36,10 @@ public interface DmdManageMapper {
     List<DmdManageEntity> getByParams(DmdQueryParamsEntity dmdQueryParamsEntity);
 
     void insert(DmdManageEntity dmdManageEntity);
+    
+    void insertUpload(UploadFileEntity uploadFileEntity);
 
-  /* @Update("UPDATE users SET userName=#{userName},nick_name=#{nickName} WHERE id =#{id}")
-    void update(UserEntity user);*/
+    //void update(UserEntity user);
 
     void deleteById(Integer id);
 

@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ccb.ProdPms.controller.UploadFileController;
+import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 
 @RunWith(SpringRunner.class)
@@ -27,7 +28,6 @@ private UploadFileController uploadFileController;
 	 */
 	@Test
 	public void testQueryParams() {
-		HttpServletResponse response = null;
 		//DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity("", "", "", "", "", "", "", "", null,
 				//null);
 		// List<DmdManageEntity> dmd =
@@ -41,7 +41,8 @@ private UploadFileController uploadFileController;
 		//DmdManageEntity dmdManageEntity = new DmdManageEntity("33", "mingzi","laiyuan","dept","fangshi","nwipo","wip","design","dev","req","good",0);
 		//dmdManageMapper.insert(dmdManageEntity);
 		//uploadFileController.delFile("test.sql");
-		uploadFileController.downloadFile(response, "idea快捷键.txt");
+		//uploadFileController.downloadFile(HttpServletResponse response, "idea快捷键.txt");
+		//dmdManageMapper.insertUpload(new UploadFileEntity("321text","E:/temp/","txt","xq", "123",0));
 		/*
 		 * for (int i = 0; i < dmd.size(); i++) { System.out.println(dmd); }
 		 */

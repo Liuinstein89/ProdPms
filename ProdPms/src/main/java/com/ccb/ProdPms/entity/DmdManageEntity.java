@@ -29,6 +29,9 @@ public class DmdManageEntity implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 
+	public DmdManageEntity() {
+	}
+
 	@Override
     public String toString() {
         return "DmdManageEntity{" +
