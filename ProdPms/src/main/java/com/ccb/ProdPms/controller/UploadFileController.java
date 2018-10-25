@@ -43,11 +43,9 @@ public class UploadFileController {
 
 	// 需求新建处文件上传
 	/*
-	 * 在controller上加注解@Controller和@RestController都可以在前端调通接口，但是二者的区别在于，
-	 * 当用前者的时候在方法上必须添加注解@ResponseBody，
+	 * 在controller上加注解@Controller和@RestController都可以在前端调通接口，但是二者的区别在于，当用前者的时候在方法上必须添加注解@ResponseBody，
 	 * 如果不添加@ResponseBody，就会报错，因为当使用@Controller注解时，spring默认方法返回的是view对象（页面）。
-	 * 而加上@ResponseBody，则方法返回的就是具体对象了。@RestController的作用就相当于@Controller+@
-	 * ResponseBody的结合体
+	 * 而加上@ResponseBody，则方法返回的就是具体对象了。@RestController的作用就相当于@Controller+@ResponseBody的结合体
 	 */
 	// @RequestMapping(value="/uploadfile",method=RequestMethod.POST)，发送的请求路径为uploadfile，但是操作还是在upload页面
 	@PostMapping("/uploadFile")
