@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
  * 
  */
 @Controller
+//@Slf4j
 // @RequestMapping("/addReq")
 public class UploadFileController {
 	// 用log4j还是slf4j是个问题，主要使用slf4j吧,class.getName()
