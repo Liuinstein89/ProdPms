@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.ccb.ProdPms.entity.DmdManageEntity;
+import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.service.DmdManageService;
 
@@ -26,8 +27,8 @@ public class DmdManageServiceImpl implements DmdManageService {
 
 	@Transactional
 	// public void addKeywordRule(KeywordRuleDto rule)
-	public void addReq(DmdManageEntity rule) {
-		DmdManageEntity dmdManageEntity = new DmdManageEntity();
+	public void addReq(DmdManageEntity dmdManageEntity) {
+		// DmdManageEntity dmdManageEntity = new DmdManageEntity();
 		// dmdManageEntity.setRuleName(rule.getRuleName());
 		// dmdManageEntity.setKeywords(rule.getKeywords());
 		// dmdManageEntity.setReplyAll(rule.isReplyAll());
@@ -36,7 +37,13 @@ public class DmdManageServiceImpl implements DmdManageService {
 		// "", "", "", "", "", 0);
 		dmdManageMapper.insert(dmdManageEntity);
 		// BeanUtils.copyProperties(source, target);
-		//return dmdManageEntity;
+		// return dmdManageEntity;
+	}
+
+	@Override
+	public void insertUpload(UploadFileEntity uploadFileEntity) {
+		// TODO Auto-generated method stub
+
 	}
 
 	/*
