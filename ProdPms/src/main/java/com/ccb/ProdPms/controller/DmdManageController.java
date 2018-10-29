@@ -13,16 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.service.DmdManageService;
@@ -32,11 +31,11 @@ import com.ccb.ProdPms.service.DmdManageService;
 // @EnableAutoConfiguration
 // @RequestMapping("/demandManage")
 public class DmdManageController {
-	
+
 	Logger log = LoggerFactory.getLogger(this.getClass());
-	
+
 	private static String UPLOADED_FILEPATH = "E://temp//";
-	
+
 	@Autowired
 	DmdManageService dmdManageService;
 
@@ -119,16 +118,31 @@ public class DmdManageController {
 	 * public @ResponseBody String multifileUpload(HttpServletRequest request)
 	 */
 
+	// 新增需求对应的需求项，一对多的关系
+	@PostMapping("/addReqItem")
+	public String addReqItem(DmdItemEntity dmdItemEntity) {
+		dmdManageService.insertDmdItem(dmdItemEntity);
+		return "详情列表";
+	}
+
+	// 初始化列表显示全部已创建需求项，注意分页显示
+	@GetMapping("/demand")
+	public List<DmdManageEntity> getAll(DmdManageEntity demand) {
+		List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
+		return demandList;
+	}
+	
 	// 查询
-	@GetMapping
+	//@GetMapping
 	// 插入，H5调用跨域用Jsonp
-	@PostMapping
+	//@PostMapping
 	// 更新
-	@PutMapping
+	//@PutMapping
 	// 删除，注意逻辑删除和物理删除的区别
-	@DeleteMapping
+	//@DeleteMapping
 	// 以上是很标准的REST风格的接口形式，源码只不过是封装了 @RequestMapping( method = {RequestMethod.POST} )
 
+	
 	// 获取参数几种常用的注解
 	/*
 	 * @PathVariable：一般我们使用URI
@@ -192,12 +206,7 @@ public class DmdManageController {
 	 * return all; }
 	 */
 
-	// 初始化列表显示全部已创建需求项，注意分页显示
-	@RequestMapping(value = "/demand")
-	public List<DmdManageEntity> getAll(DmdManageEntity demand) {
-		List<DmdManageEntity> demandList = new ArrayList();
-		return demandList;
-	}
+
 
 	/*
 	 * 

@@ -1,9 +1,13 @@
 package com.ccb.ProdPms.service.impl;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
@@ -42,8 +46,21 @@ public class DmdManageServiceImpl implements DmdManageService {
 
 	@Override
 	public void insertUpload(UploadFileEntity uploadFileEntity) {
-		// TODO Auto-generated method stub
+		dmdManageMapper.insertUpload(uploadFileEntity);
+	}
 
+	@Override
+	public void insertDmdItem(DmdItemEntity dmdItemEntity) {
+		String reqNo = dmdItemEntity.getReqNo();
+		String reqitemDesc = dmdItemEntity.getReqitemDesc();
+		String opPerson = dmdItemEntity.getOpPerson();
+		String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqitemDesc, opPerson, createDate, null, 0);
+		try {
+			dmdManageMapper.insertDmdItem(itemEntity);
+		} catch (Exception e) {
+			e.getMessage();
+		}
 	}
 
 	/*
