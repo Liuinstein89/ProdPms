@@ -8,20 +8,28 @@
 	<!-- =============映射关系标签============= 属性type:写po类的包名类名，由于之前定义了po类的别名，这里就写这个别名 
 		属性id：是这个映射标签的唯一标识 id标签是查询结果集中的唯一标识，多列组成唯一标识则配置多个id 属性column：查询出来的列名 属性property：是po类里所指定的列名 
 		通常会在原列名后面加下划线，这是固定的，这里就是id后面 column不做限制，可以为任意表的字段，而property须为type 定义的pojo属性 -->
-	<resultMap id="DmdManageMap" type="com.ccb.ProdPms.entity.DmdManageEntity">
+	<resultMap id="DmdManageMap"
+		type="com.ccb.ProdPms.entity.DmdManageEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
 		<result column="req_no" property="reqNo" jdbcType="VARCHAR" />
 		<result column="req_name" property="reqName" jdbcType="VARCHAR" />
-		<result column="req_source" property="reqSource" jdbcType="VARCHAR" />
+		<result column="req_source" property="reqSource"
+			jdbcType="VARCHAR" />
 		<result column="dept" property="dept" jdbcType="VARCHAR" />
-		<result column="exec_type" property="execType" jdbcType="VARCHAR" />
-		<result column="lead_team" property="leadTeam" jdbcType="VARCHAR" />
+		<result column="exec_type" property="execType"
+			jdbcType="VARCHAR" />
+		<result column="lead_team" property="leadTeam"
+			jdbcType="VARCHAR" />
 		<result column="coo_team" property="cooTeam" jdbcType="VARCHAR" />
 		<result column="now_user" property="nowUser" jdbcType="VARCHAR" />
-		<result column="next_user" property="nextUser" jdbcType="VARCHAR" />
-		<result column="create_user" property="createUser" jdbcType="VARCHAR" />
-		<result column="req_status" property="reqStatus" jdbcType="VARCHAR" />
-		<result column="create_date" property="createDate" jdbcType="DATE" />
+		<result column="next_user" property="nextUser"
+			jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser"
+			jdbcType="VARCHAR" />
+		<result column="req_status" property="reqStatus"
+			jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate"
+			jdbcType="DATE" />
 		<result column="modi_date" property="modiDate" jdbcType="DATE" />
 	</resultMap>
 
@@ -44,6 +52,20 @@
 		<include refid="Basic_Req_Columns" />
 		from req
 		where is_deleted = 0
+	</select>
+	<!-- 获取需求总数 -->
+	<select id="selectCount" resultType="java.lang.Integer">
+		select
+		COUNT(id)id
+		from req
+	</select>
+	<!-- 获取最后一个需求的id值 -->
+	<select id="getLastId" resultType="java.lang.Integer">
+		select
+		id
+		from req
+		order by id
+		desc limit 1
 	</select>
 
 	<!-- 什么时候用where，什么时候用<where>标签？ 查询的时候如果某些条件没有，可能sql拼装会有问题 解决办法： 1.给where 
@@ -93,36 +115,54 @@
 	</select>
 
 	<!-- 添加需求信息，参数的初始值在代码中做处理 -->
-	<insert id="insert" parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
+	<insert id="insert"
+		parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
 		insert into
-		req (req_no,req_name,req_source,dept,exec_type,lead_team,coo_team,now_user,next_user,req_status,create_date,create_uesr,modi_date,is_deleted)
-		values (#{reqNo,jdbcType=VARCHAR}, #{reqName,jdbcType=VARCHAR},#{reqSource,jdbcType=VARCHAR}, #{dept,jdbcType=VARCHAR},
-		#{execType,jdbcType=VARCHAR},#{leadTeam,jdbcType=VARCHAR},#{cooTeam,jdbcType=VARCHAR}, #{nowUser,jdbcType=VARCHAR},
-		#{nextUser,jdbcType=VARCHAR}, #{reqStatus,jdbcType=VARCHAR},now(), #{createUser,jdbcType=VARCHAR}, null, #{isDeleted,jdbcType=INTEGER})
+		req
+		(req_no,req_name,req_source,dept,exec_type,lead_team,coo_team,now_user,next_user,req_status,create_date,create_uesr,modi_date,is_deleted)
+		values (#{reqNo,jdbcType=VARCHAR},
+		#{reqName,jdbcType=VARCHAR},#{reqSource,jdbcType=VARCHAR},
+		#{dept,jdbcType=VARCHAR},
+		#{execType,jdbcType=VARCHAR},#{leadTeam,jdbcType=VARCHAR},#{cooTeam,jdbcType=VARCHAR},
+		#{nowUser,jdbcType=VARCHAR},
+		#{nextUser,jdbcType=VARCHAR},
+		#{reqStatus,jdbcType=VARCHAR},now(), #{createUser,jdbcType=VARCHAR},
+		null, #{isDeleted,jdbcType=INTEGER})
 	</insert>
-	
-	<!-- 添加新增需求时候的上传文档, 多份-->
-	<insert id="insertUpload" parameterType="com.ccb.ProdPms.entity.UploadFileEntity">
+
+	<!-- 添加新增需求时候的上传文档, 多份 -->
+	<insert id="insertUpload"
+		parameterType="com.ccb.ProdPms.entity.UploadFileEntity">
 		insert into
-		upload_file (file_name,path,type,user,is_deleted,req_no,datetime)
-		values (#{fileName,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR}, 
+		upload_file
+		(file_name,path,type,user,is_deleted,req_no,datetime)
+		values
+		(#{fileName,jdbcType=VARCHAR},
+		#{path,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
 		#{user,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER},#{reqNo,jdbcType=VARCHAR},now())
 	</insert>
-	<!-- <insert id="insertSelective" parameterType="com.winter.model.User">
-		insert into t_user
-		<trim prefix="(" suffix=")" suffixOverrides=",">
-			<if test="userId != null"> user_id, </if>
-			<if test="userName != null"> user_name, </if>
-			<if test="password != null"> password, </if>
-			<if test="phone != null"> phone, </if>
-		</trim>
-		<trim prefix="values (" suffix=")" suffixOverrides=",">
-			<if test="userId != null"> #{userId,jdbcType=INTEGER}, </if>
-			<if test="userName != null"> #{userName,jdbcType=VARCHAR}, </if>
-			<if test="password != null"> #{password,jdbcType=VARCHAR}, </if>
-			<if test="phone != null"> #{phone,jdbcType=VARCHAR}, </if>
-		</trim>
-	</insert> -->
+
+	<!-- 添加指定需求对应的需求项, 一对多关系 -->
+	<insert id="insertDmdItem"
+		parameterType="com.ccb.ProdPms.entity.DmdItemEntity">
+		insert into
+		req_item
+		(req_no,req_item_name,req_item_desc,online_datetime,req_item_dev,req_item_status,create_time,change_time,op_person,is_deleted)
+		values
+		(#{reqNo,jdbcType=VARCHAR},
+		#{reqItemName,jdbcType=VARCHAR},#{reqItemDesc,jdbcType=VARCHAR},#{onlineDatetime,jdbcType=VARCHAR},#{reqItemDev,jdbcType=VARCHAR},#{reqItemStatus,jdbcType=VARCHAR},
+		#{createTime,jdbcType=VARCHAR},#{changeTime,jdbcType=VARCHAR},#{opPerson,jdbcType=VARCHAR},0)
+	</insert>
+
+	<!-- <insert id="insertSelective" parameterType="com.winter.model.User"> 
+		insert into t_user <trim prefix="(" suffix=")" suffixOverrides=","> <if test="userId 
+		!= null"> user_id, </if> <if test="userName != null"> user_name, </if> <if 
+		test="password != null"> password, </if> <if test="phone != null"> phone, 
+		</if> </trim> <trim prefix="values (" suffix=")" suffixOverrides=","> <if 
+		test="userId != null"> #{userId,jdbcType=INTEGER}, </if> <if test="userName 
+		!= null"> #{userName,jdbcType=VARCHAR}, </if> <if test="password != null"> 
+		#{password,jdbcType=VARCHAR}, </if> <if test="phone != null"> #{phone,jdbcType=VARCHAR}, 
+		</if> </trim> </insert> -->
 
 	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- 修改用户信息 -->
@@ -137,7 +177,8 @@
 	<!-- 假删除需求 -->
 	<update id="deleteById" parameterType="java.lang.Integer">
 		update req set
-		is_deleted = 1
+		is_deleted =
+		1
 		where
 		id = #{Id,jdbcType=INTEGER}
 	</update>

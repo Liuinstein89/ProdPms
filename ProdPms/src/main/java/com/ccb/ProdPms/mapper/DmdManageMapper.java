@@ -62,6 +62,10 @@ public interface DmdManageMapper {
 	void insertUpload(UploadFileEntity uploadFileEntity);
 
 	void insertDmdItem(DmdItemEntity dmdItemEntity);
+	
+	int selectCount();
+	
+	int getLastId();
 
 	// void update(UserEntity user);
 

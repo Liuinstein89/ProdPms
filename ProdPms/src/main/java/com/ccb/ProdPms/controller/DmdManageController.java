@@ -39,11 +39,18 @@ public class DmdManageController {
 	@Autowired
 	DmdManageService dmdManageService;
 
-	// 自动获取reqNo
+	// 查询: @GetMapping
+	// 插入，H5调用跨域用Jsonp: @PostMapping
+	// 更新 @PutMapping
+	// 删除，注意逻辑删除和物理删除的区别: @DeleteMapping
+	// 以上是标准的REST风格的接口，源码是封装了: @RequestMapping( method = {RequestMethod.POST} )
+
+	// 自动获取reqNo,规则是数据库当前需求PR(prod_req)-日期年月日(YYYYMMDD)-id++
 	@GetMapping("/getReqNo")
 	public String getReqNo() {
-
-		return null;
+		String reqNo = dmdManageService.getReqNo();
+		//reqNo ="PR" + sdf12.format(date) +reqNo;
+		return "PR" + new SimpleDateFormat("yyyyMMdd").format(new Date()) +reqNo;
 	}
 
 	// 创建需求项,提交多个文件,可以使office、pdf、图片等格式
@@ -127,22 +134,12 @@ public class DmdManageController {
 
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")
+	// public List<DmdManageEntity> getAll(@RequestBody DmdManageEntity demand)
 	public List<DmdManageEntity> getAll(DmdManageEntity demand) {
 		List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
 		return demandList;
 	}
-	
-	// 查询
-	//@GetMapping
-	// 插入，H5调用跨域用Jsonp
-	//@PostMapping
-	// 更新
-	//@PutMapping
-	// 删除，注意逻辑删除和物理删除的区别
-	//@DeleteMapping
-	// 以上是很标准的REST风格的接口形式，源码只不过是封装了 @RequestMapping( method = {RequestMethod.POST} )
 
-	
 	// 获取参数几种常用的注解
 	/*
 	 * @PathVariable：一般我们使用URI
@@ -198,21 +195,6 @@ public class DmdManageController {
 	 */
 
 	/*
-	 * @PostMapping("/dc/moreFileUpload") public String
-	 * bacthFileUpload(MultipartFile[] file) throws MyException { StringBuffer
-	 * buffer = new StringBuffer(); for (MultipartFile multipartFile : file) {
-	 * String str = fileUpload(multipartFile); buffer.append(str);
-	 * buffer.append(","); } String all = buffer.substring(0, buffer.length() - 1);
-	 * return all; }
-	 */
-
-
-
-	/*
-	 * 
-	 * 
-	 * @RequestMapping("/hello") public String index() { return"Hello World"; }
-	 * 
 	 * 
 	 * @RequestMapping("/get")
 	 * 
@@ -220,13 +202,6 @@ public class DmdManageController {
 	 * u=userService.getNameById(user);
 	 * 
 	 * return JSONObject.toJSONString(u); }
-	 */
-	// 新增需求提交时，多上传文件插入数据库的操作
-
-	/*
-	 * @GetMapping("/autoreply/keywords") public
-	 * List<KeywordReply>getAllKeywordRules() { return
-	 * replyService.getAllKeywordRules(); }
 	 */
 
 	/*

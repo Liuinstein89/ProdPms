@@ -6,6 +6,7 @@ import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
@@ -54,13 +55,38 @@ public class DmdManageServiceImpl implements DmdManageService {
 		String reqNo = dmdItemEntity.getReqNo();
 		String reqitemDesc = dmdItemEntity.getReqitemDesc();
 		String opPerson = dmdItemEntity.getOpPerson();
-		String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqitemDesc, opPerson, createDate, null, 0);
+		Date modiDate = dmdItemEntity.getModiDate();
+		Date onlineDatetime = dmdItemEntity.getOnlineDatetime();
+		String reqItemDev = dmdItemEntity.getReqItemDev();
+		String reqItemName = dmdItemEntity.getReqItemName();
+		String reqItemStatus = dmdItemEntity.getReqItemStatus();
+		Date createDate = dmdItemEntity.getCreateDate();
+				//new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		//Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(createDate);
+		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqitemDesc, opPerson, reqItemName, reqItemDev,reqItemStatus,
+				createDate, modiDate, onlineDatetime,0);
+		System.out.println(itemEntity.toString());
 		try {
+			System.out.println("@@@@@@@@@@@@@");
 			dmdManageMapper.insertDmdItem(itemEntity);
+			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 		} catch (Exception e) {
 			e.getMessage();
 		}
+	}
+
+	@Override
+	public String getReqNo() {
+		String reqNo = null;
+		try {
+			reqNo = String.valueOf(dmdManageMapper.getLastId());
+			if (StringUtils.isEmpty(reqNo))
+				return "0";
+		} catch (Exception e) {
+			e.getMessage();
+			return "获取id出错";
+		}
+		return reqNo;
 	}
 
 	/*

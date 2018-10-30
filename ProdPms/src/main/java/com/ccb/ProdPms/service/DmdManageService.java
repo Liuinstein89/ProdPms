@@ -14,5 +14,7 @@ public interface DmdManageService {
 	void insertUpload(UploadFileEntity uploadFileEntity);
 	
 	void insertDmdItem(DmdItemEntity dmdItemEntity);
+	
+	String getReqNo();
 
 }

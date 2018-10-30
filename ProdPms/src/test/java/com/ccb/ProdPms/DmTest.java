@@ -43,6 +43,7 @@ private UploadFileController uploadFileController;
 		//uploadFileController.delFile("test.sql");
 		//uploadFileController.downloadFile(HttpServletResponse response, "idea快捷键.txt");
 		//dmdManageMapper.insertUpload(new UploadFileEntity("321text","E:/temp/","txt","xq", "123",0));
+		
 		/*
 		 * for (int i = 0; i < dmd.size(); i++) { System.out.println(dmd); }
 		 */
