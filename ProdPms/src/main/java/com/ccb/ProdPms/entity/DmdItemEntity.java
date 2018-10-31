@@ -67,8 +67,6 @@ public class DmdItemEntity implements Serializable {
 		this.opPerson = opPerson;
 	}
 
-
-
 	public String getOnlineDatetime() {
 		return onlineDatetime;
 	}
@@ -115,13 +113,15 @@ public class DmdItemEntity implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 
+
 	public DmdItemEntity(String reqNo, String reqItemDesc, String opPerson, String reqItemName, String reqItemDev,
-			String reqItemStatus) {
+			String onlineDatetime, String reqItemStatus) {
 		this.reqNo = reqNo;
 		this.reqItemDesc = reqItemDesc;
 		this.opPerson = opPerson;
 		this.reqItemName = reqItemName;
 		this.reqItemDev = reqItemDev;
+		this.onlineDatetime = onlineDatetime;
 		this.reqItemStatus = reqItemStatus;
 	}
 

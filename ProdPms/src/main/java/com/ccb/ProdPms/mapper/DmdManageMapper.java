@@ -2,6 +2,8 @@ package com.ccb.ProdPms.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
@@ -62,7 +64,7 @@ public interface DmdManageMapper {
 
 	// There is no getter for property named 'tableName' in 'class
 	// java.lang.String',Mybatis默认采用ONGL解析参数，所以会自动采用对象树的形式取 string.xxx
-	// 值，如果没在在方法中定义,则会抛异常报错。如果用第二种，mapper.xml中参数改为#{_parameter}，第一种可以不用管#{tableName}
+	// 值，如果没在在方法中定义,则会抛异常报错。如果用第二种，mapper.xml中参数改为#{_parameter}，第一种可以不用管，用#{tableName}
 	// void methodName(@Param(value="tableName") String tableName );
 	void alterTableAutoIncre(String tableName);
 

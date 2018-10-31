@@ -139,7 +139,8 @@ public class DmdManageController {
 	public String addReqItem(DmdItemEntity dmdItemEntity) {
 		dmdManageService.insertDmdItem(dmdItemEntity);
 		// 返回本记录reqId，用于插入多条funcId
-		System.out.println(dmdItemEntity.getId());
+		System.out.println("1111111111111111111111111111111111111111"+dmdItemEntity.toString());
+		System.out.println("1111111111111111111"+dmdItemEntity.getId());
 		return "详情列表";
 	}
 

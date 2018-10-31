@@ -47,13 +47,13 @@ public class ProdPmsApplicationTests {
 		// int count = dmdManageMapper.getLastId();
 		// System.out.println("@@@@@@@@@@@@@@@@@"+count);
 		// System.out.println("@@@@@@@@@@@@@@@@@" + dmdManageController.getReqNo());
-		// DmdItemEntity dmdItemEntity = new DmdItemEntity("PR2018103005", "描述", "YH",
-		// "需求项1", "开发任务1", "未上线");
-		// dmdManageController.addReqItem(dmdItemEntity);
-		// dmdManageMapper.insertDmdItem(dmdItemEntity);
-		// System.out.println("111"+dmdItemEntity.toString());
-		String tableName = "req_item";
-		dmdManageMapper.alterTableAutoIncre(tableName);
+		 DmdItemEntity dmdItemEntity = new DmdItemEntity("PR20181", "描述", "YH",
+		 "需求项1", "开发任务1","2018-11-24 00:00:00", "未上线");
+		 dmdManageController.addReqItem(dmdItemEntity);
+		 //dmdManageMapper.insertDmdItem(dmdItemEntity);
+		 System.out.println("111"+dmdItemEntity.toString());
+		//String tableName = "req_item";
+		//dmdManageMapper.alterTableAutoIncre(tableName);
 	}
 	/*
 	 * INSERT INTO req_item ( req_no, req_item_name, req_item_desc, online_datetime,

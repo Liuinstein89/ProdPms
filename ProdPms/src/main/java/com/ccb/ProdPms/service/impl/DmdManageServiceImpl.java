@@ -62,15 +62,15 @@ public class DmdManageServiceImpl implements DmdManageService {
 		String reqItemName = dmdItemEntity.getReqItemName();
 		String reqItemStatus = dmdItemEntity.getReqItemStatus();
 		String createDate = dmdItemEntity.getCreateDate();
-				//new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		//Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(createDate);
-		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,reqItemStatus,
-				createDate, modiDate, onlineDatetime,0);
+		// new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		// Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(createDate);
+		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,
+				reqItemStatus, onlineDatetime, createDate, modiDate, 0);
 		System.out.println(itemEntity.toString());
+		//DmdItemEntity dmdItemEntity2 = new DmdItemEntity();
 		try {
-			System.out.println("@@@@@@@@@@@@@");
 			dmdManageMapper.insertDmdItem(itemEntity);
-			System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+			//dmdItemEntity2.setId(itemEntity.getId());
 		} catch (Exception e) {
 			e.getMessage();
 		}

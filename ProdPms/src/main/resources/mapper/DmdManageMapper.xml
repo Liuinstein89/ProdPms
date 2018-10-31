@@ -144,15 +144,14 @@
 
 	<!-- 添加指定需求对应的需求项, 一对多关系，keyProperty的id就是我们要返回的主键id -->
 	<!-- 执行这里的时候，一直不报错，但是数据无法插入到数据库中，最后原因是req_item_desc大小写在entity中没有写对，导致get方法无法获取到值，造成sql执行异常，但是为什么没报错这点需要继续查？ -->
-	<insert id="insertDmdItem"
-		parameterType="com.ccb.ProdPms.entity.DmdItemEntity"
-		useGeneratedKeys="true" keyProperty="id">
+	<insert id="insertDmdItem" useGeneratedKeys="true" keyProperty="id"
+		parameterType="com.ccb.ProdPms.entity.DmdItemEntity">
 		insert into
 		req_item
 		(req_no,req_item_name,req_item_desc,online_datetime,req_item_dev,req_item_status,create_time,change_time,op_person,is_deleted)
 		values
 		(#{reqNo,jdbcType=VARCHAR},
-		#{reqItemName,jdbcType=VARCHAR},#{reqItemDesc,jdbcType=VARCHAR},now(),#{reqItemDev,jdbcType=VARCHAR},
+		#{reqItemName,jdbcType=VARCHAR},#{reqItemDesc,jdbcType=VARCHAR},#{onlineDatetime,jdbcType=VARCHAR},#{reqItemDev,jdbcType=VARCHAR},
 		#{reqItemStatus,jdbcType=VARCHAR},now(),null,#{opPerson,jdbcType=VARCHAR},0)
 	</insert>
 
@@ -166,7 +165,6 @@
 		#{password,jdbcType=VARCHAR}, </if> <if test="phone != null"> #{phone,jdbcType=VARCHAR}, 
 		</if> </trim> </insert> -->
 
-	<!--+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 	<!-- 修改用户信息 -->
 	<!-- <update id="update" parameterType="com.po.UserinfoPO"> update userinfo 
 		set loginname=#{loginname},loginpass=#{loginpass},username=#{username}, upower=#{upower},birthday=#{birthday},sex=#{sex} 
@@ -177,9 +175,9 @@
 		</if> <if test="phone != null"> phone = #{phone,jdbcType=VARCHAR}, </if> 
 		</set> where user_id = #{userId,jdbcType=INTEGER} </update> -->
 	<!-- 解决mysql自增id不连续 -->
-	<update id="alterTableAutoIncre" parameterType="string"
-		>
-		alter table ${_parameter} auto_increment=1
+	<update id="alterTableAutoIncre" parameterType="string">
+		alter table
+		${_parameter} auto_increment = 1
 	</update>
 	<!-- 假删除需求 -->
 	<update id="deleteById" parameterType="java.lang.Integer">
