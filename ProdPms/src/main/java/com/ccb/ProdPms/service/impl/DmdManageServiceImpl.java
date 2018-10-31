@@ -41,6 +41,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 		// DmdManageEntity dmdManageEntity = new DmdManageEntity("", "", "", "", "", "",
 		// "", "", "", "", "", 0);
 		dmdManageMapper.insert(dmdManageEntity);
+		System.out.println("##########################");
 		// BeanUtils.copyProperties(source, target);
 		// return dmdManageEntity;
 	}
@@ -53,17 +54,17 @@ public class DmdManageServiceImpl implements DmdManageService {
 	@Override
 	public void insertDmdItem(DmdItemEntity dmdItemEntity) {
 		String reqNo = dmdItemEntity.getReqNo();
-		String reqitemDesc = dmdItemEntity.getReqitemDesc();
+		String reqItemDesc = dmdItemEntity.getReqItemDesc();
 		String opPerson = dmdItemEntity.getOpPerson();
-		Date modiDate = dmdItemEntity.getModiDate();
-		Date onlineDatetime = dmdItemEntity.getOnlineDatetime();
+		String modiDate = dmdItemEntity.getModiDate();
+		String onlineDatetime = dmdItemEntity.getOnlineDatetime();
 		String reqItemDev = dmdItemEntity.getReqItemDev();
 		String reqItemName = dmdItemEntity.getReqItemName();
 		String reqItemStatus = dmdItemEntity.getReqItemStatus();
-		Date createDate = dmdItemEntity.getCreateDate();
+		String createDate = dmdItemEntity.getCreateDate();
 				//new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		//Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(createDate);
-		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqitemDesc, opPerson, reqItemName, reqItemDev,reqItemStatus,
+		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,reqItemStatus,
 				createDate, modiDate, onlineDatetime,0);
 		System.out.println(itemEntity.toString());
 		try {

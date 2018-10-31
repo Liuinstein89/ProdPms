@@ -7,11 +7,14 @@ import com.ccb.ProdPms.service.impl.DmdManageServiceImpl;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.sql.DataSource;
 
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,14 +42,24 @@ public class ProdPmsApplicationTests {
 	 * connection); // com.mysql.jdbc.JDBC4Connection@36681447 connection.close(); }
 	 */
 	@Test
-	public void HN() {
+	public void HN() throws Exception {
 		// dmdManageController.getReqNo();
 		// int count = dmdManageMapper.getLastId();
 		// System.out.println("@@@@@@@@@@@@@@@@@"+count);
 		// System.out.println("@@@@@@@@@@@@@@@@@" + dmdManageController.getReqNo());
-		DmdItemEntity dmdItemEntity = new DmdItemEntity("PR2018103003", "描述", "YH", "需求项1", "开发任务1", "未上线", new Date(), new Date(), null, 0);
-		
-
-		dmdManageController.addReqItem(dmdItemEntity);
+		// DmdItemEntity dmdItemEntity = new DmdItemEntity("PR2018103005", "描述", "YH",
+		// "需求项1", "开发任务1", "未上线");
+		// dmdManageController.addReqItem(dmdItemEntity);
+		// dmdManageMapper.insertDmdItem(dmdItemEntity);
+		// System.out.println("111"+dmdItemEntity.toString());
+		String tableName = "req_item";
+		dmdManageMapper.alterTableAutoIncre(tableName);
 	}
+	/*
+	 * INSERT INTO req_item ( req_no, req_item_name, req_item_desc, online_datetime,
+	 * req_item_dev, req_item_status, create_time, change_time, op_person,
+	 * is_deleted )VALUES( "2323","name","desc","2018-10-31 14:36:32","dev","good",
+	 * "2018-10-31 14:36:32","2018-10-31 14:36:32","yh",0 )
+	 */
+
 }

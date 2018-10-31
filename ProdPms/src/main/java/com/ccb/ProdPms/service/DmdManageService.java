@@ -16,5 +16,7 @@ public interface DmdManageService {
 	void insertDmdItem(DmdItemEntity dmdItemEntity);
 	
 	String getReqNo();
+	
+	//void insertReqItemAndFunc();
 
 }

@@ -52,9 +52,6 @@ public interface DmdManageMapper {
 	 * 
 	 * @ResultMap("123")
 	 */
-	// List<DmdManageEntity> getByParams(String reqNo,String reqName,String
-	// reqSource,String dept,String execType,String leadTeam,String nextUser,String
-	// reqStatus,String beginDate,String endDate);
 	List<DmdManageEntity> getByParams(DmdQueryParamsEntity dmdQueryParamsEntity);
 
 	void insert(DmdManageEntity dmdManageEntity);
@@ -62,9 +59,15 @@ public interface DmdManageMapper {
 	void insertUpload(UploadFileEntity uploadFileEntity);
 
 	void insertDmdItem(DmdItemEntity dmdItemEntity);
-	
+
+	// There is no getter for property named 'tableName' in 'class
+	// java.lang.String',Mybatis默认采用ONGL解析参数，所以会自动采用对象树的形式取 string.xxx
+	// 值，如果没在在方法中定义,则会抛异常报错。如果用第二种，mapper.xml中参数改为#{_parameter}，第一种可以不用管#{tableName}
+	// void methodName(@Param(value="tableName") String tableName );
+	void alterTableAutoIncre(String tableName);
+
 	int selectCount();
-	
+
 	int getLastId();
 
 	// void update(UserEntity user);

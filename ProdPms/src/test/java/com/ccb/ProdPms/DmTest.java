@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ccb.ProdPms.controller.UploadFileController;
+import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 
@@ -38,8 +39,8 @@ private UploadFileController uploadFileController;
 		//System.out.println("###" + dmdManageMapper.getByParams(dmdQueryParamsEntity).toString());
 		//dmdManageMapper.deleteById(1);
 		//new DmdQueryParamsEntity(555,"mingzi","laiyuan","dept","fangshi","nwipo","wip","design","dev","req","good",,2222-22-22,0);		
-		//DmdManageEntity dmdManageEntity = new DmdManageEntity("33", "mingzi","laiyuan","dept","fangshi","nwipo","wip","design","dev","req","good",0);
-		//dmdManageMapper.insert(dmdManageEntity);
+		DmdManageEntity dmdManageEntity = new DmdManageEntity("5", "mingzi","laiyuan","dept","fangshi","nwipo","wip","design","dev","req","good",null, 0);
+		dmdManageMapper.insert(dmdManageEntity);
 		//uploadFileController.delFile("test.sql");
 		//uploadFileController.downloadFile(HttpServletResponse response, "idea快捷键.txt");
 		//dmdManageMapper.insertUpload(new UploadFileEntity("321text","E:/temp/","txt","xq", "123",0));

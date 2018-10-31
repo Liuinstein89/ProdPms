@@ -4,97 +4,115 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class FunctionEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private Long id, reqNo;
-    private String funcName, createUser, funcStatus;
-    private Date createDate, modiDate, onlineDate;
-    private int isDeleted;
+	private Long id;
+	private String funcName, funcReformContent, desiPerson, devPerson, testPerson, createUser, funcStatus;
+	private Date createDate, modiDate;
+	private int isDeleted;
 
-    @Override
-    public String toString() {
-        return "FunctionEntity{" +
-                "id=" + id +
-                ", reqNo=" + reqNo +
-                ", funcName='" + funcName + '\'' +
-                ", createUser='" + createUser + '\'' +
-                ", funcStatus='" + funcStatus + '\'' +
-                ", createDate=" + createDate +
-                ", modiDate=" + modiDate +
-                ", onlineDate=" + onlineDate +
-                ", isDeleted=" + isDeleted +
-                '}';
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public Long getId() {
-        return id;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	public String getFuncReformContent() {
+		return funcReformContent;
+	}
 
-    public Long getReqNo() {
-        return reqNo;
-    }
+	public void setFuncReformContent(String funcReformContent) {
+		this.funcReformContent = funcReformContent;
+	}
 
-    public void setReqNo(Long reqNo) {
-        this.reqNo = reqNo;
-    }
+	public String getDesiPerson() {
+		return desiPerson;
+	}
 
-    public String getFuncName() {
-        return funcName;
-    }
+	public void setDesiPerson(String desiPerson) {
+		this.desiPerson = desiPerson;
+	}
 
-    public void setFuncName(String funcName) {
-        this.funcName = funcName;
-    }
+	public String getDevPerson() {
+		return devPerson;
+	}
 
-    public String getCreateUser() {
-        return createUser;
-    }
+	public void setDevPerson(String devPerson) {
+		this.devPerson = devPerson;
+	}
 
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
+	public String getTestPerson() {
+		return testPerson;
+	}
 
-    public String getFuncStatus() {
-        return funcStatus;
-    }
+	public void setTestPerson(String testPerson) {
+		this.testPerson = testPerson;
+	}
 
-    public void setFuncStatus(String funcStatus) {
-        this.funcStatus = funcStatus;
-    }
+	public String getFuncName() {
+		return funcName;
+	}
 
-    public Date getCreateDate() {
-        return createDate;
-    }
+	public void setFuncName(String funcName) {
+		this.funcName = funcName;
+	}
 
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
+	public String getCreateUser() {
+		return createUser;
+	}
 
-    public Date getModiDate() {
-        return modiDate;
-    }
+	public void setCreateUser(String createUser) {
+		this.createUser = createUser;
+	}
 
-    public void setModiDate(Date modiDate) {
-        this.modiDate = modiDate;
-    }
+	public String getFuncStatus() {
+		return funcStatus;
+	}
 
-    public Date getOnlineDate() {
-        return onlineDate;
-    }
+	public void setFuncStatus(String funcStatus) {
+		this.funcStatus = funcStatus;
+	}
 
-    public void setOnlineDate(Date onlineDate) {
-        this.onlineDate = onlineDate;
-    }
+	public Date getCreateDate() {
+		return createDate;
+	}
 
-    public int getIsDeleted() {
-        return isDeleted;
-    }
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 
-    public void setIsDeleted(int isDeleted) {
-        this.isDeleted = isDeleted;
-    }
+	public Date getModiDate() {
+		return modiDate;
+	}
+
+	public void setModiDate(Date modiDate) {
+		this.modiDate = modiDate;
+	}
+
+	public int getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(int isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public FunctionEntity(String funcName, String funcReformContent, String desiPerson, String devPerson,
+			String testPerson, String createUser, String funcStatus, Date createDate, Date modiDate) {
+		this.funcName = funcName;
+		this.funcReformContent = funcReformContent;
+		this.desiPerson = desiPerson;
+		this.devPerson = devPerson;
+		this.testPerson = testPerson;
+		this.createUser = createUser;
+		this.funcStatus = funcStatus;
+		this.createDate = createDate;
+		this.modiDate = modiDate;
+	}
+
+	public FunctionEntity() {
+	}
+
 }

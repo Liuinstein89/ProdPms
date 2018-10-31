@@ -35,6 +35,15 @@ public class DmdManageController {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private static String UPLOADED_FILEPATH = "E://temp//";
+	private String tableName;
+
+	public String getTableName() {
+		return tableName;
+	}
+
+	public void setTableName(String tableName) {
+		this.tableName = tableName;
+	}
 
 	@Autowired
 	DmdManageService dmdManageService;
@@ -49,8 +58,8 @@ public class DmdManageController {
 	@GetMapping("/getReqNo")
 	public String getReqNo() {
 		String reqNo = dmdManageService.getReqNo();
-		//reqNo ="PR" + sdf12.format(date) +reqNo;
-		return "PR" + new SimpleDateFormat("yyyyMMdd").format(new Date()) +reqNo;
+		// reqNo ="PR" + sdf12.format(date) +reqNo;
+		return "PR" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + reqNo;
 	}
 
 	// 创建需求项,提交多个文件,可以使office、pdf、图片等格式
@@ -125,10 +134,12 @@ public class DmdManageController {
 	 * public @ResponseBody String multifileUpload(HttpServletRequest request)
 	 */
 
-	// 新增需求对应的需求项，一对多的关系
+	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
 	@PostMapping("/addReqItem")
 	public String addReqItem(DmdItemEntity dmdItemEntity) {
 		dmdManageService.insertDmdItem(dmdItemEntity);
+		// 返回本记录reqId，用于插入多条funcId
+		System.out.println(dmdItemEntity.getId());
 		return "详情列表";
 	}
 
