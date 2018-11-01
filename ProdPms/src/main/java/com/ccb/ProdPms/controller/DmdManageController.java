@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.ccb.ProdPms.entity.DmdItemEntity;
+import com.ccb.ProdPms.dto.DmdItemFuncDto;
+import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.service.DmdManageService;
@@ -35,15 +36,6 @@ public class DmdManageController {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private static String UPLOADED_FILEPATH = "E://temp//";
-	private String tableName;
-
-	public String getTableName() {
-		return tableName;
-	}
-
-	public void setTableName(String tableName) {
-		this.tableName = tableName;
-	}
 
 	@Autowired
 	DmdManageService dmdManageService;
@@ -136,11 +128,8 @@ public class DmdManageController {
 
 	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
 	@PostMapping("/addReqItem")
-	public String addReqItem(DmdItemEntity dmdItemEntity) {
-		dmdManageService.insertDmdItem(dmdItemEntity);
-		// 返回本记录reqId，用于插入多条funcId
-		System.out.println("1111111111111111111111111111111111111111"+dmdItemEntity.toString());
-		System.out.println("1111111111111111111"+dmdItemEntity.getId());
+	public String addReqItem(DmdItemFuncDto dmdItemFuncDto) {
+		dmdManageService.insertDmdItem(dmdItemFuncDto);
 		return "详情列表";
 	}
 
@@ -150,6 +139,13 @@ public class DmdManageController {
 	public List<DmdManageEntity> getAll(DmdManageEntity demand) {
 		List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
 		return demandList;
+	}
+
+	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
+	@PostMapping("/addOnlinePlan")
+	public String addOnlinePlan(OnlinePlanFuncDto onlinePlanFuncDto) {
+		dmdManageService.insertOnlinePlan(onlinePlanFuncDto);
+		return "详情列表";
 	}
 
 	// 获取参数几种常用的注解

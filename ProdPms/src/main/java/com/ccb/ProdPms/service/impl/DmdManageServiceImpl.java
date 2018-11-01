@@ -1,19 +1,28 @@
 package com.ccb.ProdPms.service.impl;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.ccb.ProdPms.dto.DmdItemFuncDto;
+import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
 import com.ccb.ProdPms.entity.DmdItemEntity;
+import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.service.DmdManageService;
 
+/*因为一个Service完成一个服务，但是可能会调用很多个DAO层的功能，如果Transaction放在DAO层的话，做完一个DAO，就会提交一次事务，永久修改数据库，后面在调用另外一个DAO，
+但是throws Exception，对于整个的Service来说，应该是要完全回滚的，但是只能回滚到当前的DAO所以这就破坏了事务的ＡＣＩＤ;有一些项目的事务是在Controller层。*/
+//一般类上这么写: @Transactional(readOnly=true) 配置事务 查询使用 只读
+//方法的写法 (增删改要写 ReadOnly=false 为可写 针对增删改操作)@Transactional (propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT,readOnly=false)
+//Propagation.REQUIRED ：有事务就处于当前事务中，没事务就创建一个事务;isolation=Isolation.DEFAULT：事务数据库的默认隔离级别
 @Service
 public class DmdManageServiceImpl implements DmdManageService {
 	@Autowired
@@ -30,7 +39,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 	 * keywordReplyRepo.delete(keywordReplyId); }
 	 */
 
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	// public void addKeywordRule(KeywordRuleDto rule)
 	public void addReq(DmdManageEntity dmdManageEntity) {
 		// DmdManageEntity dmdManageEntity = new DmdManageEntity();
@@ -41,42 +50,60 @@ public class DmdManageServiceImpl implements DmdManageService {
 		// DmdManageEntity dmdManageEntity = new DmdManageEntity("", "", "", "", "", "",
 		// "", "", "", "", "", 0);
 		dmdManageMapper.insert(dmdManageEntity);
-		System.out.println("##########################");
+		//System.out.println("##########################");
 		// BeanUtils.copyProperties(source, target);
 		// return dmdManageEntity;
 	}
 
-	@Override
+	@Transactional
 	public void insertUpload(UploadFileEntity uploadFileEntity) {
 		dmdManageMapper.insertUpload(uploadFileEntity);
 	}
 
-	@Override
-	public void insertDmdItem(DmdItemEntity dmdItemEntity) {
-		String reqNo = dmdItemEntity.getReqNo();
-		String reqItemDesc = dmdItemEntity.getReqItemDesc();
-		String opPerson = dmdItemEntity.getOpPerson();
-		String modiDate = dmdItemEntity.getModiDate();
-		String onlineDatetime = dmdItemEntity.getOnlineDatetime();
-		String reqItemDev = dmdItemEntity.getReqItemDev();
-		String reqItemName = dmdItemEntity.getReqItemName();
-		String reqItemStatus = dmdItemEntity.getReqItemStatus();
-		String createDate = dmdItemEntity.getCreateDate();
-		// new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-		// Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(createDate);
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
+	public void insertDmdItem(DmdItemFuncDto dmdItemFuncDto) {
+		String reqNo = dmdItemFuncDto.getReqNo();
+		String reqItemDesc = dmdItemFuncDto.getReqItemDesc();
+		String opPerson = dmdItemFuncDto.getOpPerson();
+		String modiDate = dmdItemFuncDto.getModiDate();
+		String onlineDatetime = dmdItemFuncDto.getOnlineDatetime();
+		String reqItemDev = dmdItemFuncDto.getReqItemDev();
+		String reqItemName = dmdItemFuncDto.getReqItemName();
+		String reqItemStatus = dmdItemFuncDto.getReqItemStatus();
+		String createDate = dmdItemFuncDto.getCreateDate();
+		int hasFunc = dmdItemFuncDto.getHasFunc();
 		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,
-				reqItemStatus, onlineDatetime, createDate, modiDate, 0);
-		System.out.println(itemEntity.toString());
-		//DmdItemEntity dmdItemEntity2 = new DmdItemEntity();
-		try {
-			dmdManageMapper.insertDmdItem(itemEntity);
-			//dmdItemEntity2.setId(itemEntity.getId());
-		} catch (Exception e) {
-			e.getMessage();
+				reqItemStatus, onlineDatetime, createDate, modiDate, 0, hasFunc);
+		//System.out.println(itemEntity.toString());
+		if (hasFunc == 0) {
+			try {
+				dmdManageMapper.insertDmdItem(itemEntity);
+			} catch (Exception e) {
+				e.getMessage();
+			}
+		} else {
+			try {
+				dmdManageMapper.insertDmdItem(itemEntity);
+				Long req_item_id = itemEntity.getId();
+				List<Long> list = dmdItemFuncDto.getFuncId();
+				//System.out.println(req_item_id + "^^^^^^^^^^^^^^^^^^^^^^^^^" + list.toString());
+				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
+				for (Long func_id : list) {
+					dmdItemFuncEntity.setFuncId(func_id);
+					dmdItemFuncEntity.setReqitemId(req_item_id);
+					dmdItemFuncEntity.setOpPerson(opPerson);
+					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setIsDeleted(0);
+					//System.out.println("%%%%%%%%%%%" + dmdItemFuncEntity.toString());
+					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
+				}
+			} catch (Exception e) {
+				e.getMessage();
+			}
 		}
 	}
 
-	@Override
+	@Transactional
 	public String getReqNo() {
 		String reqNo = null;
 		try {
@@ -88,6 +115,11 @@ public class DmdManageServiceImpl implements DmdManageService {
 			return "获取id出错";
 		}
 		return reqNo;
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
+	public void insertOnlinePlan(OnlinePlanFuncDto onlinePlanFuncDto) {
+
 	}
 
 	/*

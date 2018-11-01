@@ -1,25 +1,19 @@
 package com.ccb.ProdPms;
 
-import com.ccb.ProdPms.controller.DmdManageController;
-import com.ccb.ProdPms.entity.DmdItemEntity;
-import com.ccb.ProdPms.mapper.DmdManageMapper;
-import com.ccb.ProdPms.service.impl.DmdManageServiceImpl;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 
 import javax.sql.DataSource;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import com.ccb.ProdPms.controller.DmdManageController;
+import com.ccb.ProdPms.dto.DmdItemFuncDto;
+import com.ccb.ProdPms.mapper.DmdManageMapper;
+import com.ccb.ProdPms.service.impl.DmdManageServiceImpl;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -47,19 +41,16 @@ public class ProdPmsApplicationTests {
 		// int count = dmdManageMapper.getLastId();
 		// System.out.println("@@@@@@@@@@@@@@@@@"+count);
 		// System.out.println("@@@@@@@@@@@@@@@@@" + dmdManageController.getReqNo());
-		 DmdItemEntity dmdItemEntity = new DmdItemEntity("PR20181", "描述", "YH",
-		 "需求项1", "开发任务1","2018-11-24 00:00:00", "未上线");
-		 dmdManageController.addReqItem(dmdItemEntity);
-		 //dmdManageMapper.insertDmdItem(dmdItemEntity);
-		 System.out.println("111"+dmdItemEntity.toString());
-		//String tableName = "req_item";
-		//dmdManageMapper.alterTableAutoIncre(tableName);
+		ArrayList<Long> list = new ArrayList<>();
+		list.add(0, (long) 1);
+		list.add(1, (long) 2);
+		DmdItemFuncDto dmdItemEntity = new DmdItemFuncDto("PR201823333", "描述", "YH", "需求项1", "开发任务1", "未上线",
+				"2018-11-24 00:00:00", "", 0, 1, list);
+		dmdManageController.addReqItem(dmdItemEntity);
+		// DmdItemFuncEntity dmdItemFuncEntity = new
+		// DmdItemFuncEntity((long)8,(long)1,"YH",null,0);
+		// dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
+		// String tableName = "req_item";
+		// dmdManageMapper.alterTableAutoIncre(tableName);
 	}
-	/*
-	 * INSERT INTO req_item ( req_no, req_item_name, req_item_desc, online_datetime,
-	 * req_item_dev, req_item_status, create_time, change_time, op_person,
-	 * is_deleted )VALUES( "2323","name","desc","2018-10-31 14:36:32","dev","good",
-	 * "2018-10-31 14:36:32","2018-10-31 14:36:32","yh",0 )
-	 */
-
 }

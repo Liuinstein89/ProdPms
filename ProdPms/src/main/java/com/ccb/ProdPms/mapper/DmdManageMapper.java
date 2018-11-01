@@ -2,9 +2,8 @@ package com.ccb.ProdPms.mapper;
 
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
-
 import com.ccb.ProdPms.entity.DmdItemEntity;
+import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
@@ -61,6 +60,8 @@ public interface DmdManageMapper {
 	void insertUpload(UploadFileEntity uploadFileEntity);
 
 	void insertDmdItem(DmdItemEntity dmdItemEntity);
+	
+	void insertDmdItemFunc(DmdItemFuncEntity dmdItemFuncEntity);
 
 	// There is no getter for property named 'tableName' in 'class
 	// java.lang.String',Mybatis默认采用ONGL解析参数，所以会自动采用对象树的形式取 string.xxx
