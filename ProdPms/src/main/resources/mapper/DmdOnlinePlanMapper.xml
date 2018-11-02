@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ccb.ProdPms.mapper.DmdOnlinePlanMapper">
+
+
+	<!-- 添加指定需求对应的上线计划, 一对多关系 -->
+	<insert id="insertOnlinePlan"
+		parameterType="com.ccb.ProdPms.entity.OnlinePlanEntity">
+		insert into
+		online_plan
+		(req_no,online_datetime,online_plan_status,func_item,online_plan_name,dev_no,online_plan_desc,create_date,change_date,op_person,is_deleted,has_func)
+		values
+		(#{reqNo,jdbcType=VARCHAR},#{onlineDatetime,jdbcType=VARCHAR},#{onlinePlanStatus,jdbcType=VARCHAR},#{funcItem,jdbcType=VARCHAR},
+		#{onlinePlanName,jdbcType=VARCHAR},#{devNo,jdbcType=VARCHAR},#{onlinePlanDesc,jdbcType=VARCHAR},now(),null,
+		#{opPerson,jdbcType=VARCHAR},0,0)
+	</insert>
+
+	<!-- 循环插入上线计划与功能点对应关系表，这里是一个多对多的关系联结表 ,一定要注意数据库字段与bean对应 -->
+	<insert id="insertOlFunc"
+		parameterType="com.ccb.ProdPms.entity.OnlinePlanFuncEntity">
+		insert into
+		online_func
+		(olplan_id,func_id,create_time,change_time,op_person,is_deleted)
+		values
+		(#{onlinePlanId,jdbcType=INTEGER},
+		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
+	</insert>
+</mapper>

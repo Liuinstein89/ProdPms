@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
-import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
@@ -20,13 +19,14 @@ import com.ccb.ProdPms.service.DmdManageService;
 
 /*因为一个Service完成一个服务，但是可能会调用很多个DAO层的功能，如果Transaction放在DAO层的话，做完一个DAO，就会提交一次事务，永久修改数据库，后面在调用另外一个DAO，
 但是throws Exception，对于整个的Service来说，应该是要完全回滚的，但是只能回滚到当前的DAO所以这就破坏了事务的ＡＣＩＤ;有一些项目的事务是在Controller层。*/
-//一般类上这么写: @Transactional(readOnly=true) 配置事务 查询使用 只读
+//一般类上这么写: @Transactional(readOnly=true) 配置事务 查询使用 只读,查询相关的业务，尽量别加事物，影响效率，而只在事务内进行增、删、改、加锁查询等操作。
 //方法的写法 (增删改要写 ReadOnly=false 为可写 针对增删改操作)@Transactional (propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT,readOnly=false)
 //Propagation.REQUIRED ：有事务就处于当前事务中，没事务就创建一个事务;isolation=Isolation.DEFAULT：事务数据库的默认隔离级别
 @Service
 public class DmdManageServiceImpl implements DmdManageService {
 	@Autowired
 	private DmdManageMapper dmdManageMapper;
+
 	/*
 	 * public List<KeywordReply> getAllKeywordRules() { return
 	 * keywordReplyRepo.findAll(); }
@@ -50,7 +50,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 		// DmdManageEntity dmdManageEntity = new DmdManageEntity("", "", "", "", "", "",
 		// "", "", "", "", "", 0);
 		dmdManageMapper.insert(dmdManageEntity);
-		//System.out.println("##########################");
+		// System.out.println("##########################");
 		// BeanUtils.copyProperties(source, target);
 		// return dmdManageEntity;
 	}
@@ -74,7 +74,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 		int hasFunc = dmdItemFuncDto.getHasFunc();
 		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,
 				reqItemStatus, onlineDatetime, createDate, modiDate, 0, hasFunc);
-		//System.out.println(itemEntity.toString());
+		// System.out.println(itemEntity.toString());
 		if (hasFunc == 0) {
 			try {
 				dmdManageMapper.insertDmdItem(itemEntity);
@@ -86,7 +86,8 @@ public class DmdManageServiceImpl implements DmdManageService {
 				dmdManageMapper.insertDmdItem(itemEntity);
 				Long req_item_id = itemEntity.getId();
 				List<Long> list = dmdItemFuncDto.getFuncId();
-				//System.out.println(req_item_id + "^^^^^^^^^^^^^^^^^^^^^^^^^" + list.toString());
+				// System.out.println(req_item_id + "^^^^^^^^^^^^^^^^^^^^^^^^^" +
+				// list.toString());
 				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
 				for (Long func_id : list) {
 					dmdItemFuncEntity.setFuncId(func_id);
@@ -94,7 +95,6 @@ public class DmdManageServiceImpl implements DmdManageService {
 					dmdItemFuncEntity.setOpPerson(opPerson);
 					dmdItemFuncEntity.setCreateTime(createDate);
 					dmdItemFuncEntity.setIsDeleted(0);
-					//System.out.println("%%%%%%%%%%%" + dmdItemFuncEntity.toString());
 					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
 				}
 			} catch (Exception e) {
@@ -103,7 +103,6 @@ public class DmdManageServiceImpl implements DmdManageService {
 		}
 	}
 
-	@Transactional
 	public String getReqNo() {
 		String reqNo = null;
 		try {
@@ -115,11 +114,6 @@ public class DmdManageServiceImpl implements DmdManageService {
 			return "获取id出错";
 		}
 		return reqNo;
-	}
-
-	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
-	public void insertOnlinePlan(OnlinePlanFuncDto onlinePlanFuncDto) {
-
 	}
 
 	/*
