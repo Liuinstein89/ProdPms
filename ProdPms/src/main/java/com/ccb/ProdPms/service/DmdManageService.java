@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.entity.DmdManageEntity;
-import com.ccb.ProdPms.entity.OnlinePlanEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 
 @Service

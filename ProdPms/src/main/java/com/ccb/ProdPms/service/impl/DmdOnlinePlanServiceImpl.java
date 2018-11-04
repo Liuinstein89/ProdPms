@@ -41,7 +41,7 @@ public class DmdOnlinePlanServiceImpl implements DmdOnlinePlanService {
 		}
 	}
 
-	@Override
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void insertOnlinePlanFunc(OnlinePlanFuncDto opfDto) {
 		List<Long> list = opfDto.getFuncId();
 		Long online_plan_id = opfDto.getOnlinePlanId();
