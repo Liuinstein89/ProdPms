@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>ProductMS</title>
+		<link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
+		<style type="text/css">
+			body{
+				padding: 20px;
+				padding-top: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap-container">
+			<form class="layui-form" style="width: 100%;" method="post" action="">
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">需求标题：</label>
+					<div class="layui-input-block">
+						<input type="text" name="title"  placeholder="请输入需求标题" autocomplete="off" class="layui-input">
+					</div>
+
+				</div>
+
+				<div class="layui-form-item ">
+			        <label class="layui-form-label">时间范围：</label>
+			        <div class="layui-input-inline">
+			            <input type="text" id="start_time" name="start_time" autocomplete="off" placeholder="请输入开始时间" class="layui-input">
+			        </div> 
+			        <div class="layui-form-mid">到</div>
+			        <div class="layui-input-inline">
+			            <input type="text" id="end_time" name="end_time" autocomplete="off" placeholder="请输入结束时间" class="layui-input">
+			        </div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">需求来源：</label>
+					<div class="layui-input-block">
+						<select name="category">
+							<option value=""></option>
+                            <option value="1">个人部</option>
+                            <option value="2">运维</option>
+                            <option value="3">金融科技部</option>
+                            <option value="4">网络金融部</option>
+                            <option value="5">托管业务部</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">提出部门：</label>
+					<div class="layui-input-block">
+						<select name="category" >
+							<option value=""></option>
+                            <option value="1">个人部</option>
+                            <option value="2">运维</option>
+                            <option value="3">金融科技部</option>
+                            <option value="4">网络金融部</option>
+                            <option value="5">托管业务部</option>
+						</select>
+					</div>
+				</div>
+				
+				<div class="layui-form-item">
+					<label class="layui-form-label">受理状态：</label>
+					<div class="layui-input-block">
+						<select name="category">
+							<option value=""></option>
+                            <option value="1">个人部</option>
+                            <option value="2">运维</option>
+                            <option value="3">金融科技部</option>
+                            <option value="4">网络金融部</option>
+                            <option value="5">托管业务部</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">头项目组：</label>
+					<div class="layui-input-block">
+						<select name="category" >
+							<option value=""></option>
+                            <option value="1">个人部</option>
+                            <option value="2">运维</option>
+                            <option value="3">金融科技部</option>
+                            <option value="4">网络金融部</option>
+                            <option value="5">托管业务部</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">受理人：</label>
+					<div class="layui-input-block">
+						<select name="category">
+							<option value=""></option>
+                            <option value="1">个人部</option>
+                            <option value="2">运维</option>
+                            <option value="3">金融科技部</option>
+                            <option value="4">网络金融部</option>
+                            <option value="5">托管业务部</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<label class="layui-form-label">实施方式：</label>
+					<div class="layui-input-block">
+						<select name="category">
+							<option value=""></option>
+                            <option value="1">个人部</option>
+                            <option value="2">运维</option>
+                            <option value="3">金融科技部</option>
+                            <option value="4">网络金融部</option>
+                            <option value="5">托管业务部</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="layui-form-item">
+					<div class="layui-input-block" style="float: right">
+						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
+						<button class="layui-btn " id="btnSearch" type="button">高级查找</button>
+					</div>
+				</div>
+			</form>
+		</div>
+
+		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//Demo
+			layui.use('form', function() {
+				var form = layui.form;
+				form.render();
+				//监听提交
+				form.on('submit(formDemo)', function(data) {
+					layer.msg(JSON.stringify(data.field));
+					return false;
+				});
+			});
+
+		</script>
+		<script type="text/javascript">
+		    layui.use('laydate', function(){
+		        var laydate = layui.laydate;
+		        var endDate= laydate.render({
+		            elem: '#end_time',//选择器结束时间
+		            theme: 'molv',
+		            min:"1970-1-1",//设置min默认最小值
+		            done: function(value,date){
+		                startDate.config.max={
+		                    year:date.year,
+		                    month:date.month-1,//关键
+		                    date: date.date,
+		                }
+		            }
+		        });
+		        //日期范围
+		        var startDate=laydate.render({
+		            elem: '#start_time',
+		            theme: 'molv',
+		            max:"2099-12-31",//设置一个默认最大值
+		            done: function(value, date){
+		                endDate.config.min ={
+		                    year:date.year,
+		                    month:date.month-1, //关键
+		                    date: date.date,
+		                };
+		            }
+		        });
+
+		    });
+		</script>
+
+	</body>
+
+</html>
