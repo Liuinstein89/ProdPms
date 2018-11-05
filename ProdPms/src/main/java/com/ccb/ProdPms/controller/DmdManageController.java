@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ import com.ccb.ProdPms.service.DmdOnlinePlanService;
 
 //@RestController
 @Controller
-// @EnableAutoConfiguration
+@EnableAutoConfiguration
 // @RequestMapping("/demandManage")
 public class DmdManageController {
 
@@ -41,7 +42,7 @@ public class DmdManageController {
 
 	@Autowired
 	DmdManageService dmdManageService;
-	
+
 	@Autowired
 	DmdOnlinePlanService dmdOnlinePlanService;
 
@@ -50,6 +51,16 @@ public class DmdManageController {
 	// 更新 @PutMapping
 	// 删除，注意逻辑删除和物理删除的区别: @DeleteMapping
 	// 以上是标准的REST风格的接口，源码是封装了: @RequestMapping( method = {RequestMethod.POST} )
+
+	@RequestMapping("/admin")
+	public String helloHtml() {
+		return "admin";
+	}
+
+	@RequestMapping("/welcome")
+	public String welcome() {
+		return "welcome";
+	}
 
 	// 自动获取reqNo,规则是数据库当前需求PR(prod_req)-日期年月日(YYYYMMDD)-id++
 	@GetMapping("/getReqNo")
@@ -152,7 +163,7 @@ public class DmdManageController {
 		dmdOnlinePlanService.insertOnlinePlan(olEntity);
 		return "详情列表";
 	}
-	
+
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
 	@PostMapping("/addOnlinePlanFunc")
 	public String addOnlinePlanFunc(OnlinePlanFuncDto opfDto) {
