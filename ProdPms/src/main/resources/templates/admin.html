@@ -61,7 +61,7 @@
 						<dl class="layui-nav-child">
 							<dd>
 								<a href="javascript:;" data-id="1" data-title="需求列表"
-									data-url="demand-list.html" class="site-demo-active"
+									data-url="/admin/list" class="site-demo-active"
 									data-type="tabAdd"> <span class="l-line"></span>需求列表
 								</a>
 							</dd>
@@ -170,10 +170,9 @@
 		});
 	</script>
 	<!-- js有问题，排查 -->
-	<!--  <script type="text/javascript">
+	 <script type="text/javascript">
 		layui.use([ 'jquery' ], function() {
 			var $ = layui.jquery;
-
 			// 左侧导航菜单的显示和隐藏
 			$('.layui-layout-left .left_open i').click(function(event) {
 				if ($('.layui-side').css('left') == '0px') {
@@ -193,10 +192,14 @@
 					$('.page-content').animate({
 						left : '200px'
 					}, 100);
-					//点击显示后，判断屏幕宽度较小时显示遮罩背景
+					//点击显示后，判断屏幕宽度较小时显示遮罩背景;
+					/* 首尾增加这样的注释一样的声明，由于thymeleaf是采用xml解析的方式进行替换的，
+					所以javascript中大于小于等特殊的xml实体转义字符会被识别为转义，所以会出sax解析错误 */
+					/*<![CDATA[*/
 					if ($(window).width() < 768) {
 						$('.page-content-bg').show();
 					}
+					/*]]>*/
 				}
 			});
 			//点击遮罩背景，左侧菜单隐藏
@@ -210,12 +213,12 @@
 				$(this).hide();
 			});
 		});
-	</script>  -->
-
-<!--<script>
+	</script>  
+	
+	<!--左侧树形目录折叠js-->
+	<script>
 		layui.use([ 'element', 'layer', 'jquery' ], function() {
 			var element = layui.element;
-			// var layer = layui.layer;
 			var $ = layui.$;
 			// 配置tab实践在下面无法获取到菜单元素
 			$('.site-demo-active').on(
@@ -223,6 +226,7 @@
 					function() {
 						var dataid = $(this);
 						//这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
+						/*<![CDATA[*/
 						if ($(".layui-tab-title li[lay-id]").length <= 0) {
 							//如果比零小，则直接打开新的tab项
 							active
@@ -247,6 +251,7 @@
 										.attr("data-title"));
 							}
 						}
+						/*]]>*/
 						//最后不管是否新增tab，最后都转到要打开的选项页面上
 						active.tabChange(dataid.attr("data-id"));
 					});
@@ -280,8 +285,6 @@
 				$("iframe").css("height", h + "px");
 			}
 		});
-	</script>-->
-
-
+	</script>
 </body>
 </html>

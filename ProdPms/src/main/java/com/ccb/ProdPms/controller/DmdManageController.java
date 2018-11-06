@@ -62,7 +62,7 @@ public class DmdManageController {
 		return "welcome";
 	}
 	
-	@RequestMapping("/list")
+	@RequestMapping("/admin/list")
 	public String list() {
 		return "demand-list";
 	}
@@ -70,6 +70,19 @@ public class DmdManageController {
 	@RequestMapping("/add")
 	public String add() {
 		return "demand-add";
+	}
+	@RequestMapping("/admin/edit")
+	public String edit() {
+		return "demand-edit";
+	}
+	
+	// 初始化列表显示全部已创建需求项，注意分页显示
+	@GetMapping("/demand")
+	@ResponseBody
+	// public List<DmdManageEntity> getAll(@RequestBody DmdManageEntity demand)
+	public List<DmdManageEntity> getAll(DmdManageEntity demand) {
+		List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
+		return demandList;
 	}
 	// 自动获取reqNo,规则是数据库当前需求PR(prod_req)-日期年月日(YYYYMMDD)-id++
 	@GetMapping("/getReqNo")
@@ -158,13 +171,7 @@ public class DmdManageController {
 		return "详情列表";
 	}
 
-	// 初始化列表显示全部已创建需求项，注意分页显示
-	@GetMapping("/demand")
-	// public List<DmdManageEntity> getAll(@RequestBody DmdManageEntity demand)
-	public List<DmdManageEntity> getAll(DmdManageEntity demand) {
-		List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
-		return demandList;
-	}
+
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
 	@PostMapping("/addOnlinePlan")

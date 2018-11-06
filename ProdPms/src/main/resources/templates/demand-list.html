@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport"content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></meta>
     <title>需求列表</title>
     <link rel="stylesheet" href="../static/src/css/layui.css"/>
 
@@ -30,7 +30,7 @@
         <div class="layui-card-header" style="height: 55px">
             <div class="demoTable layui-inline" style="margin-top: 6px">
                 <div class="layui-inline">
-                    <input type="text" class="layui-input"  id="demoReload" autocomplete="off" placeholder="请输入需求标题">
+                    <input type="text" class="layui-input"  id="demoReload" autocomplete="off" placeholder="请输入需求标题"/>
                 </div>
                 <button class="layui-btn search_btn" id="" data-type="reload"><i class="layui-icon">查询</i></button>
                 <button class="layui-btn layui-btn-xs layui-btn-primary" data-method="offset" data-type="t" id="hSearch" type="button" style="margin-left: 10px">高级查询</button>
@@ -61,7 +61,7 @@
 
 
     <script src="../static/src/layui.js" charset="utf-8"></script>
-    <script src="js/public.js" charset="utf-8"></script>
+    <script src="../static/src/public.js" charset="utf-8"></script>
     <script>
         layui.use(['jquery','table','form','layer'], function () {
             var table = layui.table;
@@ -69,14 +69,13 @@
             var form = layui.form;
             layer = parent.layer === undefined ? layui.layer : top.layer;
 
-            // var index = layer.load(1);
+             var index = layer.load(1);
             //渲染
             var tableIns = table.render({
                 elem: '#demand_table'
                 // , height: 535
                 , title: '需求主表'
-                 // , url: 'json/table/demo1.json'
-                , url:'${basePath!}/demand'
+                , url:'../static/demo1.json'//url: '/demand''
                 , page: {}
                 //,loading: false
                 , totalRow: false
@@ -130,7 +129,7 @@
                             skin: 'layui-layer-molv',
                             title:'创建需求',
                             area:['640px', '650px'],
-                            content: 'demand-add.html',
+                            content: '/add',
                             success: function (layero, lockIndex) {
                                 var body = layer.getChildFrame('body', lockIndex);
                                 //绑定解锁按钮的点击事件
@@ -225,7 +224,7 @@
                     shade: 0.3,
                     area: ['600px', '580px'],
                     // area : [ '100%', '100%' ],
-                    content: ['demand-edit.html','yes'],//跳转的页面
+                    content: ['/admin/edit','yes'],//跳转的页面
                     success : function(layero, index){
 
                         var body = parent.layer.getChildFrame('body', index);
