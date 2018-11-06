@@ -61,7 +61,16 @@ public class DmdManageController {
 	public String welcome() {
 		return "welcome";
 	}
+	
+	@RequestMapping("/list")
+	public String list() {
+		return "demand-list";
+	}
 
+	@RequestMapping("/add")
+	public String add() {
+		return "demand-add";
+	}
 	// 自动获取reqNo,规则是数据库当前需求PR(prod_req)-日期年月日(YYYYMMDD)-id++
 	@GetMapping("/getReqNo")
 	public String getReqNo() {
