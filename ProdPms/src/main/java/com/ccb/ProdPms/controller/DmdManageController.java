@@ -67,13 +67,17 @@ public class DmdManageController {
 		return "demand-list";
 	}
 
-	@RequestMapping("/add")
+	@RequestMapping("/admin/add")
 	public String add() {
 		return "demand-add";
 	}
 	@RequestMapping("/admin/edit")
 	public String edit() {
 		return "demand-edit";
+	}
+	@RequestMapping("/admin/search")
+	public String search() {
+		return "demand-search";
 	}
 	
 	// 初始化列表显示全部已创建需求项，注意分页显示

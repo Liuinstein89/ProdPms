@@ -26,6 +26,7 @@ public class DefaultView extends WebMvcConfigurerAdapter {
 		registry.addViewController("/").setViewName("demand-list");
 		registry.addViewController("/").setViewName("demand-add");
 		registry.addViewController("/").setViewName("demand-edit");
+		registry.addViewController("/").setViewName("demand-search");
 		// registry.addRedirectViewController("/hello", "/admin.html");
 		super.addViewControllers(registry);
 	}
