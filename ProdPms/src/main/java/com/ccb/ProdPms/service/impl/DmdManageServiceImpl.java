@@ -116,6 +116,12 @@ public class DmdManageServiceImpl implements DmdManageService {
 		return reqNo;
 	}
 
+	@Override
+	public List<DmdManageEntity> getAll() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/*
 	 * @Transactional public KeywordReply updateKeywordRule(KeywordRuleDto rule) {
 	 * KeywordReply keywordReply = keywordReplyRepo.findOne(rule.getId());

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.alibaba.fastjson.JSON;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
 import com.ccb.ProdPms.entity.DmdManageEntity;
@@ -29,6 +30,8 @@ import com.ccb.ProdPms.entity.OnlinePlanEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.service.DmdManageService;
 import com.ccb.ProdPms.service.DmdOnlinePlanService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 //@RestController
 @Controller
@@ -39,7 +42,8 @@ public class DmdManageController {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private static String UPLOADED_FILEPATH = "E://temp//";
-
+	private int pageNum;
+	private int pageSize = 10;
 	@Autowired
 	DmdManageService dmdManageService;
 
@@ -61,7 +65,7 @@ public class DmdManageController {
 	public String welcome() {
 		return "welcome";
 	}
-	
+
 	@RequestMapping("/admin/list")
 	public String list() {
 		return "demand-list";
@@ -71,23 +75,32 @@ public class DmdManageController {
 	public String add() {
 		return "demand-add";
 	}
+
 	@RequestMapping("/admin/edit")
 	public String edit() {
 		return "demand-edit";
 	}
+
 	@RequestMapping("/admin/search")
 	public String search() {
 		return "demand-search";
 	}
-	
+
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")
 	@ResponseBody
 	// public List<DmdManageEntity> getAll(@RequestBody DmdManageEntity demand)
-	public List<DmdManageEntity> getAll(DmdManageEntity demand) {
+	 public String getAll(DmdManageEntity demand){
+	//public List<DmdManageEntity> getAll(DmdManageEntity demand){
 		List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
-		return demandList;
+		// PageHelper.startPage下一行紧跟查询语句，不可以写其他的，否则没有效果
+		PageHelper.startPage(pageNum, pageSize);
+		demandList = dmdManageService.getAll();
+		PageInfo<DmdManageEntity> appsPageInfo = new PageInfo<>(demandList);
+		return JSON.toJSONString(appsPageInfo);
+		 //return demandList;
 	}
+
 	// 自动获取reqNo,规则是数据库当前需求PR(prod_req)-日期年月日(YYYYMMDD)-id++
 	@GetMapping("/getReqNo")
 	public String getReqNo() {
@@ -174,8 +187,6 @@ public class DmdManageController {
 		dmdManageService.insertDmdItem(dmdItemFuncDto);
 		return "详情列表";
 	}
-
-
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
 	@PostMapping("/addOnlinePlan")
