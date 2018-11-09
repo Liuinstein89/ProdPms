@@ -7,6 +7,7 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>ProductMS</title>
 		<link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
+
 		<style type="text/css">
 			body{
 				padding: 20px;
@@ -16,7 +17,7 @@
 	</head>
 	<body>
 		<div class="wrap-container">
-			<form class="layui-form" style="width: 100%;" method="post" action="">
+			<form class="layui-form" style="width: 100%;" method="post" action="" id="searchform">
 				
 				<div class="layui-form-item">
 					<label class="layui-form-label">需求标题：</label>
@@ -122,26 +123,53 @@
 				</div>
 
 				<div class="layui-form-item">
+					<!--<div class="layui-input-block" style="float: right">-->
+						<!--<button type="button" class="layui-btn layui-btn-primary" id="close2">关闭</button>-->
+						<!--<button class="layui-btn " id="btnSearch" lay-submit="" lay-filter="btnSearch" type="button">高级查找</button>-->
+					<!--</div>-->
 					<div class="layui-input-block" style="float: right">
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-						<button class="layui-btn " id="btnSearch" type="button">高级查找</button>
+						<button type="button" class="layui-btn layui-btn-primary"
+								id="close">关闭</button>
+						<button class="layui-btn" id="btnSearch" lay-submit=""
+								lay-filter="btnSearch">立即提交</button>
 					</div>
 				</div>
 			</form>
 		</div>
 
 		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
-			//Demo
-			layui.use('form', function() {
+			layui.use(['form','layer','jquery'], function() {
 				var form = layui.form;
+				var layer = layui.layer;
+				var $ = layui.jquery;
 				form.render();
 				//监听提交
-				form.on('submit(formDemo)', function(data) {
-					layer.msg(JSON.stringify(data.field));
-					return false;
-				});
-			});
+                form.on('submit(btnSearch)', function(data) {
+                    layer.alert(JSON.stringify(data.field));
+                    $.ajax({
+                        url : 'demand/search',
+                        data : data.field,
+                        type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                        dataType : 'json',
+                        success : function(obj) {
+                            // layer.close(index);//关闭
+                            if (obj.success) {
+                                pubUtil.msg(obj.msg, layer, 1, function() {
+                                    $("#close").click();
+                                }, 500);
+                            } else {
+                                pubUtil.msg(obj.msg, layer, 2, function() {
+
+                                }, 5 * 1000);
+                            }
+                        }
+                    });
+                    return false;
+                });
+
+            });
 
 		</script>
 		<script type="text/javascript">

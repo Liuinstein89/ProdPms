@@ -32,7 +32,7 @@
                 <div class="layui-inline">
                     <input type="text" class="layui-input"  id="demoReload" style="width:300px" autocomplete="off" placeholder="请输入需求标题"/>
                 </div>
-                <button class="layui-btn search_btn" id="" data-type="reload"><i class="layui-icon">查询</i></button>
+                <button class="layui-btn search_btn" id="demand_search" data-type="reload" type="button">查询</button>
                 <button class="layui-btn layui-btn-xs layui-btn-primary" data-method="offset" data-type="t" id="hSearch" type="button" style="margin-left: 8px">高级查询</button>
             </div>
             <a  style="float:right;margin-top: 8px;" href="javascript:location.replace(location.href);" title="刷新">
@@ -42,10 +42,11 @@
         <div class="layui-card-body" style="margin-top: -15px">
             <table class="layui-hide" id="demand_table" lay-filter="demand_table"></table>
 
+
         </div>
     </div>
 
-    <table class="layui-hide" id="test" lay-filter="test"></table>
+    <!--<table class="layui-hide" id="test" lay-filter="test"></table>-->
 
 
 
@@ -56,7 +57,7 @@
     </script>
 
     <script type="text/html" id="reqnameTpl">
-        <a href="/demand/detail" class="layui-table-link" >{{ d.reqName }}</a>
+        <a href="/admin/detail" class="layui-table-link" >{{ d.req_name }}</a>
     </script>
 
 
@@ -75,8 +76,8 @@
                 elem: '#demand_table'
                 // , height: 535
                 , title: '需求主表'
-                , url:'/demand'
-                , page: true
+                , url:'../static/demo1.json'//url: '/demand''
+                , page: {}
                 //,loading: false
                 , totalRow: false
                 , limit: 10
@@ -88,33 +89,34 @@
                     }
                 , cols: [[
                     {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
-                    , {field: 'reqNo', title: '需求编号', width: 100, fixed: 'left', unresize: true, sort: true,align:'left'}
-                    , {field: 'reqName', title: '开发需求',templet: '#reqnameTpl'}
-                    , {field: 'reqSource', title: '需求来源',  width: 150}
-                    , {field: 'dept', title: '提出部门', width: 120, edit: 'text'}
-                    , {field: 'reqStatus', title: '当前受理状态', width: 150}
-                    , {field: 'nextUser', title: '后续受理人', width: 120}
-                    , {field: 'execType', title: '实施方式', width: 120, totalRow: true}
-                    , {field: 'leadTeam', title: '产品团队牵头项目组',  width: 180}
-                    , {field: 'cooTeam', title: '配合项目组',  width: 150, totalRow: true}
-                    , {field: 'createDate', title: '创建日期',sort: true,width: 150}
-                    , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 180}
+                    , {field: 'req_no', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true,align:'center'}
+                    , {field: 'req_name', title: '开发需求',templet: '#reqnameTpl'}
+                    , {field: 'req_source', title: '需求来源',  width: 90}
+                    , {field: 'dept', title: '提出部门', width: 95, edit: 'text', sort: true}
+                    , {field: 'req_status', title: '当前受理状态', width: 120}
+                    , {field: 'next_user', title: '后续受理人', width: 100}
+                    , {field: 'exec_type', title: '实施方式', width: 95, sort: true, totalRow: true}
+                    , {field: 'lead_team', title: '牵头项目组', hide: true, width: 110}
+                    , {field: 'coo_team', title: '配合项目组', hide: true, width: 120, sort: true, totalRow: true}
+                    , {field: 'create_date', title: '创建日期', width: 90}
+                    , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 165,unresize:true}
                 ]]
 
                 // ,response: {
                 //   statusName: 'status'
                 //   ,statusCode: 200
                 // }
-                ,parseData: function(res){
-                	return {
-                     "code": res.code
-                     ,"msg": res.msg
-                     ,"count": res.data.total
-                     ,"data": res.data.list
-                   };
-                 }
+                // ,parseData: function(res){
+                //   return {
+                //     "status": res.status
+                //     ,"msg": res.message
+                //     ,"count": res.total
+                //     ,"data": res.data.list
+                //   };
+                // }
+
             });
-            
+
             //工具栏事件
             table.on('toolbar(demand_table)', function (obj) {
                 var checkStatus = table.checkStatus(obj.config.id);
@@ -152,6 +154,25 @@
                 }
                 
             });
+
+            $("#demand_search").on("click",function(){
+                // index = layer.load(1);//开启进度条
+                var demoReload = $('#demoReload').val();
+
+                if(demoReload != ''){
+                    table.reload("testReload",{
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        },
+                        where: {
+                            key: demoReload  //搜索的关键字
+                        },
+                        url:'',
+                        method:'post'
+                    })
+                }
+            });
+
             //监听高级搜索
             $("#hSearch").on('click',function(){
                // layer.msg('高级搜索');
@@ -162,9 +183,62 @@
                     title:'需求搜索',
                     area:['600px', '560px'],
                     content: '/admin/search',
-
+                   success: function (layero, lockIndex) {
+                       var body = layer.getChildFrame('body', lockIndex);
+                       //绑定解锁按钮的点击事件
+                       body.find('button#close').on('click', function () {
+                           layer.close(lockIndex);
+                           //location.reload();//刷新
+                       });
+                   }
                 });
             });
+
+
+            //监听行工具事件
+            table.on('tool(demand_table)', function (obj) {
+                var data = obj.data;
+                //console.log(obj)
+                if (obj.event === 'del') {
+                    layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
+                        obj.del();
+                        layer.close(index);
+                        // $.get("删除文章接口",{
+                        //     newsId : data.newsId  //将需要删除的newsId作为参数传入
+                        //     },function(data){
+                        //         tableIns.reload();
+                        //         layer.close(index);
+                        // })
+                    });
+                } else if (obj.event === 'edit') {
+                    editDemandList(data);
+                }
+            });
+            function editDemandList(data){
+               parent.layer.open({
+                    title : "编辑页面",
+                    type : 2,
+                    maxmin: true,
+                    skin: 'layui-layer-molv',
+                    shadeClose: false,
+                    shade: 0.3,
+                    area: ['600px', '580px'],
+                    // area : [ '100%', '100%' ],
+                    content: ['/admin/edit','yes'],//跳转的页面
+                    success : function(layero, index){
+
+                        var body = parent.layer.getChildFrame('body', index);
+
+                        body.find('button#close').on('click', function() {
+                            parent.layer.close(index);
+                            location.reload();//刷新
+                        });
+                        pubUtil.load(body, data);//填充表单
+                    }
+                })
+              
+            }
+
             //监听表格行点击
             table.on('tr', function (obj) {
                 console.log(obj)
@@ -194,50 +268,6 @@
                 console.log(obj)
             });
 
-            //监听行工具事件
-            table.on('tool(demand_table)', function (obj) {
-                var data = obj.data;
-                //console.log(obj)
-                if (obj.event === 'del') {
-                    layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
-                        obj.del();
-                        layer.close(index);
-                        // $.get("删除文章接口",{
-                        //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                        //     },function(data){
-                        //         tableIns.reload();
-                        //         layer.close(index);
-                        // })
-                    });
-                } else if (obj.event === 'edit') {
-                    editDemandList(data);
-                }
-            });
-        
-            function editDemandList(data){
-               parent.layer.open({
-                    title : "编辑页面",
-                    type : 2,
-                    maxmin: true,
-                    skin: 'layui-layer-molv',
-                    shadeClose: false,
-                    shade: 0.3,
-                    area: ['600px', '580px'],
-                    // area : [ '100%', '100%' ],
-                    content: ['/admin/edit','yes'],//跳转的页面
-                    success : function(layero, index){
-
-                        var body = parent.layer.getChildFrame('body', index);
-
-                        body.find('button#close').on('click', function() {
-                            parent.layer.close(index);
-                            location.reload();//刷新
-                        });
-                        pubUtil.load(body, data);//填充表单
-                    }
-                })
-              
-            }
 
             //监听排序
             table.on('sort(demand_table)', function (obj) {
@@ -256,31 +286,15 @@
             });
 
 
-            // $(".search_btn").on("click",function(){
-            //     var demoReload = $('#demoReload').val();
-            //     if(demoReload != ''){
-            //         table.reload("testReload",{
-            //             page: {
-            //                 curr: 1 //重新从第 1 页开始
-            //             },
-            //             where: {
-            //                 key: demoReload  //搜索的关键字
-            //             }
-            //         })
-            //     }else{
-            //         layer.msg("请输入搜索的内容");
-            //     }
-            // });
-
             //查询按钮
-            $('#btnSearch').on('click', function () {
-                // index = layer.load(1);//开启进度条
-                var searchform = pubUtil.serializeObject($("#searchform"));//查询页面表单ID
-                //alert(JSON.stringify(searchform));
-                table.reload('searchID', {
-                    where: searchform
-                });
-            });
+            // $('#btnSearch').on('click', function () {
+            //     index = layer.load(1);//开启进度条
+            //     var searchform = pubUtil.serializeObject($("#searchform"));//查询页面表单ID
+            //     //alert(JSON.stringify(searchform));
+            //     table.reload('searchID', {
+            //         where: searchform
+            //     });
+            // });
 
             var $ = layui.jquery, active = {
                 parseTable: function () {

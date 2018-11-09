@@ -189,7 +189,7 @@ body {
 					type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
 					dataType : 'json',
 					success : function(obj) {
-						layer.close(index);//关闭   
+						// layer.close(index);//关闭
 						if (obj.success) {
 							pubUtil.msg(obj.msg, layer, 1, function() {
 								$("#close").click();
