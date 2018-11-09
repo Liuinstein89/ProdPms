@@ -56,7 +56,7 @@
     </script>
 
     <script type="text/html" id="reqnameTpl">
-        <a href="demand-detail.html" class="layui-table-link" >{{ d.req_name }}</a>
+        <a href="/demand/detail" class="layui-table-link" >{{ d.reqName }}</a>
     </script>
 
 
@@ -75,8 +75,8 @@
                 elem: '#demand_table'
                 // , height: 535
                 , title: '需求主表'
-                , url:'../static/demo1.json'//url: '/demand''
-                , page: {}
+                , url:'/demand'
+                , page: true
                 //,loading: false
                 , totalRow: false
                 , limit: 10
@@ -88,34 +88,33 @@
                     }
                 , cols: [[
                     {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
-                    , {field: 'req_no', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: true,align:'center'}
-                    , {field: 'req_name', title: '开发需求',templet: '#reqnameTpl'}
-                    , {field: 'req_source', title: '需求来源',  width: 90}
-                    , {field: 'dept', title: '提出部门', width: 95, edit: 'text', sort: true}
-                    , {field: 'req_status', title: '当前受理状态', width: 120}
-                    , {field: 'next_user', title: '后续受理人', width: 100}
-                    , {field: 'exec_type', title: '实施方式', width: 95, sort: true, totalRow: true}
-                    , {field: 'lead_team', title: '牵头项目组', hide: true, width: 110}
-                    , {field: 'coo_team', title: '配合项目组', hide: true, width: 120, sort: true, totalRow: true}
-                    , {field: 'create_date', title: '创建日期', width: 90}
-                    , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 165}
+                    , {field: 'reqNo', title: '需求编号', width: 100, fixed: 'left', unresize: true, sort: true,align:'left'}
+                    , {field: 'reqName', title: '开发需求',templet: '#reqnameTpl'}
+                    , {field: 'reqSource', title: '需求来源',  width: 150}
+                    , {field: 'dept', title: '提出部门', width: 120, edit: 'text'}
+                    , {field: 'reqStatus', title: '当前受理状态', width: 150}
+                    , {field: 'nextUser', title: '后续受理人', width: 120}
+                    , {field: 'execType', title: '实施方式', width: 120, totalRow: true}
+                    , {field: 'leadTeam', title: '产品团队牵头项目组',  width: 180}
+                    , {field: 'cooTeam', title: '配合项目组',  width: 150, totalRow: true}
+                    , {field: 'createDate', title: '创建日期',sort: true,width: 150}
+                    , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 180}
                 ]]
 
                 // ,response: {
                 //   statusName: 'status'
                 //   ,statusCode: 200
                 // }
-                // ,parseData: function(res){
-                //   return {
-                //     "status": res.status
-                //     ,"msg": res.message
-                //     ,"count": res.total
-                //     ,"data": res.data.list
-                //   };
-                // }
-
+                ,parseData: function(res){
+                	return {
+                     "code": res.code
+                     ,"msg": res.msg
+                     ,"count": res.data.total
+                     ,"data": res.data.list
+                   };
+                 }
             });
-
+            
             //工具栏事件
             table.on('toolbar(demand_table)', function (obj) {
                 var checkStatus = table.checkStatus(obj.config.id);
@@ -214,6 +213,7 @@
                     editDemandList(data);
                 }
             });
+        
             function editDemandList(data){
                parent.layer.open({
                     title : "编辑页面",

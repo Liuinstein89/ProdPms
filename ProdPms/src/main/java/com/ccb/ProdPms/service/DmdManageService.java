@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.entity.DmdManageEntity;
+import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 
 @Service
@@ -20,5 +21,7 @@ public interface DmdManageService {
 	String getReqNo();
 
 	List<DmdManageEntity> getAll();
+
+	List<DmdManageEntity> getByParams(DmdQueryParamsEntity dmdQueryParamsEntity);
 
 }

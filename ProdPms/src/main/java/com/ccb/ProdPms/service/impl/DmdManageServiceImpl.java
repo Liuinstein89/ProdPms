@@ -1,5 +1,6 @@
 package com.ccb.ProdPms.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
+import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.service.DmdManageService;
@@ -118,8 +120,24 @@ public class DmdManageServiceImpl implements DmdManageService {
 
 	@Override
 	public List<DmdManageEntity> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		List<DmdManageEntity> dmdList = new ArrayList<DmdManageEntity>();
+		try {
+			dmdList = dmdManageMapper.getAll();
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return dmdList;
+	}
+
+	@Override
+	public List<DmdManageEntity> getByParams(DmdQueryParamsEntity queryParams) {
+		List<DmdManageEntity> dsList = new ArrayList<DmdManageEntity>();
+		try {
+			dsList = dmdManageMapper.getByParams(queryParams);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return dsList;
 	}
 
 	/*

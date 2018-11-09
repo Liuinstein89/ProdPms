@@ -37,7 +37,7 @@
 		id是该片段的唯一标识 -->
 	<sql id="Basic_Req_Columns">
 		id, req_no, req_name,req_source,dept,exec_type,lead_team,
-		coo_team,next_user,req_status,create_date,create_user,modi_date
+		coo_team,next_user,now_user,req_status,create_date,create_user,modi_date
 	</sql>
 
 	<!--mybatis进行数据库连接操作时对于SQL语句返回结果的处理有两种方式，resultType和resultMap resultType：对于SQL语句查询出的字段在相应的pojo中必须有和它相同的字段对应，而resultType中的内容就是pojo在本项目中的位置，适合单标查询 

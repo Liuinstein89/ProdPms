@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,18 +20,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
 import com.ccb.ProdPms.entity.DmdManageEntity;
+import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.OnlinePlanEntity;
+import com.ccb.ProdPms.entity.RestRespEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.service.DmdManageService;
 import com.ccb.ProdPms.service.DmdOnlinePlanService;
+import com.ccb.ProdPms.util.RespCode;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -42,8 +48,8 @@ public class DmdManageController {
 	Logger log = LoggerFactory.getLogger(this.getClass());
 
 	private static String UPLOADED_FILEPATH = "E://temp//";
-	private int pageNum;
-	private int pageSize = 10;
+	// private int pageNum ;
+	// private int pageSize = 10;
 	@Autowired
 	DmdManageService dmdManageService;
 
@@ -90,15 +96,49 @@ public class DmdManageController {
 	@GetMapping("/demand")
 	@ResponseBody
 	// public List<DmdManageEntity> getAll(@RequestBody DmdManageEntity demand)
-	 public String getAll(DmdManageEntity demand){
-	//public List<DmdManageEntity> getAll(DmdManageEntity demand){
-		List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
+	public String getAll(@RequestParam(value = "page") Integer pageNum,
+			@RequestParam(value = "limit") Integer pageSize) {
+		// public PageInfo<DmdManageEntity> getAll(DmdManageEntity demand){
+		// List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
 		// PageHelper.startPage下一行紧跟查询语句，不可以写其他的，否则没有效果
+		System.out.println(pageNum+"！！！！！！！！"+pageSize);
 		PageHelper.startPage(pageNum, pageSize);
-		demandList = dmdManageService.getAll();
-		PageInfo<DmdManageEntity> appsPageInfo = new PageInfo<>(demandList);
-		return JSON.toJSONString(appsPageInfo);
-		 //return demandList;
+		PageInfo<DmdManageEntity> dmdPageInfo = new PageInfo<>(dmdManageService.getAll());
+		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdPageInfo);
+		return JSONObject.toJSONString(restResp);
+	}
+
+	// 检索，普通检索和高级检索写一块，通过传参分辨，注意分页显示
+	@GetMapping("/search")
+	@ResponseBody
+	public String search(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
+			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
+
+		// Form接参
+		String reqNo = request.getParameter("reqNo");
+		String reqName = request.getParameter("reqName");
+		String reqSource = request.getParameter("reqSource");
+		String dept = request.getParameter("dept");
+		String execType = request.getParameter("execType");
+		String leadTeam = request.getParameter("leadTeam");
+		String nextUser = request.getParameter("nextUser");
+		String reqStatus = request.getParameter("reqStatus");
+		String beginDate = request.getParameter("beginDate");
+		String endDate = request.getParameter("endDate");
+		// String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new
+		// Date());
+		DmdQueryParamsEntity queryParams = new DmdQueryParamsEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
+				nextUser, reqStatus, beginDate, endDate);
+
+		List<DmdManageEntity> dmdSearList = new ArrayList<DmdManageEntity>();
+		PageHelper.startPage(pageNum, pageSize);
+		dmdSearList = dmdManageService.getByParams(queryParams);
+		PageInfo<DmdManageEntity> dsPageInfo = new PageInfo<>(dmdSearList);
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("code", 0);
+		map.put("msg", "ok");
+		map.put("data", dsPageInfo);
+		return JSONObject.toJSONString(map);
 	}
 
 	// 自动获取reqNo,规则是数据库当前需求PR(prod_req)-日期年月日(YYYYMMDD)-id++

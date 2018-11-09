@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></meta>
+    <title>需求列表</title>
+    <link rel="stylesheet" href="../static/src/css/layui.css"/>
+
+    <style>
+        body {
+            padding: 5px 20px 20px 20px;
+        }
+        a{
+            color: #1874CD;
+        }
+        .layui-card{
+            box-shadow: 3px 3px 8px 3px rgba(50,50,50,0.25);
+        }
+    </style>
+</head>
+<body>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container layui-inline ">
+        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add"><i class="layui-icon">&#xe654;</i></button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i></button>
+    </div>
+</script>
+
+<div class="layui-card" style="padding-bottom: 100px;border: 2px">
+    <div class="layui-card-header" style="height: 55px">
+        <div class="demoTable layui-inline" style="margin-top: 6px">
+            <div class="layui-inline">
+                <input type="text" class="layui-input"  id="demoReload" style="width:300px" autocomplete="off" placeholder="请输入需求标题"/>
+            </div>
+            <button class="layui-btn search_btn" id="demand_search" data-type="reload" type="button">查询</button>
+            <!--<button class="layui-btn layui-btn-xs layui-btn-primary" data-method="offset" data-type="t" id="hSearch" type="button" style="margin-left: 8px">高级查询</button>-->
+        </div>
+        <a  style="float:right;margin-top: 8px;" href="javascript:location.replace(location.href);" title="刷新">
+            <i class="layui-icon" style="font-size: 30px">&#xe9aa;</i>
+        </a>
+    </div>
+    <div class="layui-card-body" style="margin-top: -15px">
+        <table class="layui-hide" id="onplan_table" lay-filter="onplan_table"></table>
+
+
+    </div>
+</div>
+
+<!--<table class="layui-hide" id="test" lay-filter="test"></table>-->
+
+
+
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="reqnoTpl">
+    <a href="/admin/detail" class="layui-table-link" >{{ d.req_no }}</a>
+</script>
+
+
+<script src="../static/src/layui.js" charset="utf-8"></script>
+<script src="../static/src/public.js" charset="utf-8"></script>
+<script>
+    layui.use(['jquery','table','form','layer'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        layer = parent.layer === undefined ? layui.layer : top.layer;
+
+        // var index = layer.load(1);
+        //渲染
+        var tableIns = table.render({
+            elem: '#onplan_table'
+            // , height: 535
+            , title: '需求主表'
+            , url:'../static/demo2.json'//url: '/demand''
+            , page: {}
+            //,loading: false
+            , totalRow: false
+            , limit: 10
+            , toolbar: '#toolbarDemo'
+            , id:'testReload'
+
+            ,cols: [[
+                {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
+                , {field: 'online_datetime', title: '上线时间', width: 120, fixed: 'left', unresize: true, sort: true,align:'center'}
+                , {field: 'req_no', title: '需求编号',width: 120,sort: true,templet: '#reqnoTpl'}
+                , {field: 'func_item', title: '需求项',  width: 100}
+                , {field: 'op_person', title: '用户', width: 100}
+
+                , {field: 'dev_no', title: '开发任务编号', width: 100}
+                , {field: 'online_plan_name', title: '上线计划名称', width: 120}
+                , {field: 'online_plan_desc', title: '上线计划描述'}
+                , {field: 'online_plan_status', title: '上线计划状态', width: 120}
+                , {field: 'create_date', title: '创建时间', width: 120, sort: true}
+                , {field: 'change_date', title: '修改时间', width: 100, hide:true,sort: true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 165,unresize:true}
+            ]]
+
+            // ,response: {
+            //   statusName: 'status'
+            //   ,statusCode: 200
+            // }
+            // ,parseData: function(res){
+            //   return {
+            //     "status": res.status
+            //     ,"msg": res.message
+            //     ,"count": res.total
+            //     ,"data": res.data.list
+            //   };
+            // }
+
+        });
+
+        //工具栏事件
+        table.on('toolbar(onplan_table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var data = obj.data;
+            switch (obj.event) {
+                case 'add':
+                    layer.msg('添加');
+                    layer.open({
+                        type:2,
+                        maxmin: true,
+                        skin: 'layui-layer-molv',
+                        title:'创建需求',
+                        area:['640px', '650px'],
+                        content: '/plan/add',
+                        success: function (layero, lockIndex) {
+                            var body = layer.getChildFrame('body', lockIndex);
+                            //绑定解锁按钮的点击事件
+                            body.find('button#close').on('click', function () {
+                                layer.close(lockIndex);
+                                //location.reload();//刷新
+                            });
+                        }
+                    });
+                    break;
+                case 'update':
+                    layer.msg('编辑');
+                    break;
+                case 'delete':
+                    layer.msg('批量删除');
+                    break;
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+            }
+
+        });
+
+        $("#demand_search").on("click",function(){
+            // index = layer.load(1);//开启进度条
+            var demoReload = $('#demoReload').val();
+
+            if(demoReload != ''){
+                table.reload("testReload",{
+                    page: {
+                        curr: 1 //重新从第 1 页开始
+                    },
+                    where: {
+                        key: demoReload  //搜索的关键字
+                    },
+                    url:'',
+                    method:'post'
+                })
+            }
+        });
+
+
+        //监听行工具事件
+        table.on('tool(onplan_table)', function (obj) {
+            var data = obj.data;
+            //console.log(obj)
+            if (obj.event === 'del') {
+                layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
+                    obj.del();
+                    layer.close(index);
+                    // $.get("删除文章接口",{
+                    //     newsId : data.newsId  //将需要删除的newsId作为参数传入
+                    //     },function(data){
+                    //         tableIns.reload();
+                    //         layer.close(index);
+                    // })
+                });
+            } else if (obj.event === 'edit') {
+                editDemandList(data);
+            }
+        });
+        function editDemandList(data){
+            parent.layer.open({
+                title : "编辑页面",
+                type : 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area: ['640px', '650px'],
+                // area : [ '100%', '100%' ],
+                content: ['/plan/edit','yes'],//跳转的页面
+                success : function(layero, index){
+
+                    var body = parent.layer.getChildFrame('body', index);
+
+                    body.find('button#close').on('click', function() {
+                        parent.layer.close(index);
+                        location.reload();//刷新
+                    });
+                    pubUtil.load(body, data);//填充表单
+                }
+            })
+
+        }
+
+        //监听表格行点击
+        table.on('tr', function (obj) {
+            console.log(obj)
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(onplan_table)', function (obj) {
+            console.log(obj)
+        });
+
+        //监听表格单选框选择
+        table.on('rowDouble(onplan_table)', function (obj) {
+            console.log(obj);
+        });
+
+        //监听单元格编辑
+        table.on('edit(onplan_table)', function (obj) {
+            var value = obj.value //得到修改后的值
+                , data = obj.data //得到所在行所有键值
+                , field = obj.field; //得到字段
+
+            console.log(obj)
+        });
+
+
+        //监听排序
+        table.on('sort(onplan_table)', function (obj) {
+            console.log(this, obj.field, obj.type)
+
+            return;
+            //服务端排序
+            table.reload('onplan_table', {
+                initSort: obj
+                //,page: {curr: 1} //重新从第一页开始
+                , where: { //重新请求服务端
+                    key: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+
+
+        var $ = layui.jquery, active = {
+            parseTable: function () {
+                table.init('parse-table-demo', {
+                    limit: 3
+                });
+            }
+            , add: function () {
+                table.addRow('onplan_table')
+            }
+        };
+        $('i').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        $('.layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
+
+</body>
+</html>

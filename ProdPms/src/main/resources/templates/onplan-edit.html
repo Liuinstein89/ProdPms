@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>ProductMS</title>
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
+    <style type="text/css">
+        body{
+            padding: 20px;
+            padding-left: 0px;
+
+        }
+    </style>
+</head>
+<body>
+<div class="wrap-container">
+    <form class="layui-form" style="width: 100%;">
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上线时间：</label>
+            <div class="layui-input-block">
+                <input type="text" name="req_no"  id="edit_id"  disabled="disabled" autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求编号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="req_name" id="edit_name"   autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求项：</label>
+            <div class="layui-input-block">
+                <input type="text" name="req_source"   autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户：</label>
+            <div class="layui-input-block">
+                <input type="text" name="dept"    autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">开发任务编号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="req_status"    autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上线计划名称：</label>
+            <div class="layui-input-block">
+                <input type="text" name="exec_type"   autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">上线计划描述：</label>
+            <div class="layui-input-block">
+                <input type="text" name="next_user"  autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">上线计划状态：</label>
+            <div class="layui-input-block">
+                <input type="text" name="lead_team"   autocomplete="off" class="layui-input"/>
+            </div>
+
+        </div>
+
+
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn "  lay-filter="formDemo">确认</button>
+                <button type="button" id="close" class="layui-btn layui-btn-primary">取消</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    //Demo
+    layui.use(['form', 'jquery'], function() {
+        var form = layui.form;
+        var $ = layui.jquery;
+        form.render();
+        //监听提交
+        form.on('submit(formDemo)', function(data) {
+            // layer.msg(JSON.stringify(data.field));
+            $.ajax({
+                url : '1111',
+                data : data.field,
+                type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                dataType : 'json',
+                success : function(obj) {
+                    layer.close(index);//关闭
+                    if (obj.success) {
+                        pubUtil.msg(obj.msg, layer, 1, function() {
+                            $("#close").click();
+                        }, 500);
+                    } else {
+                        pubUtil.msg(obj.msg, layer, 2, function() {
+
+                        }, 5 * 1000);
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+<script>
+
+
+</script>
+</body>
+
+</html>
