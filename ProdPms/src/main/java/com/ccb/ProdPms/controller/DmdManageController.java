@@ -96,12 +96,12 @@ public class DmdManageController {
 	@GetMapping("/demand")
 	@ResponseBody
 	// public List<DmdManageEntity> getAll(@RequestBody DmdManageEntity demand)
+	// public PageInfo<DmdManageEntity> getAll(DmdManageEntity demand){
 	public String getAll(@RequestParam(value = "page") Integer pageNum,
 			@RequestParam(value = "limit") Integer pageSize) {
-		// public PageInfo<DmdManageEntity> getAll(DmdManageEntity demand){
-		// List<DmdManageEntity> demandList = new ArrayList<DmdManageEntity>();
-		// PageHelper.startPage下一行紧跟查询语句，不可以写其他的，否则没有效果
-		System.out.println(pageNum+"！！！！！！！！"+pageSize);
+		// PageHelper.startPage下一行紧跟查询语句，不可以写其他的，否则没有效果;直接return
+		// demandlist可以吧json格式数据返回前台，但是没有count，pages等数据
+		System.out.println(pageNum + "！！！！！！！！" + pageSize);
 		PageHelper.startPage(pageNum, pageSize);
 		PageInfo<DmdManageEntity> dmdPageInfo = new PageInfo<>(dmdManageService.getAll());
 		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdPageInfo);
