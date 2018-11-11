@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
@@ -170,8 +171,24 @@ public class DmdManageController {
 				cooTeam, nowUser, nextUser, createUser, createDate, "reqAddStatus", 0);
 
 		// 多文件上传接参
-		List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("file");
-
+		//MultipartHttpServletRequest rq = (MultipartHttpServletRequest) request;
+		//System.out.println("@@@@@@@@@@@"+rq.toString());
+		
+		
+		//创建一个多分解的容器
+        CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getSession().getServletContext());
+        //设置编码
+        cmr.setDefaultEncoding("utf-8");
+        //判断是否有文件上传
+        //if(cmr.isMultipart(request)){
+            //将request转换成多分解请求
+            MultipartHttpServletRequest mhs = cmr.resolveMultipart(request);
+		
+		
+		
+		
+		List<MultipartFile> fileList = mhs.getFiles("file");
+		System.out.println("111111" + fileList.size());
 		// 新增需求主表项
 		try {
 			dmdManageService.addReq(dmdManageEntity);
@@ -181,7 +198,7 @@ public class DmdManageController {
 		}
 
 		// 循环插入上传文件到指定路径
-		for (MultipartFile file : files) {
+		for (MultipartFile file : fileList) {
 			if (file.isEmpty()) {
 				return "no upload file!";
 			}
@@ -209,9 +226,10 @@ public class DmdManageController {
 					e.printStackTrace();
 					return "You failed to upload " + file.getName() + " => " + e.getMessage();
 				}
-			} else {
-				return "You failed to upload " + file.getName() + " because the file was empty.";
-			}
+			} /*
+				 * else { return "You failed to upload " + file.getName() +
+				 * " because the file was empty."; }
+				 */
 		}
 		return "upload successful";
 	}

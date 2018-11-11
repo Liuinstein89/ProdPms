@@ -32,8 +32,10 @@ public class DmdOnlinePlanServiceImpl implements DmdOnlinePlanService {
 		String onlineDatetime = olanEntity.getOnlineDatetime();
 		String onlinePlanDesc = olanEntity.getOnlinePlanDesc();
 		String onlinePlanName = olanEntity.getOnlinePlanName();
+		String reqName = olanEntity.getReqName();
+		
 		OnlinePlanEntity olEntity = new OnlinePlanEntity(reqNo, onlinePlanDesc, opPerson, onlinePlanName, devNo,
-				onlinePlanStatus, funcItem, onlineDatetime, createDate, changeDate);
+				onlinePlanStatus, funcItem, onlineDatetime, createDate, changeDate,reqName);
 		try {
 			dmdOnlinePlanMapper.insertOnlinePlan(olEntity);
 		} catch (Exception e) {

@@ -119,7 +119,7 @@
 		parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
 		insert into
 		req
-		(req_no,req_name,req_source,dept,exec_type,lead_team,coo_team,now_user,next_user,req_status,create_date,create_uesr,modi_date,is_deleted)
+		(req_no,req_name,req_source,dept,exec_type,lead_team,coo_team,now_user,next_user,req_status,create_date,create_user,modi_date,is_deleted)
 		values (#{reqNo,jdbcType=VARCHAR},
 		#{reqName,jdbcType=VARCHAR},#{reqSource,jdbcType=VARCHAR},
 		#{dept,jdbcType=VARCHAR},

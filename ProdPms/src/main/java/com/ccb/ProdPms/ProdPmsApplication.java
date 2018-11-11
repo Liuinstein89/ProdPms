@@ -1,13 +1,9 @@
 package com.ccb.ProdPms;
 
-import javax.servlet.MultipartConfigElement;
-
 import org.apache.log4j.Logger;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
-import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 @MapperScan("com.ccb.ProdPms.mapper")
@@ -25,7 +21,7 @@ public class ProdPmsApplication {
         //factory.setLocation("路径地址");
         return factory.createMultipartConfig(); 
     } */
-	
+
 	private static final Logger logger = Logger.getLogger(ProdPmsApplication.class);
 
 	public static void main(String[] args) {

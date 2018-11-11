@@ -57,8 +57,9 @@ public class DmdManageServiceImpl implements DmdManageService {
 		// return dmdManageEntity;
 	}
 
-	@Transactional
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void insertUpload(UploadFileEntity uploadFileEntity) {
+		System.out.println(uploadFileEntity.toString());
 		dmdManageMapper.insertUpload(uploadFileEntity);
 	}
 
