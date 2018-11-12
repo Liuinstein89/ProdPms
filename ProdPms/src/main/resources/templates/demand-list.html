@@ -171,6 +171,37 @@ a {
                     title:'需求搜索',
                     area:['600px', '560px'], 
                     content: '/admin/search',
+                    success: function (layero, index) {
+
+                        var body = layer.getChildFrame('body', index);
+
+                        body.find('button#close').on('click', function() {
+                            layer.close(index);
+                        });
+
+                        body.find('button#btnSearch').on('click', function () {
+                            // index = layer.load(1);//开启进度条
+                            // alert("zzf")
+                            var searchform = pubUtil.serializeObject( body.find('#searchform'));//查询页面表单ID
+                            alert(JSON.stringify(searchform));
+                            table.reload('testReload', {
+                                where: searchform,
+                                success : function(obj) {//没有success，这一块不对
+                                    alert(obj.code)
+                                    if (obj.code == '1') {
+                                        pubUtil.msg(obj.msg, layer, 1, function() {
+                                            $("#close").click();
+                                            location.reload();
+                                        }, 500);
+                                    } else {
+                                        pubUtil.msg(obj.msg, layer, 2, function() {
+
+                                        }, 5 * 1000);
+                                    }
+                                }
+                            });
+                        });
+                    }
                 });
             });
             //普通搜索
@@ -182,10 +213,12 @@ a {
                         where: {
                             key: demoReload  //搜索的关键字
                         },
-                        //url:'/search',
-                        // method:'post'
+                        url:'/search',
+                        method:'GET'
                     })
-                }
+                }else{
+                    location.reload();
+				}
             });
             
             
@@ -273,13 +306,14 @@ a {
                     skin: 'layui-layer-molv',
                     shadeClose: false,
                     shade: 0.3,
-                    area: ['600px', '580px'],
+                    area: ['640px', '650px'],
+                    boolean: true,
                     // area : [ '100%', '100%' ],
-                    content: '/admin/edit',//跳转的页面
+                    content:  ['/admin/edit','yes'],//跳转的页面
                     success : function(layero, index){
-                        var body = parent.layer.getChildFrame('body', index);
+                        var body = layer.getChildFrame('body', index);
                         body.find('button#close').on('click', function() {
-                            parent.layer.close(index);
+                            layer.close(index);
                         });
                         pubUtil.load(body, data);//填充表单
                     }
@@ -302,32 +336,6 @@ a {
                 });
             });
 
-
-            // $(".search_btn").on("click",function(){
-            //     var demoReload = $('#demoReload').val();
-            //     if(demoReload != ''){
-            //         table.reload("testReload",{
-            //             page: {
-            //                 curr: 1 //重新从第 1 页开始
-            //             },
-            //             where: {
-            //                 key: demoReload  //搜索的关键字
-            //             }
-            //         })
-            //     }else{
-            //         layer.msg("请输入搜索的内容");
-            //     }
-            // });
-
-            //查询按钮
-           /*  $('#btnSearch').on('click', function () {
-                // index = layer.load(1);//开启进度条
-                var searchform = pubUtil.serializeObject($("#searchform"));//查询页面表单ID
-                //alert(JSON.stringify(searchform));
-                table.reload('searchID', {
-                    where: searchform
-                });
-            }); */
 
             var $ = layui.jquery, active = {
                 parseTable: function () {

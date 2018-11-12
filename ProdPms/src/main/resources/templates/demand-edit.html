@@ -87,14 +87,15 @@
 
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn " lay-submit="" lay-filter="editForButton" type="button">确认</button>
-						<button type="button" id="close" class="layui-btn layui-btn-primary">取消</button>
+						<button class="layui-btn "  id="edit_form_btn" lay-submit="" lay-filter="edit_form_btn">确认</button>
+						<button type="button" id="close" class="layui-btn layui-btn-primary">关闭</button>
 					</div>
 				</div>
 			</form>
 		</div>
 
 		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			//Demo
 			layui.use(['form', 'jquery'], function() {
@@ -102,7 +103,8 @@
 				var $ = layui.jquery;
 				form.render();
 				//监听提交
-				form.on('submit("editForButton")', function(data) {
+				alert("123");
+				form.on('submit(edit_form_btn)', function(data) {
                     $.ajax({
                         url : '/updateReq',
                         data : data.field,
@@ -113,6 +115,7 @@
                             if (obj=="success") {
                                 pubUtil.msg(obj.msg, layer, 1, function() {
                                     $("#close").click();
+                                    location.reload();
                                 }, 300);
                             } else {
                                 pubUtil.msg(obj.msg, layer, 2, function() {
