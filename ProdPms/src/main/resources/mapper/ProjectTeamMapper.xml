@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccb.ProdPms.mapper.ProjectTeamMapper">
+    <select id="queryProjectTeam" resultType="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        SELECT *
+        FROM project_team
+    </select>
+
+    <select id="queryProjectTeamById" resultType="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        SELECT *
+        FROM project_team
+        WHERE id=#{id}
+    </select>
+
+    <insert id="insertProjectTeam" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" parameterType="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        INSERT INTO
+        project_team(team_name,belong_dpt_code,team_leader,teammate_num,teammate,
+        create_time,change_time,is_deleted,op_person)
+        VALUES
+        (#{teamName},#{belongDptCode},#{teamLeader},#{teammateNum},#{teammate},
+        #{createTime},#{changeTime},#{isDeleted},#{opPerson})
+    </insert>
+
+    <update id="updateProjectTeam" parameterType="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        update project_team
+        <set>
+            <if test="teamName != null">team_name=#{teamName},</if>
+            <if test="belongDptCode != null">belong_dpt_code=#{belongDptCode},</if>
+            <if test="teamLeader != null">team_leader=#{teamLeader},</if>
+            <if test="teammateNum != null">teammate_num=#{teammateNum},</if>
+            <if test="teammate != null">is_deleted=#{teammate},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="changeTime != null">change_time=#{changeTime},</if>
+            <if test="isDeleted != null">is_deleted=#{isDeleted},</if>
+            <if test="opPerson != null">op_person=#{opPerson}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteProjectTeam">
+        DELETE FROM
+        project_team
+        WHERE id =#{id}
+    </delete>
+</mapper>
