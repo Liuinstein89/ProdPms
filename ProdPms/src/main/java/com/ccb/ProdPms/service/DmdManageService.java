@@ -24,4 +24,8 @@ public interface DmdManageService {
 
 	List<DmdManageEntity> getByParams(DmdQueryParamsEntity dmdQueryParamsEntity);
 
+	void updateReq(DmdManageEntity dmdManageEntity);
+
+	void deleteReqById(Integer id);
+
 }

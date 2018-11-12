@@ -17,12 +17,12 @@
 	</head>
 	<body>
 		<div class="wrap-container">
-			<form class="layui-form" style="width: 100%;">
+			<form class="layui-form" style="width: 100%;" method = "post" action = "" name = "form">
 				
 				<div class="layui-form-item">
-					<label class="layui-form-label">ID：</label>
+					<label class="layui-form-label">需求编号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="req_no"  id="edit_id"  disabled="disabled" autocomplete="off" class="layui-input"/>
+						<input type="text" name="reqNo"  id="edit_id"  disabled="disabled" autocomplete="off" class="layui-input"/>
 					</div>
 
 				</div>
@@ -30,7 +30,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">标题：</label>
 					<div class="layui-input-block">
-						<input type="text" name="req_name" id="edit_name"   autocomplete="off" class="layui-input"/>
+						<input type="text" name="reqName" id="edit_name"   autocomplete="off" class="layui-input"/>
 					</div>
 
 				</div>
@@ -38,7 +38,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">需求来源：</label>
 					<div class="layui-input-block">
-						<input type="text" name="req_source"   autocomplete="off" class="layui-input"/>
+						<input type="text" name="reqSource"   autocomplete="off" class="layui-input"/>
 					</div>
 
 				</div>
@@ -52,21 +52,21 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">受理状态：</label>
 					<div class="layui-input-block">
-						<input type="text" name="req_status"    autocomplete="off" class="layui-input"/>
+						<input type="text" name="reqStatus"    autocomplete="off" class="layui-input"/>
 					</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">实施方式：</label>
 					<div class="layui-input-block">
-						<input type="text" name="exec_type"   autocomplete="off" class="layui-input"/>
+						<input type="text" name="execType"   autocomplete="off" class="layui-input"/>
 					</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">受理人：</label>
 					<div class="layui-input-block">
-						<input type="text" name="next_user"  autocomplete="off" class="layui-input"/>
+						<input type="text" name="nextUser"  autocomplete="off" class="layui-input"/>
 					</div>
 
 				</div>
@@ -74,24 +74,23 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">牵头组：</label>
 					<div class="layui-input-block">
-						<input type="text" name="lead_team"   autocomplete="off" class="layui-input"/>
+						<input type="text" name="leadTeam"   autocomplete="off" class="layui-input"/>
 					</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">配合组：</label>
 					<div class="layui-input-block">
-						<input type="text" name="coo_team"   autocomplete="off" class="layui-input"/>
+						<input type="text" name="cooTeam"   autocomplete="off" class="layui-input"/>
 					</div>
 				</div>
 
 				<div class="layui-form-item">
 					<div class="layui-input-block">
-						<button class="layui-btn "  lay-filter="formDemo">确认</button>
+						<button class="layui-btn " lay-submit="" lay-filter="editForButton" type="button">确认</button>
 						<button type="button" id="close" class="layui-btn layui-btn-primary">取消</button>
 					</div>
 				</div>
-
 			</form>
 		</div>
 
@@ -103,23 +102,21 @@
 				var $ = layui.jquery;
 				form.render();
 				//监听提交
-				form.on('submit(formDemo)', function(data) {
-					// layer.msg(JSON.stringify(data.field));
+				form.on('submit("editForButton")', function(data) {
                     $.ajax({
-                        url : '1111',
+                        url : '/updateReq',
                         data : data.field,
                         type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
                         dataType : 'json',
                         success : function(obj) {
-                            layer.close(index);//关闭
-                            if (obj.success) {
+                            //layer.close(index);//关闭
+                            if (obj=="success") {
                                 pubUtil.msg(obj.msg, layer, 1, function() {
                                     $("#close").click();
-                                }, 500);
+                                }, 300);
                             } else {
                                 pubUtil.msg(obj.msg, layer, 2, function() {
-
-                                }, 5 * 1000);
+                                }, 5 * 100);
                             }
                         }
                     });

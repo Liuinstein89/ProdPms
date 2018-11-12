@@ -29,11 +29,11 @@
 				<div class="layui-form-item ">
 			        <label class="layui-form-label">时间范围：</label>
 			        <div class="layui-input-inline">
-			            <input type="text" id="start_time" name="start_time" autocomplete="off" placeholder="请输入开始时间" class="layui-input"/>
+			            <input type="text" id="start_time" name="startTime" autocomplete="off" placeholder="请输入开始时间" class="layui-input"/>
 			        </div> 
 			        <div class="layui-form-mid">到</div>
 			        <div class="layui-input-inline">
-			            <input type="text" id="end_time" name="end_time" autocomplete="off" placeholder="请输入结束时间" class="layui-input"/>
+			            <input type="text" id="end_time" name="endTime" autocomplete="off" placeholder="请输入结束时间" class="layui-input"/>
 			        </div>
 				</div>
 
@@ -123,25 +123,46 @@
 
 				<div class="layui-form-item">
 					<div class="layui-input-block" style="float: right">
-						<button type="reset" class="layui-btn layui-btn-primary">重置</button>
-						<button class="layui-btn " id="btnSearch" type="button">高级查找</button>
+						<button type="button" class="layui-btn layui-btn-primary" id="close">关闭</button>
+						<button class="layui-btn " id="btnSearch" lay-submit="" lay-filter="btnSearch">立即提交</button>
 					</div>
 				</div>
 			</form>
 		</div>
-
 		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			//Demo
-			layui.use('form', function() {
+			layui.use(['form','layer','jquery'], function() {
 				var form = layui.form;
+				var layer = layui.layer;
+				var $ = layui.jquery;
 				form.render();
 				//监听提交
-				form.on('submit(formDemo)', function(data) {
-					layer.msg(JSON.stringify(data.field));
-					return false;
-				});
-			});
+                form.on('submit(btnSearch)', function(data) {
+                    layer.alert(JSON.stringify(data.field));
+                    $.ajax({
+                        url : '/search',
+                        data : data.field,
+                        //type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                        dataType : 'json',
+                        page: true, 
+                        limit: 10, 
+                        success : function(obj) {
+                            // layer.close(index);//关闭
+                            if (obj.success) {
+                                pubUtil.msg(obj.msg, layer, 1, function() {
+                                    $("#close").click();
+                                }, 500);
+                            } else {
+                                pubUtil.msg(obj.msg, layer, 2, function() {
+                                }, 5 * 1000);
+                            }
+                        }
+                    });
+                    return false;
+                });
+            });
 
 		</script>
 		<script type="text/javascript">
@@ -175,7 +196,5 @@
 
 		    });
 		</script>
-
 	</body>
-
 </html>

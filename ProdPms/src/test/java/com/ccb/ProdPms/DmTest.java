@@ -1,5 +1,7 @@
 package com.ccb.ProdPms;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,13 +26,13 @@ public class DmTest {
 	@Autowired
 	private UploadFileController uploadFileController;
 
-	@Test
+	/*@Test
 	public void testQuery() throws Exception {
 		List<DmdManageEntity> dmd = dmdManageMapper.getAll();
 		System.out.println(dmd.toString());
-	}
+	}*/
 
-	// @Test
+	 @Test
 	public void testQueryParams() {
 		// DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity("", "",
 		// "", "", "", "", "", "", null,
@@ -55,7 +57,11 @@ public class DmTest {
 		// "idea快捷键.txt");
 		// dmdManageMapper.insertUpload(new
 		// UploadFileEntity("321text","E:/temp/","txt","xq", "123",0));
-
+		String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		DmdManageEntity dmdManageEntity = new DmdManageEntity("3",
+				 "ming","lai","dept","fangshi","nwipo","wip","dev","good","qqq"
+				 ,modiDate);
+		dmdManageMapper.updateReq(dmdManageEntity);
 		/*
 		 * for (int i = 0; i < dmd.size(); i++) { System.out.println(dmd); }
 		 */

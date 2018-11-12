@@ -77,4 +77,8 @@ public interface DmdManageMapper {
 
 	void deleteById(Integer id);
 
+	void updateReq(DmdManageEntity dmdManageEntity);
+
+	DmdManageEntity findOne(Integer id);
+
 }

@@ -16,6 +16,7 @@ import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
+import com.ccb.ProdPms.exception.ResourceNotFoundException;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.service.DmdManageService;
 
@@ -29,31 +30,9 @@ public class DmdManageServiceImpl implements DmdManageService {
 	@Autowired
 	private DmdManageMapper dmdManageMapper;
 
-	/*
-	 * public List<KeywordReply> getAllKeywordRules() { return
-	 * keywordReplyRepo.findAll(); }
-	 */
-
-	/*
-	 * public void deleteKeywordRule(String keywordReplyId) { KeywordReply
-	 * keywordReply = keywordReplyRepo.findOne(keywordReplyId); if (keywordReply ==
-	 * null) { throw new ResourceNotFoundException("找不到关键词，id：" + keywordReplyId); }
-	 * keywordReplyRepo.delete(keywordReplyId); }
-	 */
-
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
-	// public void addKeywordRule(KeywordRuleDto rule)
 	public void addReq(DmdManageEntity dmdManageEntity) {
-		// DmdManageEntity dmdManageEntity = new DmdManageEntity();
-		// dmdManageEntity.setRuleName(rule.getRuleName());
-		// dmdManageEntity.setKeywords(rule.getKeywords());
-		// dmdManageEntity.setReplyAll(rule.isReplyAll());
-		// addOrUpdateReplyMsgs(keywordReply, rule.getReplyMsgs());
-		// DmdManageEntity dmdManageEntity = new DmdManageEntity("", "", "", "", "", "",
-		// "", "", "", "", "", 0);
 		dmdManageMapper.insert(dmdManageEntity);
-		// System.out.println("##########################");
-		// BeanUtils.copyProperties(source, target);
 		// return dmdManageEntity;
 	}
 
@@ -139,6 +118,25 @@ public class DmdManageServiceImpl implements DmdManageService {
 			e.getMessage();
 		}
 		return dsList;
+	}
+
+	@Transactional
+	public void updateReq(DmdManageEntity dmdManageEntity) {
+		dmdManageMapper.updateReq(dmdManageEntity);
+
+	}
+
+	@Transactional
+	public void deleteReqById(Integer id) {
+		DmdManageEntity dmdManageEntity = dmdManageMapper.findOne(id);
+		if (dmdManageEntity == null) {
+			throw new ResourceNotFoundException("找不到关键词，id：" + id);
+		}
+		try {
+			dmdManageMapper.deleteById(id);
+		} catch (Exception e) {
+			e.getMessage();
+		}
 	}
 
 	/*

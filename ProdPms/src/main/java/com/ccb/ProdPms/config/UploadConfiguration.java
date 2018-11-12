@@ -7,15 +7,8 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 @Configuration
 public class UploadConfiguration {
-/*	@Bean
-	public MultipartResolver multipartResolver() {
-		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
-		multipartResolver.setMaxUploadSize(5000000);
-		multipartResolver.setDefaultEncoding("UTF-8");
-		
-		return multipartResolver;
-	}*/
-	 @Bean(name = "multipartResolver")
+
+/*	 @Bean(name = "multipartResolver")
      public MultipartResolver multipartResolver(){
       CommonsMultipartResolver resolver = new CommonsMultipartResolver();
       resolver.setDefaultEncoding("UTF-8");
@@ -23,5 +16,5 @@ public class UploadConfiguration {
       resolver.setMaxInMemorySize(40960);
       resolver.setMaxUploadSize(50*1024*1024);//上传文件大小 50M 50*1024*1024
       return resolver;
-  }
+  }*/
 }

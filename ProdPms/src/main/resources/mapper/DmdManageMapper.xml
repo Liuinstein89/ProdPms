@@ -53,6 +53,13 @@
 		from req
 		where is_deleted = 0
 	</select>
+	<!-- 获取全部需求列表 -->
+	<select id="findOne" resultMap="DmdManageMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Basic_Req_Columns" />
+		from req
+		where is_deleted = 0 and id = #{Id,jdbcType=INTEGER}
+	</select>
 	<!-- 获取需求总数 -->
 	<select id="selectCount" resultType="java.lang.Integer">
 		select
@@ -187,5 +194,21 @@
 		1
 		where
 		id = #{Id,jdbcType=INTEGER}
+	</update>
+	<!-- 修改需求信息，参数的初始值在代码中做处理 -->
+	<update id="updateReq"
+		parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
+		update req set
+		req_name=#{reqName,jdbcType=VARCHAR},
+		req_source=#{reqSource,jdbcType=VARCHAR},
+		dept=#{dept,jdbcType=VARCHAR},
+		exec_type=#{execType,jdbcType=VARCHAR},
+		lead_team=#{leadTeam,jdbcType=VARCHAR},
+		coo_team=#{cooTeam,jdbcType=VARCHAR},
+		next_user=#{nextUser,jdbcType=VARCHAR},
+		req_status=#{reqStatus,jdbcType=VARCHAR},
+		modi_date=#{modiDate,jdbcType=VARCHAR}
+		where
+		is_deleted =0 and req_no=#{reqNo,jdbcType=VARCHAR}
 	</update>
 </mapper>

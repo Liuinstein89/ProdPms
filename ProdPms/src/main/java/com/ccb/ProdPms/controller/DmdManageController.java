@@ -16,7 +16,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartResolver;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.alibaba.fastjson.JSONObject;
@@ -92,6 +95,11 @@ public class DmdManageController {
 	public String search() {
 		return "demand-search";
 	}
+	
+	/*@RequestMapping("/admin/delReqById")
+	public String delReq() {
+		return "demand-list";
+	}*/
 
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")
@@ -102,7 +110,6 @@ public class DmdManageController {
 			@RequestParam(value = "limit") Integer pageSize) {
 		// PageHelper.startPage下一行紧跟查询语句，不可以写其他的，否则没有效果;直接return
 		// demandlist可以吧json格式数据返回前台，但是没有count，pages等数据
-		System.out.println(pageNum + "！！！！！！！！" + pageSize);
 		PageHelper.startPage(pageNum, pageSize);
 		PageInfo<DmdManageEntity> dmdPageInfo = new PageInfo<>(dmdManageService.getAll());
 		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdPageInfo);
@@ -112,8 +119,8 @@ public class DmdManageController {
 	// 检索，普通检索和高级检索写一块，通过传参分辨，注意分页显示
 	@GetMapping("/search")
 	@ResponseBody
-	public String search(@RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
-			@RequestParam(value = "pageSize", defaultValue = "10") Integer pageSize, HttpServletRequest request) {
+	public String search(@RequestParam(value = "page" ) Integer pageNum,
+			@RequestParam(value = "limit") Integer pageSize, HttpServletRequest request) {
 
 		// Form接参
 		String reqNo = request.getParameter("reqNo");
@@ -134,6 +141,7 @@ public class DmdManageController {
 		List<DmdManageEntity> dmdSearList = new ArrayList<DmdManageEntity>();
 		PageHelper.startPage(pageNum, pageSize);
 		dmdSearList = dmdManageService.getByParams(queryParams);
+		System.out.println("@@@@@"+dmdSearList.toString());
 		PageInfo<DmdManageEntity> dsPageInfo = new PageInfo<>(dmdSearList);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", 0);
@@ -176,18 +184,19 @@ public class DmdManageController {
 		
 		
 		//创建一个多分解的容器
-        CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getSession().getServletContext());
+        //CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getSession().getServletContext());
         //设置编码
-        cmr.setDefaultEncoding("utf-8");
+        //cmr.setDefaultEncoding("utf-8");
         //判断是否有文件上传
         //if(cmr.isMultipart(request)){
             //将request转换成多分解请求
-            MultipartHttpServletRequest mhs = cmr.resolveMultipart(request);
+           // MultipartHttpServletRequest mhs = cmr.resolveMultipart(request);
 		
+		MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+		MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
+		List<MultipartFile> fileList = multipartRequest.getFiles("file");
 		
-		
-		
-		List<MultipartFile> fileList = mhs.getFiles("file");
+		//List<MultipartFile> fileList = ((MultipartHttpServletRequest) request).getFiles("file");
 		System.out.println("111111" + fileList.size());
 		// 新增需求主表项
 		try {
@@ -199,6 +208,7 @@ public class DmdManageController {
 
 		// 循环插入上传文件到指定路径
 		for (MultipartFile file : fileList) {
+			System.out.println("2222" + file.getName());
 			if (file.isEmpty()) {
 				return "no upload file!";
 			}
@@ -217,6 +227,7 @@ public class DmdManageController {
 				try {
 					file.transferTo(dest);
 					try {
+						System.out.println("333" + file.getName());
 						dmdManageService.insertUpload(uploadFileEntity);
 					} catch (Exception e) {
 						e.getMessage();
@@ -239,6 +250,34 @@ public class DmdManageController {
 	 * public @ResponseBody String multifileUpload(HttpServletRequest request)
 	 */
 
+	// 编辑需求项
+		@RequestMapping(value = "/updateReq", method = RequestMethod.POST)
+		@ResponseBody
+		public String updateReq(HttpServletRequest request) throws IOException {
+			// Form接参
+			String reqNo = request.getParameter("reqNo");
+			String reqName = request.getParameter("reqName");
+			String reqSource = request.getParameter("reqSource");
+			String dept = request.getParameter("dept");
+			String execType = request.getParameter("execType");
+			String leadTeam = request.getParameter("leadTeam");
+			String cooTeam = request.getParameter("cooTeam");
+			String nowUser = request.getParameter("nowUser");
+			String nextUser = request.getParameter("nextUser");
+			String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+			DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
+					cooTeam, nowUser, nextUser, "reqAddStatus",modiDate);
+
+			// 修改需求主表项
+			try {
+				dmdManageService.updateReq(dmdManageEntity);
+			} catch (Exception e) {
+				e.getMessage();
+				return "update req failed! ";
+			}
+			return "success";
+		}
+	
 	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
 	@PostMapping("/addReqItem")
 	public String addReqItem(DmdItemFuncDto dmdItemFuncDto) {
@@ -260,6 +299,14 @@ public class DmdManageController {
 		return "详情列表";
 	}
 
+	//删除需求
+	@GetMapping("/delReqById")
+	@ResponseBody
+	public String deleteReqById(@RequestParam(value = "id" ) Integer id) {
+		dmdManageService.deleteReqById(id);
+		String str = "success";
+		return JSONObject.toJSONString(str);
+	}
 	// 获取参数几种常用的注解
 	/*
 	 * @PathVariable：一般我们使用URI
