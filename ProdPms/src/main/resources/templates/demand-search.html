@@ -16,31 +16,29 @@
 	</head>
 	<body>
 		<div class="wrap-container">
-			<form class="layui-form" style="width: 100%;" method="post" action="">
-				
+			<form class="layui-form" style="width: 100%;" method="get" action="" id="searchform" name="searchform">
 				<div class="layui-form-item">
 					<label class="layui-form-label">需求标题：</label>
 					<div class="layui-input-block">
-						<input type="text" name="title"  placeholder="请输入需求标题" autocomplete="off" class="layui-input"/>
+						<input type="text" name="reqName"  placeholder="请输入需求标题" autocomplete="off" class="layui-input"/>
 					</div>
-
 				</div>
 
 				<div class="layui-form-item ">
 			        <label class="layui-form-label">时间范围：</label>
 			        <div class="layui-input-inline">
-			            <input type="text" id="start_time" name="startTime" autocomplete="off" placeholder="请输入开始时间" class="layui-input"/>
+			            <input type="text" id="begin_date" name="beginDate" autocomplete="off" placeholder="请输入开始时间" class="layui-input"/>
 			        </div> 
 			        <div class="layui-form-mid">到</div>
 			        <div class="layui-input-inline">
-			            <input type="text" id="end_time" name="endTime" autocomplete="off" placeholder="请输入结束时间" class="layui-input"/>
+			            <input type="text" id="end_date" name="endDate" autocomplete="off" placeholder="请输入结束时间" class="layui-input"/>
 			        </div>
 				</div>
 
 				<div class="layui-form-item">
 					<label class="layui-form-label">需求来源：</label>
 					<div class="layui-input-block">
-						<select name="category">
+						<select name="reqSource">
 							<option value=""></option>
                             <option value="1">个人部</option>
                             <option value="2">运维</option>
@@ -54,7 +52,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">提出部门：</label>
 					<div class="layui-input-block">
-						<select name="category" >
+						<select name="dept" >
 							<option value=""></option>
                             <option value="1">个人部</option>
                             <option value="2">运维</option>
@@ -68,7 +66,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">受理状态：</label>
 					<div class="layui-input-block">
-						<select name="category">
+						<select name="reqStatus">
 							<option value=""></option>
                             <option value="1">个人部</option>
                             <option value="2">运维</option>
@@ -80,9 +78,9 @@
 				</div>
 
 				<div class="layui-form-item">
-					<label class="layui-form-label">头项目组：</label>
+					<label class="layui-form-label">牵头项目组：</label>
 					<div class="layui-input-block">
-						<select name="category" >
+						<select name="leadTeam" >
 							<option value=""></option>
                             <option value="1">个人部</option>
                             <option value="2">运维</option>
@@ -96,7 +94,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">受理人：</label>
 					<div class="layui-input-block">
-						<select name="category">
+						<select name="nextUser">
 							<option value=""></option>
                             <option value="1">个人部</option>
                             <option value="2">运维</option>
@@ -110,7 +108,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">实施方式：</label>
 					<div class="layui-input-block">
-						<select name="category">
+						<select name="execType">
 							<option value=""></option>
                             <option value="1">个人部</option>
                             <option value="2">运维</option>
@@ -129,9 +127,10 @@
 				</div>
 			</form>
 		</div>
+		
 		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript">
+		<!-- <script type="text/javascript">
 			//Demo
 			layui.use(['form','layer','jquery'], function() {
 				var form = layui.form;
@@ -164,12 +163,14 @@
                 });
             });
 
-		</script>
+		</script> -->
 		<script type="text/javascript">
-		    layui.use('laydate', function(){
+		    layui.use(['form','laydate'], function(){
 		        var laydate = layui.laydate;
+		        var form = layui.form;
+		        form.render();//不渲染下拉框显示不出来
 		        var endDate= laydate.render({
-		            elem: '#end_time',//选择器结束时间
+		            elem: '#end_date',//选择器结束时间
 		            theme: 'molv',
 		            min:"1970-1-1",//设置min默认最小值
 		            done: function(value,date){
@@ -182,7 +183,7 @@
 		        });
 		        //日期范围
 		        var startDate=laydate.render({
-		            elem: '#start_time',
+		            elem: '#begin_date',
 		            theme: 'molv',
 		            max:"2099-12-31",//设置一个默认最大值
 		            done: function(value, date){

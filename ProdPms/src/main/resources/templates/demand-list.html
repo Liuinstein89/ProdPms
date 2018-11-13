@@ -33,7 +33,7 @@ a {
 		<div class="layui-card-header" style="height: 55px">
 			<div class="demoTable layui-inline" style="margin-top: 6px">
 				<div class="layui-inline">
-					<input type="text" class="layui-input" id="demoReload"
+					<input type="text" class="layui-input" id="reqName"
 						style="width: 300px" autocomplete="off" placeholder="请输入需求标题" />
 				</div>
 				<button class="layui-btn search_btn" id="demand_search" data-type="reload">
@@ -159,11 +159,9 @@ a {
                         layer.alert(JSON.stringify(data));
                         break;
                 }
-                
             });
             //监听高级搜索
             $("#hSearch").on('click',function(){
-               // layer.msg('高级搜索');
                layer.open({
                     type:2,
                     maxmin: true,
@@ -172,32 +170,33 @@ a {
                     area:['600px', '560px'], 
                     content: '/admin/search',
                     success: function (layero, index) {
-
                         var body = layer.getChildFrame('body', index);
-
                         body.find('button#close').on('click', function() {
                             layer.close(index);
                         });
-
                         body.find('button#btnSearch').on('click', function () {
-                            // index = layer.load(1);//开启进度条
-                            // alert("zzf")
                             var searchform = pubUtil.serializeObject( body.find('#searchform'));//查询页面表单ID
-                            alert(JSON.stringify(searchform));
+                            //alert(JSON.stringify(searchform));
                             table.reload('testReload', {
                                 where: searchform,
-                                success : function(obj) {//没有success，这一块不对
-                                    alert(obj.code)
-                                    if (obj.code == '1') {
-                                        pubUtil.msg(obj.msg, layer, 1, function() {
-                                            $("#close").click();
-                                            location.reload();
+                                url:'/search',
+                                method:'GET',
+                                parseData : function(res) {//没有success，这一块不对
+                                    //alert(obj.code)
+                                    if (res.code == '0') {
+                                        pubUtil.msg(res.msg, layer, 1, function() {
+                                        	layer.close(index);
                                         }, 500);
                                     } else {
-                                        pubUtil.msg(obj.msg, layer, 2, function() {
-
-                                        }, 5 * 1000);
+                                        pubUtil.msg(res.msg, layer, 2, function() {
+                                        }, 5 * 100);
                                     }
+                                    return{
+                                        "code": res.code
+                                        ,"msg": res.msg
+                                        ,"count": res.data.total
+                                        ,"data": res.data.list
+ 								   };
                                 }
                             });
                         });
@@ -207,20 +206,19 @@ a {
             //普通搜索
             $("#demand_search").on("click",function(){
                 // index = layer.load(1);//开启进度条
-                var demoReload = $('#demoReload').val();
-                if(demoReload != ''){
+                var reqName = $('#reqName').val();
+                if(reqName != ''){
                     table.reload("testReload",{
                         where: {
-                            key: demoReload  //搜索的关键字
+                        	reqName: reqName  //搜索的关键字
                         },
                         url:'/search',
-                        method:'GET'
+                        method:'GET',
                     })
                 }else{
                     location.reload();
 				}
             });
-            
             
             //监听表格行点击
             table.on('tr', function (obj) {
@@ -255,23 +253,7 @@ a {
             table.on('tool(demand_table)', function (obj) {
                 var data = obj.data;
                 if (obj.event === 'del') {
-                    	/* layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
-                        layer.close(index);
-                        $.post("/admin/DeleteCustomer",{ reqId : data.reqId  //将需要删除的Id作为参数传入
-                        },function(data){
-                             				layer.alert(data, {
-                                            title: "删除操作",
-                                            btn: ['确定']
-                                        }, function (index, item) {
-                                                //location.reload();
-                                 				tableIns.reload();
-                         					})
-                    	});
-                    }); */
-                    	
-                    	
                     	layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
-                            //console.log(data);
                             $.ajax({
                                 url: '/delReqById',
                                 data: {
@@ -308,7 +290,6 @@ a {
                     shade: 0.3,
                     area: ['640px', '650px'],
                     boolean: true,
-                    // area : [ '100%', '100%' ],
                     content:  ['/admin/edit','yes'],//跳转的页面
                     success : function(layero, index){
                         var body = layer.getChildFrame('body', index);

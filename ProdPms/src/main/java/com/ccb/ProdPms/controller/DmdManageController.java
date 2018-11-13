@@ -51,7 +51,7 @@ import com.github.pagehelper.PageInfo;
 public class DmdManageController {
 
 	Logger log = LoggerFactory.getLogger(this.getClass());
-
+	private static String strSuc = "success";
 	private static String UPLOADED_FILEPATH = "E://temp//";
 	// private int pageNum ;
 	// private int pageSize = 10;
@@ -96,11 +96,11 @@ public class DmdManageController {
 	public String search() {
 		return "demand-search";
 	}
-	
-	/*@RequestMapping("/admin/delReqById")
-	public String delReq() {
-		return "demand-list";
-	}*/
+
+	/*
+	 * @RequestMapping("/admin/delReqById") public String delReq() { return
+	 * "demand-list"; }
+	 */
 
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")
@@ -120,8 +120,8 @@ public class DmdManageController {
 	// 检索，普通检索和高级检索写一块，通过传参分辨，注意分页显示
 	@GetMapping("/search")
 	@ResponseBody
-	public String search(@RequestParam(value = "page" ) Integer pageNum,
-			@RequestParam(value = "limit") Integer pageSize, HttpServletRequest request) {
+	public String search(@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize,
+			HttpServletRequest request) {
 
 		// Form接参
 		String reqNo = request.getParameter("reqNo");
@@ -132,17 +132,17 @@ public class DmdManageController {
 		String leadTeam = request.getParameter("leadTeam");
 		String nextUser = request.getParameter("nextUser");
 		String reqStatus = request.getParameter("reqStatus");
-		String beginDate = request.getParameter("beginDate");
-		String endDate = request.getParameter("endDate");
+		String beginDate = ("".equals(request.getParameter("beginDate"))) ? "1970-1-1"
+				: request.getParameter("beginDate");
+		String endDate = ("".equals(request.getParameter("endDate"))) ? "2099-12-31"
+				: request.getParameter("endDate");
 		// String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new
 		// Date());
 		DmdQueryParamsEntity queryParams = new DmdQueryParamsEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
 				nextUser, reqStatus, beginDate, endDate);
-
 		List<DmdManageEntity> dmdSearList = new ArrayList<DmdManageEntity>();
 		PageHelper.startPage(pageNum, pageSize);
 		dmdSearList = dmdManageService.getByParams(queryParams);
-		System.out.println("@@@@@"+dmdSearList.toString());
 		PageInfo<DmdManageEntity> dsPageInfo = new PageInfo<>(dmdSearList);
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", 0);
@@ -180,24 +180,25 @@ public class DmdManageController {
 				cooTeam, nowUser, nextUser, createUser, createDate, "reqAddStatus", 0);
 
 		// 多文件上传接参
-		//MultipartHttpServletRequest rq = (MultipartHttpServletRequest) request;
-		//System.out.println("@@@@@@@@@@@"+rq.toString());
-		
-		
-		//创建一个多分解的容器
-        //CommonsMultipartResolver cmr = new CommonsMultipartResolver(request.getSession().getServletContext());
-        //设置编码
-        //cmr.setDefaultEncoding("utf-8");
-        //判断是否有文件上传
-        //if(cmr.isMultipart(request)){
-            //将request转换成多分解请求
-           // MultipartHttpServletRequest mhs = cmr.resolveMultipart(request);
-		
+		// MultipartHttpServletRequest rq = (MultipartHttpServletRequest) request;
+		// System.out.println("@@@@@@@@@@@"+rq.toString());
+
+		// 创建一个多分解的容器
+		// CommonsMultipartResolver cmr = new
+		// CommonsMultipartResolver(request.getSession().getServletContext());
+		// 设置编码
+		// cmr.setDefaultEncoding("utf-8");
+		// 判断是否有文件上传
+		// if(cmr.isMultipart(request)){
+		// 将request转换成多分解请求
+		// MultipartHttpServletRequest mhs = cmr.resolveMultipart(request);
+
 		MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
 		MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
 		List<MultipartFile> fileList = multipartRequest.getFiles("file");
-		
-		//List<MultipartFile> fileList = ((MultipartHttpServletRequest) request).getFiles("file");
+
+		// List<MultipartFile> fileList = ((MultipartHttpServletRequest)
+		// request).getFiles("file");
 		System.out.println("111111" + fileList.size());
 		// 新增需求主表项
 		try {
@@ -252,34 +253,34 @@ public class DmdManageController {
 	 */
 
 	// 编辑需求项
-		@RequestMapping(value = "/updateReq", method = RequestMethod.POST)
-		//@PutMapping("/updateReq")
-		@ResponseBody
-		public String updateReq(HttpServletRequest request) throws IOException {
-			// Form接参
-			String reqNo = request.getParameter("reqNo");
-			String reqName = request.getParameter("reqName");
-			String reqSource = request.getParameter("reqSource");
-			String dept = request.getParameter("dept");
-			String execType = request.getParameter("execType");
-			String leadTeam = request.getParameter("leadTeam");
-			String cooTeam = request.getParameter("cooTeam");
-			String nowUser = request.getParameter("nowUser");
-			String nextUser = request.getParameter("nextUser");
-			String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-			DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
-					cooTeam, nowUser, nextUser, "reqAddStatus",modiDate);
+	@RequestMapping(value = "/updateReq", method = RequestMethod.POST)
+	// @PutMapping("/updateReq")
+	@ResponseBody
+	public String updateReq(HttpServletRequest request) throws IOException {
+		// Form接参
+		String reqNo = request.getParameter("reqNo");
+		String reqName = request.getParameter("reqName");
+		String reqSource = request.getParameter("reqSource");
+		String dept = request.getParameter("dept");
+		String execType = request.getParameter("execType");
+		String leadTeam = request.getParameter("leadTeam");
+		String cooTeam = request.getParameter("cooTeam");
+		String nowUser = request.getParameter("nowUser");
+		String nextUser = request.getParameter("nextUser");
+		String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
+				cooTeam, nowUser, nextUser, "reqAddStatus", modiDate);
 
-			// 修改需求主表项
-			try {
-				dmdManageService.updateReq(dmdManageEntity);
-			} catch (Exception e) {
-				e.getMessage();
-				return "update req failed! ";
-			}
-			return "success";
+		// 修改需求主表项
+		try {
+			dmdManageService.updateReq(dmdManageEntity);
+		} catch (Exception e) {
+			e.getMessage();
+			return "update req failed! ";
 		}
-	
+		return JSONObject.toJSONString(strSuc);
+	}
+
 	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
 	@PostMapping("/addReqItem")
 	public String addReqItem(DmdItemFuncDto dmdItemFuncDto) {
@@ -301,13 +302,13 @@ public class DmdManageController {
 		return "详情列表";
 	}
 
-	//删除需求
+	// 删除需求
 	@GetMapping("/delReqById")
 	@ResponseBody
-	public String deleteReqById(@RequestParam(value = "id" ) Integer id) {
+	public String deleteReqById(@RequestParam(value = "id") Integer id) {
 		dmdManageService.deleteReqById(id);
-		String str = "success";
-		return JSONObject.toJSONString(str);
+
+		return JSONObject.toJSONString(strSuc);
 	}
 	// 获取参数几种常用的注解
 	/*

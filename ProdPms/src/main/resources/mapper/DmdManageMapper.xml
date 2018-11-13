@@ -114,8 +114,8 @@
 				and req_status LIKE '%${reqStatus}%'
 			</if>
 			<if test="beginDate != null and endDate !=null">
-				and createDate between #{beginDate,jdbcType="Date"} and
-				#{beginDate,jdbcType="Date"}
+				and create_date between #{beginDate,jdbcType=DATE} and
+				#{endDate,jdbcType=DATE}
 			</if>
 			and is_deleted = 0
 		</where>

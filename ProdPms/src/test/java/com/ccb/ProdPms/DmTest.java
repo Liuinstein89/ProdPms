@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.ccb.ProdPms.controller.UploadFileController;
 import com.ccb.ProdPms.entity.DmdManageEntity;
+import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 
@@ -32,13 +33,14 @@ public class DmTest {
 		System.out.println(dmd.toString());
 	}*/
 
-	 @Test
+	// @Test
 	public void testQueryParams() {
-		// DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity("", "",
-		// "", "", "", "", "", "", null,
-		// null);
-		// List<DmdManageEntity> dmd =
-		// dmdManageMapper.getByParams("","", "", "", "", "", "", "", null, null);
+		/* DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity(null, "",
+		 "", "", "", "", "", "", "2018-11-05",
+		 "2099-12-31");
+		 
+		 List<DmdManageEntity> dmd = dmdManageMapper.getByParams(dmdQueryParamsEntity);
+		 System.out.println("%%%%%%%%%%%%%%%%"+dmd.toString());*/
 		// System.out.println("####################"+dmdManageMapper.getByParams(reqNo,
 		// reqName, reqSource, dept, execType, leadTeam, nextUser, reqStatus, beginDate,
 		// endDate).toString());
