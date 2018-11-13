@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccb.ProdPms.mapper.ReqSourceMapper">
+    <select id="queryReqSource" resultType="com.ccb.ProdPms.entity.ReqSourceEntity">
+        SELECT *
+        FROM req_source
+    </select>
+
+    <select id="queryReqSourceById" resultType="com.ccb.ProdPms.entity.ReqSourceEntity">
+        SELECT *
+        FROM req_source
+        WHERE id=#{id}
+    </select>
+
+    <insert id="insertReqSource" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" parameterType="com.ccb.ProdPms.entity.ReqSourceEntity">
+        INSERT INTO
+        req_source(souce_name,
+        create_time,change_time,is_deleted,op_person)
+        VALUES
+        (#{souceName},
+        #{createTime},#{changeTime},#{isDeleted},#{opPerson})
+    </insert>
+
+    <update id="updateReqSource" parameterType="com.ccb.ProdPms.entity.ReqSourceEntity">
+        update req_source
+        <set>
+            <if test="souceName != null">souce_name=#{souceName},</if>
+            <if test="createTime != null">create_time=#{createTime},</if>
+            <if test="changeTime != null">change_time=#{changeTime},</if>
+            <if test="isDeleted != null">is_deleted=#{isDeleted},</if>
+            <if test="opPerson != null">op_person=#{opPerson}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteReqSource">
+        DELETE FROM  req_source
+        WHERE id = #{id}
+    </delete>
+</mapper>

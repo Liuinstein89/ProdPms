@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ccb.ProdPms.mapper.DepartmentMapper">
+    <select id="queryDepartment" resultType="com.ccb.ProdPms.entity.DepartmentEntity">
+        SELECT *
+        FROM department
+    </select>
+
+    <select id="queryDepartmentById" resultType="com.ccb.ProdPms.entity.DepartmentEntity">
+        SELECT *
+        FROM department
+        WHERE id=#{id}
+    </select>
+
+    <insert id="insertDepartment" useGeneratedKeys="true" keyProperty="id"
+            keyColumn="id" parameterType="com.ccb.ProdPms.entity.DepartmentEntity">
+        INSERT INTO department(dpt_name,dpt_code,create_time,change_time,is_deleted,op_person)
+        VALUES(#{dptName},#{dptCode}, #{createTime},#{changeTime},#{isDeleted},#{opPerson})
+    </insert>
+
+    <update id="updateDepartment" parameterType="com.ccb.ProdPms.entity.DepartmentEntity">
+        update department
+        <set>
+            <if test="dptName != null">dpt_name=#{dptName},</if>
+            <if test="dptCode != null">dpt_code=#{dptCode},</if>
+            <if test="changeTime != null">change_time=#{changeTime},</if>
+            <if test="isDeleted != null">is_deleted=#{isDeleted},</if>
+            <if test="opPerson != null">op_person=#{opPerson}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteDepartment">
+        DELETE FROM
+        department
+        WHERE id =#{id}
+    </delete>
+</mapper>
