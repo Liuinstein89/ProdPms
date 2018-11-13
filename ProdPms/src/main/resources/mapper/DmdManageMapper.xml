@@ -53,7 +53,7 @@
 		from req
 		where is_deleted = 0
 	</select>
-	<!-- 获取全部需求列表 -->
+	<!-- 获取全部需求列表 --> 
 	<select id="findOne" resultMap="DmdManageMap" parameterType="java.lang.Integer">
 		select
 		<include refid="Basic_Req_Columns" />

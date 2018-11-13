@@ -50,8 +50,8 @@ public class SessionFactoryConfiguration {
 		sqlSessionFactoryBean.setConfigLocation(new ClassPathResource(mybatisConfigFile));
 		// 添加mapper 扫描路径
 		PathMatchingResourcePatternResolver pathMatchingResourcePatternResolver = new PathMatchingResourcePatternResolver();
-		String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + mapperPath;
-		sqlSessionFactoryBean.setMapperLocations(pathMatchingResourcePatternResolver.getResources(packageSearchPath));
+		//String packageSearchPath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX + mapperPath;
+		sqlSessionFactoryBean.setMapperLocations(pathMatchingResourcePatternResolver.getResources(mapperPath));
 		// 设置dataSource
 		sqlSessionFactoryBean.setDataSource(dataSource);
 		// 设置typeAlias 包扫描路径
