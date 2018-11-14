@@ -54,7 +54,7 @@ public class DmdManageController {
 	// private int pageSize = 10;
 	@Autowired
 	DmdManageService dmdManageService;
-
+ 
 	@Autowired
 	DmdOnlinePlanService dmdOnlinePlanService;
 
@@ -94,10 +94,6 @@ public class DmdManageController {
 		return "demand-search";
 	}
 
-	/*
-	 * @RequestMapping("/admin/delReqById") public String delReq() { return
-	 * "demand-list"; }
-	 */
 
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")

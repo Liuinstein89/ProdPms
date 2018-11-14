@@ -34,7 +34,7 @@ public class DmTest {
 	}*/
 
 	// @Test
-	public void testQueryParams() {
+	public void testQueryParams() {     
 		/* DmdQueryParamsEntity dmdQueryParamsEntity = new DmdQueryParamsEntity(null, "",
 		 "", "", "", "", "", "", "2018-11-05",
 		 "2099-12-31");
