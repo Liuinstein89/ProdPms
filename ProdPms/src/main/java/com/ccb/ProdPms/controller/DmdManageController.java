@@ -300,7 +300,6 @@ public class DmdManageController {
 	@ResponseBody
 	public String deleteReqById(@RequestParam(value = "id") Integer id) {
 		dmdManageService.deleteReqById(id);
-
 		return JSONObject.toJSONString(strSuc);
 	}
 	// 获取参数几种常用的注解

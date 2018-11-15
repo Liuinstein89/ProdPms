@@ -29,6 +29,7 @@ public class LoginController {
 
     //对登录请求到数据库中进行验证用户名和密码，验证通过以后设置session，否则跳转到登录页面
     @PostMapping("/loginVerify")
+    @ResponseBody
     public String loginVerify(String username,String password,HttpSession session){
         User user = new User();
         user.setUsername(username);
@@ -37,9 +38,9 @@ public class LoginController {
         boolean verify = loginService.verifyLogin(user);
         if (verify) {
             session.setAttribute(WebSecurityConfig.SESSION_KEY, username);
-            return "admin";
+            return "success";
         } else {
-            return "redirect:/login";
+            return "login error";
         }
     }
 
