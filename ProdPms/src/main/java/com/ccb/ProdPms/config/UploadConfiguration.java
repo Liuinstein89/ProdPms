@@ -17,4 +17,9 @@ public class UploadConfiguration {
       resolver.setMaxUploadSize(50*1024*1024);//上传文件大小 50M 50*1024*1024
       return resolver;
   }*/
+	//poi和poi-ooxml
+	/*当我们只要使用xls格式时、只要导入poi-version-yyyymmdd.jar就可以了。
+	当我们还要使用xlsx格式、还要导入poi-ooxml-version-yyyymmdd.jar。
+	至于poi-ooxml-schemas-version-yyyymmdd.jar这个jar基本不太会用到的。
+	当我们需要操作word、ppt、viso、outlook等时需要用到poi-scratchpad-version-yyyymmdd.jar。*/
 }

@@ -2,8 +2,8 @@
 <html lang="en" >
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport"
-	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 <title>ProductMS</title>
 <link rel="stylesheet" href="../static/src/css/layui.css" />
@@ -54,8 +54,8 @@
 			<div class="layui-side-scroll">
 				<!-- 左侧垂直导航区域 -->
 				<ul class="layui-nav layui-nav-tree" lay-filter="test">
-					<li class="layui-nav-item"><a class="fontset"
-						href="javascript:;" style="font-size: 16px;"> <i
+					<li class="layui-nav-item">
+					<a class="fontset"	href="javascript:;" style="font-size: 16px;"> <i
 							class="layui-icon layui-icon-app"> </i> &nbsp;&nbsp;需求管理
 					</a>
 						<dl class="layui-nav-child">
@@ -66,18 +66,25 @@
 								</a>
 							</dd>
 							<dd>
-								<a href="javascript:;" data-id="2" data-title="需求审查" data-url=""
+<a href="javascript:;" data-id="2" data-title="上线计划"
+								   data-url="/plan/list" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>上线计划
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="3" data-title="需求审查" data-url=""
 									class="site-demo-active" data-type="tabAdd"> <span
 									class="l-line"></span>需求审查
 								</a>
 							</dd>
-						</dl></li>
+						</dl>
+</li>
 					<li class="layui-nav-item"><a href="javascript:;"
 						class="fontset"> <i class="layui-icon layui-icon-tabs"></i>&nbsp;&nbsp;设计管理
 					</a>
 						<dl class="layui-nav-child">
 							<dd>
-								<a href="javascript:;" data-id="3" data-title="设计列表" data-url=""
+								<a href="javascript:;" data-id="4" data-title="设计列表" data-url=""
 									class="site-demo-active" data-type="tabAdd"> <span
 									class="l-line"></span>设计列表
 								</a>
@@ -119,11 +126,70 @@
 					</li>
 					<li class="layui-nav-item"><a href="javascript:;"
 						class="fontset"><i class="layui-icon layui-icon-friends"></i>&nbsp;&nbsp;个人信息</a></li>
-					<li class="layui-nav-item"><a href="javascript:;" data-id="10"
-						data-title="基本信息管理" data-url="basicInfo/basic-info.html"
-						class="site-demo-active fontset" data-type="tabAdd"> <i
-							class="layui-icon layui-icon-form"></i> &nbsp;&nbsp;基本信息管理
-					</a></li>
+				
+	<li class="layui-nav-item">
+						<a class="fontset" href="javascript:;" style="font-size: 16px;"> <i
+								class="layui-icon layui-icon-form"> </i> &nbsp;&nbsp;基本信息管理
+						</a>
+						<dl class="layui-nav-child">
+							<dd>
+								<a href="javascript:;" data-id="20" data-title="部门管理"
+								   data-url="/basicinfo/dept" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>部门管理
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="21" data-title="用户管理"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>用户管理
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="22" data-title="项目组管理"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>项目组管理
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="23" data-title="角色管理"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>角色管理
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="24" data-title="权限管理"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>权限管理
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="25" data-title="状态管理"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>状态管理
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="26" data-title="需求来源"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>需求来源
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="27" data-title="实施方式"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>实施方式
+								</a>
+							</dd>
+							<dd>
+								<a href="javascript:;" data-id="28" data-title="功能点管理"
+								   data-url="" class="site-demo-active"
+								   data-type="tabAdd"> <span class="l-line"></span>功能点管理
+								</a>
+							</dd>
+
+						</dl>
+					
+					</li>
 					<li class="layui-nav-item"><a href="javascript:;"
 						class="fontset"><i class="layui-icon layui-icon-set-fill"></i>&nbsp;&nbsp;系统设置</a></li>
 				</ul>
@@ -152,15 +218,10 @@
 			var layer = layui.layer;
 
 			//刷新当前
-			$(".refresh")
-					.on(
-							"click",
-							function() {
+			$(".refresh").on("click",function() {
 								if ($(this).hasClass("refreshThis")) {
 									$(this).removeClass("refreshThis");
-									$(".layui-tab-item.layui-show").find(
-											"iframe")[0].contentWindow.location
-											.reload(true);
+									$(".layui-tab-item.layui-show").find(	"iframe")[0].contentWindow.location.reload(true);
 									setTimeout(function() {
 										$(".refresh").addClass("refreshThis");
 									}, 50)
@@ -221,34 +282,24 @@
 			var element = layui.element;//Tab的切换功能，切换事件监听等，需要依赖element模块
 			var $ = layui.$;
 			// 配置tab实践在下面无法获取到菜单元素
-			$('.site-demo-active').on(
-					'click',
-					function() {
+			$('.site-demo-active').on('click',function() {
 						var dataid = $(this);
 						//这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
 						/*<![CDATA[*/
 						if ($(".layui-tab-title li[lay-id]").length <= 0) {
 							//如果比零小，则直接打开新的tab项
-							active
-									.tabAdd(dataid.attr("data-url"), dataid
-											.attr("data-id"), dataid
-											.attr("data-title"));
-						} else {
+	active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+						
+						} 
+else {
 							//否则判断该tab项是否以及存在
 							var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
-							$.each($(".layui-tab-title li[lay-id]"),
-									function() {
+							$.each($(".layui-tab-title li[lay-id]"),function() {
 										//如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
-										if ($(this).attr("lay-id") == dataid
-												.attr("data-id")) {
-											isData = true;
-										}
-									})
+										if ($(this).attr("lay-id") == dataid.attr("data-id")) {isData = true;}})
 							if (isData == false) {
 								//标志为false 新增一个tab项
-								active.tabAdd(dataid.attr("data-url"), dataid
-										.attr("data-id"), dataid
-										.attr("data-title"));
+								active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
 							}
 						}
 						/*]]>*/

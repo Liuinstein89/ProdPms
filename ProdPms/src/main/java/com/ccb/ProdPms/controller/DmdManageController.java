@@ -94,6 +94,10 @@ public class DmdManageController {
 		return "demand-search";
 	}
 
+	@RequestMapping("/admin/detail")
+	public String detail() {
+		return "demand-detail";
+	}
 
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")
