@@ -21,4 +21,6 @@ public interface FuncService {
 
 	void deleteFuncById(Integer id);
 
+	int findByName(String funcName);
+
 }

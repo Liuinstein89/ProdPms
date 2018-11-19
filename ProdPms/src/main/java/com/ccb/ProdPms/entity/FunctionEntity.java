@@ -25,4 +25,7 @@ public class FunctionEntity implements Serializable {
 		this.createDate = createDate;
 		this.modiDate = modiDate;
 	}
+
+	public FunctionEntity() {
+	}
 }
