@@ -48,6 +48,7 @@ import com.github.pagehelper.PageInfo;
 // @RequestMapping("/demandManage")
 public class DmdManageController {
 
+
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	private static String strSuc = "success";
 	private static String UPLOADED_FILEPATH = "E://temp//";
@@ -308,15 +309,7 @@ public class DmdManageController {
 		return JSONObject.toJSONString(strSuc);
 	}
 	
-	// 点击某条需求,展示需求对应需求项详情
-		@GetMapping("/listReqRelatedItem")
-		@ResponseBody
-		public String listReqRelatedItem(@RequestParam(value = "reqNo") String reqNo,@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize) {
-			PageHelper.startPage(pageNum, pageSize);
-			PageInfo<DmdItemEntity> dmdItemPageInfo = new PageInfo<>(dmdManageService.getReqItem(reqNo));
-			RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdItemPageInfo);
-			return JSONObject.toJSONString(restResp);
-		}
+
 	
 	// 获取参数几种常用的注解
 	/*
