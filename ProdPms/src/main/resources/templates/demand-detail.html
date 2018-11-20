@@ -57,15 +57,25 @@
 						<div class="layui-colla-item">
 							<h2 class="layui-colla-title grid-demo">需求审查</h2>
 							<div class="layui-colla-content">
-								<a class="layui-btn layui-btn-fluid" id="dem_audit_btn"
-									style="border-radius: 5px;"><i class="layui-icon">进入需求审查</i></a>
-								<a class="layui-btn layui-btn-fluid" id="dem_audit_text"
-									style="border-radius: 5px; margin-left: 0; margin-top: 10px"><i
-									class="layui-icon">进入审查记录</i></a>
+								<a class="layui-btn layui-btn-fluid" id="dem_audit_btn" style="border-radius: 5px;"><i class="layui-icon">进入需求审查</i></a>
+								<a class="layui-btn layui-btn-fluid" id="dem_audit_text" style="border-radius: 5px;margin-left: 0;margin-top: 10px"><i class="layui-icon">进入审查记录</i></a>
 							</div>
 						</div>
 					</div>
 				</div>
+					
+		<div class="layui-col-md9">
+			<div class="layui-collapse" lay-filter="">
+				<div class="layui-colla-item">
+					<h2 class="layui-colla-title grid-demo">附件相关</h2>
+					<div class="layui-colla-content">
+						<button type="button" class="layui-btn" id="demUploadFiles"><i class="layui-icon"></i>上传文件</button>
+						<table id="demandFiles" lay-filter="demandFiles" ></table>
+					
+				</div>
+				</div>
+			</div>
+		</div>			
 	
 				<div class="layui-col-md9 ">
 					<div class="layui-card">
@@ -87,7 +97,17 @@
 						</div>
 					</div>
 				</div>
-	
+		<div class="layui-col-md9">
+			<div class="layui-card">
+				<div class="layui-card-header grid-demo">
+					审查记录
+				</div>
+				<div class="layui-card-body">
+					<table id="aduitRecord" lay-filter="aduitRecord"></table>
+				</div>
+			</div>
+		</div>
+				
 				<script type="text/html" id="detail_tpl">
 			<!-- 部门管理 -->
 				    		<table class="layui-table sta-table" id="dem_det_table">
@@ -131,42 +151,98 @@
 		</div>
 		
 		<script type="text/html" id="barDemo">
-			<a class="layui-btn layui-btn-xs" lay-event="add"><i class="layui-icon">&#xe615;</i></a>
-		  	<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
-		  	<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
-	</script>
-		
+				<a class="layui-btn layui-btn-xs" lay-event="show" id="showFunc"><i class="layui-icon">&#xe615;</i></a>
+				<a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="add" id="addDemItem"><i class="layui-icon">&#xe654;</i></a>
+				<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" id="editDemItem"><i class="layui-icon">&#xe642;</i></a>
+				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+		</script>
+		<script type="text/html" id="barDemo2">
+			<a class="layui-btn layui-btn-xs" lay-event="upload" id="upload"><i class="layui-icon">&#xe62f;</i></a>
+			<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="download" id="download"><i class="layui-icon">&#xe601;</i></a>
+			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+		</script>
 		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 				layui.use(['table','jquery','layer'], function() {
 					var table = layui.table;
-	                layer = parent.layer === undefined ? layui.layer : top.layer;
+	               // layer = parent.layer === undefined ? layui.layer : top.layer;
+					var layer = layui.layer;
 	                var $ = layui.jquery;
 	
+ 		//附件相关表格渲染
+        var tableAuditRecord = table.render({
+            elem: '#demandFiles'
+            , title: '审核记录表'
+            // , url: '/item/list'
+            , page: {}
+            , totalRow: false
+            , limit: 10
+            , cols: [[
+                {field: 'ID', title: '序号', fixed: 'left', unresize: true,align:'center', width:80}
+                , {field: 'fileName', title: '文件名', sort: true}
+                , {field: 'fileSize', title: '文件大小',sort: true}
+                , {field: 'user', title: '上传人' ,sort: true,align:'center'}
+                , {field: 'dateTime', title: '上传时间', sort: true,align:'center'}
+                , {title: '操作', toolbar: '#barDemo2', fixed: 'right',unresize: true, width:190}
+            ]]
+            ,data:[{
+                "ID": "1"
+                ,"fileName": "xxxxx.txt"
+                ,"fileSize": "100.00kb"
+                ,"user":"ZF.Zhang"
+                ,"reqPerson" :"张XX"
+                ,"dateTime" :"2018-10-27"
+            }]
+
+        });
 					//需求项表格渲染
 					var tableItems = table.render({
 			            elem: '#demand_items'
 			            // , height: 535
 			            , title: '需求项表'
-			            , url:  '/item/list'
+			            , url:  '/listReqRelatedItem'
+			            , where: {
+			            	"reqNo" : reqNoid
+			            }
 			            , page: {}
 			            //,loading: false
 			            , totalRow: false
-			            , limit: 10
+			            , limit: 5
 			            // , toolbar: '#toolbarDemo'
 			            , cols: [[
 			                  {field: 'reqItemName', title: '需求项', fixed: 'left', unresize: true,align:'center'}
 			                , {field: 'reqItemDesc', title: '需求项描述'}
 			                , {field: 'ID', title: 'id',hide:true}
-			                , {field: 'onlineDateTime', title: '上线日期', width:110,sort: true}
+			                , {field: 'onlineDatetime', title: '上线日期', width:110,sort: true}
 			                , {field: 'reqItemDev', title: '对应开发任务'}
 			                , {field: 'reqItemStatus', title: '需求项状态'}
-			                , {field: 'createTime', title: '创建日期',width:110, sort: true}
-			                , {field: 'changeTime', title: '变动日期', hide:true,sort: true}
+			                , {field: 'createDate', title: '创建日期',width:110, sort: true}
+			                , {field: 'modiDate', title: '变动日期', hide:true,sort: true}
 			                , {title: '操作', toolbar: '#barDemo', fixed: 'right',align:'center' ,width:180}
 			            ]]
+			            ,parseData: function(res){
+							return {
+				                     "code": res.code
+				                     ,"msg": res.msg
+				                     ,"count": res.data.total
+				                     ,"data": res.data.list
+				                   };
+		                 }
 	                });
+		                	
+//悬停提示
+		function showMsg(msg, id){
+            var tip_index = 0;
+            $(document).on('mouseenter', id, function(){
+                tip_index = layer.tips(msg, this, {tips:[1,'#000'],time: 0});
+            }).on('mouseleave', id, function(){
+                layer.close(tip_index);
+            });
+		}
+        showMsg("查看功能点",'#showFunc');
+        showMsg("编辑需求项",'#editDemItem');
+		showMsg("增加需求项",'#addDemItem');
 					
 	                //工具条监听
 	                table.on('tool(demand_items)', function (obj) {
@@ -180,28 +256,72 @@
 							editDemandItem(data);
 	            		}else if (layEvent == 'del'){
 	                		delDemandItem(data);
+						}else if (layEvent == 'add'){
+                			addDemandItem();
 	            		}else {
 	                		$('#shfunc').toggle();
+				
+	            //功能点表格渲染
+                table.render({
+                    elem: '#dfunction'
+                    ,page: false
+                    , title: '关联功能点表'
+                    , url: '/listReqFunc'
+                    ,where: {id:data.id}
+                    ,cellMinWidth: 80
+                    ,cols: [[
+                        {field: 'id', title: '功能点名称（标准数据导入）' }
+                        ,{field: 'username', title: '功能点改造内容'}
+                        ,{field: 'username', title: '设计人员'}
+                        ,{field: 'username', title: '开发人员'}
+                        ,{field: 'username', title: '测试人员'}
+                    ]]
+
+                });
 	            		}	
 	        		});
+		
+	    //编辑需求项
+        function addDemandItem(){
+            top.layer.open({
+                title : "增加页面",
+                type : 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area:['640px', '520px'],
+                boolean: true,
+                content: ['/detail/item-add','yes'],//跳转的页面
+                success : function(layero, index){
+
+                    var body = top.layer.getChildFrame('body', index);
+
+                    body.find('button#close').on('click', function() {
+                        top.layer.close(index);
+                    });
+                }
+            })
+
+        }
 	                
 					//编辑需求项
 			        function editDemandItem(data){
-			        	layer.open({
+			         top.layer.open({
 			                title : "编辑页面",
 			                type: 2,
 			 				maxmin: true, 
 			                skin: 'layui-layer-molv',
 			                shadeClose: false,
 			                shade: 0.3,
-			                area:['640px', '500px'],
+			                area:['640px', '520px'],
 			                boolean: true,
 			                content: ['/detail/item-edit','yes'],//跳转的页面
 			                success:function(layero,index){
-			                	var body = layer.getChildFrame('body', index);
+			                	var body = top.layer.getChildFrame('body', index);
 			                                    
 								body.find('button#close').on('click', function() {
-			                        layer.close(index);
+			                        top.layer.close(index);
 			            		});
 			                    pubUtil.load(body, data);//填充表单
 			                }
@@ -232,23 +352,7 @@
 			                });
 			     		});
 					}
-			
-			        //功能点表格渲染
-					table.render({
-						elem: '#dfunction'
-						,page: false				    
-						, title: '需求项表'
-			            , url: '/function/list'
-						,cellMinWidth: 80
-						,cols: [[
-								 {field: 'id', title: '功能点名称（标准数据导入）' }
-								,{field: 'username', title: '功能点改造内容'}
-								,{field: 'username', title: '设计人员'}
-								,{field: 'username', title: '开发人员'}
-								,{field: 'username', title: '测试人员'}
-							   ]]
-					});
-			
+			        
 					//审查
 					$("#dem_audit_btn").on('click',function(){
 		            	top.layer.open({
@@ -260,7 +364,33 @@
 			                content: '/admin/demand-audit',
 			            });
 			        });
+		
+		//审核记录表格渲染
+        var tableAuditRecord = table.render({
+            elem: '#aduitRecord'
+            , title: '审核记录表'
+            // , url: '/item/list'
+            , page: {}
+            , totalRow: false
+            , limit: 10
+            , cols: [[
+                {field: 'auditTeam', title: '审核团队', fixed: 'left', unresize: true,align:'center', width:120}
+                , {field: 'reqResult', title: '审核状态', width:130,sort: true}
+                , {field: 'ID', title: 'id',hide:true}
+                , {field: 'desiResult', title: '审核意见'}
+                , {field: 'reqPerson', title: '审核人' , width:110,sort: true,align:'center'}
+                , {field: 'reqTime', title: '审核时间', sort: true, fixed: 'right',width:200,align:'center'}
+            ]]
+            ,data:[{
+                "auditTeam": "需求审核"
+                ,"reqResult": "需求审核通过"
+                ,"ID":"10"
+                ,"desiResult" :"该需求具有XXX意义，同意纳入开发，请设计团队审核。"
+                ,"reqPerson" :"张XX"
+                ,"reqTime" :"2018-10-27"
+            }]
 	            });
+ 	});
 		</script>
 	
 		<script type="text/javascript">
@@ -268,7 +398,6 @@
 			        var element = layui.element;
 			        var layer = layui.layer;
 			        var $ = layui.jquery;
-	
 			        //监听折叠
 			        element.on('collapse(test1)', function(data){
 			        });
@@ -279,7 +408,7 @@
 	    	layui.use(['laytpl','jquery'], function(){
 	        	var laytpl = layui.laytpl;
 	        	var $ = layui.jquery;
-				var reqNoid =urlParse();
+				 reqNoid =urlParse();
 	
 				//解析url获取参数
 		        /*<![CDATA[*/
@@ -301,7 +430,6 @@
 		            return value;
 		        }
 		        /*]]>*/
-		        
 		        var getTpl = detail_tpl.innerHTML
 				var view = document.getElementById('view');
 			      /*   laytpl(getTpl).render(data, function(html){

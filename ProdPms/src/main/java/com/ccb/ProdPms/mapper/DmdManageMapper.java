@@ -81,4 +81,8 @@ public interface DmdManageMapper {
 
 	DmdManageEntity findOne(Integer id);
 
+	List<DmdItemEntity> getReqItem(String reqNo);
+
+	
+
 }

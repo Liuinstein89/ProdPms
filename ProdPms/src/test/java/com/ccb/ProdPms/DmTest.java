@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import com.ccb.ProdPms.controller.DmdManageController;
 import com.ccb.ProdPms.controller.UploadFileController;
+import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
@@ -25,13 +27,15 @@ public class DmTest {
 	@Autowired
 	private DmdManageMapper dmdManageMapper;
 	@Autowired
+	private DmdManageController dmdManageController;
+	@Autowired
 	private UploadFileController uploadFileController;
 
-	/*@Test
+	@Test
 	public void testQuery() throws Exception {
-		List<DmdManageEntity> dmd = dmdManageMapper.getAll();
-		System.out.println(dmd.toString());
-	}*/
+		//List<DmdItemEntity> dmd = dmdManageMapper.getAllReqItem();
+		System.out.println(dmdManageController.listReqRelatedItem("",1,10));
+	}
 
 	// @Test
 	public void testQueryParams() {     

@@ -139,6 +139,17 @@ public class DmdManageServiceImpl implements DmdManageService {
 		}
 	}
 
+	@Override
+	public List<DmdItemEntity> getReqItem(String reqNo) {
+		List<DmdItemEntity> dmdItemList = new ArrayList<DmdItemEntity>();
+		try {
+			dmdItemList = dmdManageMapper.getReqItem(reqNo);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return dmdItemList;
+	}
+
 	/*
 	 * @Transactional public KeywordReply updateKeywordRule(KeywordRuleDto rule) {
 	 * KeywordReply keywordReply = keywordReplyRepo.findOne(rule.getId());

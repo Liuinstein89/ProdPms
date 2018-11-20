@@ -30,6 +30,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import com.alibaba.fastjson.JSONObject;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
+import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.OnlinePlanEntity;
@@ -156,7 +157,7 @@ public class DmdManageController {
 		return "PR" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + reqNo;
 	}
 
-	// 创建需求项,提交多个文件,可以使office、pdf、图片等格式
+	// 创建需求,提交多个文件,可以使office、pdf、图片等格式
 	@RequestMapping(value = "/submitMultiUpload", method = RequestMethod.POST)
 	@ResponseBody
 	public String addReq(HttpServletRequest request) throws IOException {
@@ -249,7 +250,7 @@ public class DmdManageController {
 	 * public @ResponseBody String multifileUpload(HttpServletRequest request)
 	 */
 
-	// 编辑需求项
+	// 编辑需求
 	@RequestMapping(value = "/updateReq", method = RequestMethod.POST)
 	// @PutMapping("/updateReq")
 	@ResponseBody
@@ -306,6 +307,17 @@ public class DmdManageController {
 		dmdManageService.deleteReqById(id);
 		return JSONObject.toJSONString(strSuc);
 	}
+	
+	// 点击某条需求,展示需求对应需求项详情
+		@GetMapping("/listReqRelatedItem")
+		@ResponseBody
+		public String listReqRelatedItem(@RequestParam(value = "reqNo") String reqNo,@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize) {
+			PageHelper.startPage(pageNum, pageSize);
+			PageInfo<DmdItemEntity> dmdItemPageInfo = new PageInfo<>(dmdManageService.getReqItem(reqNo));
+			RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdItemPageInfo);
+			return JSONObject.toJSONString(restResp);
+		}
+	
 	// 获取参数几种常用的注解
 	/*
 	 * @PathVariable：一般我们使用URI

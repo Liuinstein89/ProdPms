@@ -9,8 +9,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -307,7 +305,7 @@ public class ExcelUtil {
      * 修改描述：
      * 修改时间：
      */
-    public static void exportExcel(HttpServletResponse response, ExcelData data) {
+    /*public static void exportExcel(HttpServletResponse response, ExcelData data) {
         log.info("导出解析开始，fileName:{}",data.getFileName());
         try {
             //实例化HSSFWorkbook
@@ -325,7 +323,7 @@ public class ExcelUtil {
             log.info("导出解析失败!");
             e.printStackTrace();
         }
-    }
+    }*/
  
     /**
      * 方法名：setTitle
@@ -337,7 +335,8 @@ public class ExcelUtil {
      * 修改描述：
      * 修改时间：
      */
-    private static void setTitle(HSSFWorkbook workbook, HSSFSheet sheet, String[] str) {
+    @SuppressWarnings("unused")
+	private static void setTitle(HSSFWorkbook workbook, HSSFSheet sheet, String[] str) {
         try {
             HSSFRow row = sheet.createRow(0);
             //设置列宽，setColumnWidth的第二个参数要乘以256，这个参数的单位是1/256个字符宽度

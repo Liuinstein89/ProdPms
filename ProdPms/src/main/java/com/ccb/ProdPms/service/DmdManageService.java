@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
+import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
@@ -27,5 +28,9 @@ public interface DmdManageService {
 	void updateReq(DmdManageEntity dmdManageEntity);
 
 	void deleteReqById(Integer id);
+
+	List<DmdItemEntity> getReqItem(String reqNo);
+
+	
 
 }

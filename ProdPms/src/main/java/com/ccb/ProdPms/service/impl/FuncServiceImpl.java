@@ -45,4 +45,10 @@ public class FuncServiceImpl implements FuncService{
 		
 	}
 
+	@Override
+	public int findByName(String funcName) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

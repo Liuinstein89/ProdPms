@@ -38,6 +38,16 @@ public class FuncController {
 		return JSONObject.toJSONString(restResp);
 	}
 	
+	@GetMapping("/listReqFunc")
+	public String getReqFunc(@RequestParam(value = "page") Integer pageNum,
+			@RequestParam(value = "limit") Integer pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		PageInfo<FunctionEntity> funcPageInfo = new PageInfo<>(funcService.getAll());
+		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, funcPageInfo);
+		log.debug("");
+		return JSONObject.toJSONString(restResp);
+	}
+	
 	// 数据导入主要涉及三个步骤 1.文件上传；2.Excel解析；3.数据插入。
 	@RequestMapping(value = "/importFuncExcel", method = RequestMethod.POST)
 	public String importFuncExcel(MultipartFile file) {
