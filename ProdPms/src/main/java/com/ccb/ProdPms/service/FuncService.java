@@ -9,10 +9,6 @@ import com.ccb.ProdPms.entity.FunctionEntity;
 @Service
 public interface FuncService {
 
-	void addFunc(FunctionEntity functionEntity);
-
-	void insertFuncExcel(FunctionEntity functionEntity);
-
 	List<FunctionEntity> getAll();
 
 	List<FunctionEntity> getByParams(FunctionEntity functionEntity);
@@ -22,5 +18,9 @@ public interface FuncService {
 	void deleteFuncById(Integer id);
 
 	int findByName(String funcName);
+
+	void insertFunc(FunctionEntity functionEntity);
+
+	void updateExcelFunc(FunctionEntity functionEntity2);
 
 }

@@ -48,7 +48,6 @@ import com.github.pagehelper.PageInfo;
 // @RequestMapping("/demandManage")
 public class DmdManageController {
 
-
 	Logger log = LoggerFactory.getLogger(this.getClass());
 	private static String strSuc = "success";
 	private static String UPLOADED_FILEPATH = "E://temp//";
@@ -56,7 +55,7 @@ public class DmdManageController {
 	// private int pageSize = 10;
 	@Autowired
 	DmdManageService dmdManageService;
- 
+
 	@Autowired
 	DmdOnlinePlanService dmdOnlinePlanService;
 
@@ -69,6 +68,21 @@ public class DmdManageController {
 	@RequestMapping("/admin")
 	public String helloHtml() {
 		return "admin";
+	}
+
+	@RequestMapping("/basicInfo/func")
+	public String listfun() {
+		return "basic-info-func";
+	}
+
+	@RequestMapping("/basicInfo/funcAdd")
+	public String addFunc() {
+		return "basic-info-func-add";
+	}
+
+	@RequestMapping("/basicInfo/funcEdit")
+	public String editFunc() {
+		return "basic-info-func-edit";
 	}
 
 	@RequestMapping("/welcome")
@@ -133,8 +147,7 @@ public class DmdManageController {
 		String reqStatus = request.getParameter("reqStatus");
 		String beginDate = ("".equals(request.getParameter("beginDate"))) ? "1970-1-1"
 				: request.getParameter("beginDate");
-		String endDate = ("".equals(request.getParameter("endDate"))) ? "2099-12-31"
-				: request.getParameter("endDate");
+		String endDate = ("".equals(request.getParameter("endDate"))) ? "2099-12-31" : request.getParameter("endDate");
 		// String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new
 		// Date());
 		DmdQueryParamsEntity queryParams = new DmdQueryParamsEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
@@ -308,17 +321,18 @@ public class DmdManageController {
 		dmdManageService.deleteReqById(id);
 		return JSONObject.toJSONString(strSuc);
 	}
-	
+
 	// 点击某条需求,展示需求对应需求项详情
-		@GetMapping("/listReqRelatedItem")
-		@ResponseBody
-		public String listReqRelatedItem(@RequestParam(value = "reqNo") String reqNo,@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize) {
-			PageHelper.startPage(pageNum, pageSize);
-			PageInfo<DmdItemEntity> dmdItemPageInfo = new PageInfo<>(dmdManageService.getReqItem(reqNo));
-			RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdItemPageInfo);
-			return JSONObject.toJSONString(restResp);
-		}
-	
+	@GetMapping("/listReqRelatedItem")
+	@ResponseBody
+	public String listReqRelatedItem(@RequestParam(value = "reqNo") String reqNo,
+			@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		PageInfo<DmdItemEntity> dmdItemPageInfo = new PageInfo<>(dmdManageService.getReqItem(reqNo));
+		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdItemPageInfo);
+		return JSONObject.toJSONString(restResp);
+	}
+
 	// 获取参数几种常用的注解
 	/*
 	 * @PathVariable：一般我们使用URI
@@ -371,16 +385,6 @@ public class DmdManageController {
 	 * 
 	 * @ResponseBody public String xxx(HttpServletRequest request) { String s1 =
 	 * request.getParameter("xxxx"); String s2 = request.getParameter("xxxxx"); }
-	 */
-
-	/*
-	 * 
-	 * @RequestMapping("/get")
-	 * 
-	 * @ResponseBody public String get(User user) { User
-	 * u=userService.getNameById(user);
-	 * 
-	 * return JSONObject.toJSONString(u); }
 	 */
 
 	/*

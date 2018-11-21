@@ -23,6 +23,7 @@ public class DefaultView extends WebMvcConfigurerAdapter {
 		// registry.addViewController("/admin").setViewName("index.html");这句话表示在templates路径下的admin文件夹内的index文件为一个view，这样在controller中可以return
 		registry.addViewController("/").setViewName("index.html");
 		registry.addViewController("/").setViewName("admin");
+		registry.addViewController("/").setViewName("basic-info-func");
 		registry.addViewController("/").setViewName("demand-list");
 		registry.addViewController("/").setViewName("demand-add");
 		registry.addViewController("/").setViewName("demand-edit");

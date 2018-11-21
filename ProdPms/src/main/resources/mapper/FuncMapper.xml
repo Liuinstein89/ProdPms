@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ccb.ProdPms.mapper.FuncMapper">
+	<resultMap id="FuncMap"
+		type="com.ccb.ProdPms.entity.FunctionEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="func_name" property="funcName"
+			jdbcType="VARCHAR" />
+		<result column="func_reform_content"
+			property="funcReformContent" jdbcType="VARCHAR" />
+		<result column="desi_person" property="desiPerson"
+			jdbcType="VARCHAR" />
+		<result column="dev_person" property="devPerson"
+			jdbcType="VARCHAR" />
+		<result column="test_person" property="testPerson"
+			jdbcType="VARCHAR" />
+		<result column="online_date" property="onlineDate"
+			jdbcType="VARCHAR" />
+		<result column="create_user" property="createUser"
+			jdbcType="VARCHAR" />
+		<result column="func_status" property="funcStatus"
+			jdbcType="VARCHAR" />
+		<result column="create_date" property="createDate"
+			jdbcType="DATE" />
+		<result column="modi_date" property="modiDate" jdbcType="DATE" />
+	</resultMap>
+
+	<sql id="Basic_Func_Columns">
+		id, func_name,
+		func_reform_content,desi_person,dev_person,test_person,online_date,
+		create_user,func_status,create_date,modi_date
+	</sql>
+
+	<!-- 获取全部需求列表 -->
+	<select id="getAll" resultMap="FuncMap">
+		select
+		<include refid="Basic_Func_Columns" />
+		from func
+		where is_deleted = 0
+	</select>
+	
+	<!-- 获取指定功能点数目 -->
+	<select id="findByNameAndContent" parameterType="java.lang.String" resultType="Integer">
+		select
+		count(*)
+		from func
+		where is_deleted = 0 and func_name = #{funcName,jdbcType=VARCHAR} and func_reform_content = #{funcReformContent,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 添加需求信息，参数的初始值在代码中做处理 -->
+	<insert id="insertFunc"
+		parameterType="com.ccb.ProdPms.entity.FunctionEntity">
+		insert into
+		func
+		(func_name,func_reform_content,desi_person,dev_person,test_person,online_date,create_date,create_user,is_deleted,func_status,modi_date)
+		values (#{funcName,jdbcType=VARCHAR},
+		#{funcReformContent,jdbcType=VARCHAR},#{desiPerson,jdbcType=VARCHAR},
+		#{devPerson,jdbcType=VARCHAR},
+		#{testPerson,jdbcType=VARCHAR},#{onlineDate,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR},
+		#{createUser,jdbcType=VARCHAR},0,null,null)
+	</insert>
+
+	<!-- 修改功能点信息，参数的初始值在代码中做处理 -->
+	<update id="updateFunc"
+		parameterType="com.ccb.ProdPms.entity.FunctionEntity">
+		update func set
+		func_name=#{funcName,jdbcType=VARCHAR},
+		func_reform_content=#{funcReformContent,jdbcType=VARCHAR},
+		desi_person=#{desiPerson,jdbcType=VARCHAR},
+		dev_person=#{devPerson,jdbcType=VARCHAR},
+		test_person=#{testPerson,jdbcType=VARCHAR},
+		online_date=#{onlineDate,jdbcType=VARCHAR},
+		modi_date=#{modiDate,jdbcType=VARCHAR}
+		where
+		is_deleted =0 and
+		id=#{id,jdbcType=INTEGER}
+	</update>
+	
+	<!-- 修改功能点信息，参数的初始值在代码中做处理 -->
+	<update id="updateExcelFunc"
+		parameterType="com.ccb.ProdPms.entity.FunctionEntity">
+		update func set
+		func_name=#{funcName,jdbcType=VARCHAR},
+		func_reform_content=#{funcReformContent,jdbcType=VARCHAR},
+		desi_person=#{desiPerson,jdbcType=VARCHAR},
+		dev_person=#{devPerson,jdbcType=VARCHAR},
+		test_person=#{testPerson,jdbcType=VARCHAR},
+		online_date=#{onlineDate,jdbcType=VARCHAR},
+		modi_date=#{modiDate,jdbcType=VARCHAR}
+		where
+		is_deleted =0 and
+		func_name=#{funcName,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 获取指定功能点 -->
+	<select id="findOne" resultMap="FuncMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Basic_Func_Columns" />
+		from func
+		where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<!-- 假删除功能点 -->
+	<update id="deleteById" parameterType="java.lang.Integer">
+		update func set
+		is_deleted
+		=
+		1
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
+
+</mapper>

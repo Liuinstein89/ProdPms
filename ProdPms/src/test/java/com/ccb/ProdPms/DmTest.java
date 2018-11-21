@@ -19,6 +19,7 @@ import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
+import com.ccb.ProdPms.mapper.FuncMapper;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -30,11 +31,12 @@ public class DmTest {
 	private DmdManageController dmdManageController;
 	@Autowired
 	private UploadFileController uploadFileController;
-
+	@Autowired
+	FuncMapper funcMapper;
 	@Test
 	public void testQuery() throws Exception {
 		//List<DmdItemEntity> dmd = dmdManageMapper.getAllReqItem();
-		System.out.println(dmdManageController.listReqRelatedItem("",1,10));
+		System.out.println(funcMapper.findByName("11"));
 	}
 
 	// @Test
