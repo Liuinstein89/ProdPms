@@ -148,6 +148,7 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('button#close').on('click', function() {
                         layer.close(index);
+                        location.reload();
                     });
                     pubUtil.load(body, data);//填充表单
                 }
@@ -192,6 +193,7 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('button#close').on('click', function() {
                         layer.close(index);
+                        location.reload();
                     });
                 }
             });
@@ -206,13 +208,8 @@
                 console.log(res)
             }
         });
-
     });
 
-
-
 </script>
-
 </body>
-
 </html>

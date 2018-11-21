@@ -42,7 +42,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">改造内容：</label>
             <div class="layui-input-block">
-                <input type="text" name="funcModiDesc"  placeholder="功能点改造内容" autocomplete="off" class="layui-input" />
+                <input type="text" name="funcReformContent"  placeholder="功能点改造内容" autocomplete="off" class="layui-input" />
             </div>
         </div>
 
@@ -70,7 +70,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">测试人员：</label>
             <div class="layui-input-block">
-                <input type="text" name="devPerson"  placeholder="测试人员" autocomplete="off" class="layui-input" />
+                <input type="text" name="testPerson"  placeholder="测试人员" autocomplete="off" class="layui-input" />
             </div>
         </div>
 
@@ -98,21 +98,20 @@ var laydate = layui.laydate;
         form.on('submit(add_form_btn)', function(data) {
             layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : '/url',
+                url : '/addFunc',
                 data : data.field,
                 type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
                 dataType: 'json',
                 success : function(obj) {
                     // layer.close(index);//关闭
-                    if (obj.success) {
+                    if (obj=="success") {
                         pubUtil.msg(obj.msg, layer, 1, function() {
                             $("#close").click();
- location.reload();
-                        }, 500);
+ 								location.reload();
+                        }, 300);
                     } else {
                         pubUtil.msg(obj.msg, layer, 2, function() {
-
-                        }, 5 * 1000);
+                        }, 5 * 100);
                     }
                 }
             });
