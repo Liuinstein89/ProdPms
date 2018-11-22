@@ -41,11 +41,11 @@
 	</select>
 	
 	<!-- 获取指定功能点数目 -->
-	<select id="findByNameAndContent" parameterType="java.lang.String" resultType="Integer">
+	<select id="findByName" parameterType="java.lang.String" resultType="Integer">
 		select
 		count(*)
 		from func
-		where is_deleted = 0 and func_name = #{funcName,jdbcType=VARCHAR} and func_reform_content = #{funcReformContent,jdbcType=VARCHAR}
+		where is_deleted = 0 and func_name = #{funcName,jdbcType=VARCHAR}
 	</select>
 
 	<!-- 添加需求信息，参数的初始值在代码中做处理 -->

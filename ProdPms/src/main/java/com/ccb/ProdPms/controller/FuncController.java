@@ -1,6 +1,5 @@
 package com.ccb.ProdPms.controller;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -60,34 +59,33 @@ public class FuncController {
 
 	// 数据导入主要涉及三个步骤 1.文件上传；2.Excel解析；3.数据插入。
 	@RequestMapping(value = "/importFuncExcel", method = RequestMethod.POST)
-	public String importFuncExcel(MultipartFile file,@RequestParam(value = "userName") String userName) {
+	public String importFuncExcel(MultipartFile file,
+			@RequestParam(value = "userName") String userName) {
 		if (file == null)
 			return "file不能为空";
-		String fileName = file.getName();
-		String filePath = new File(fileName).getPath();
+		String fileName = file.getOriginalFilename();
+		//String filePath = new File(fileName).getPath();
 		try {
-			List<Object[]> funcList = ExcelUtil.importExcel(fileName, filePath);
+			List<Object[]> funcList = ExcelUtil.importExcel(fileName, file);
 			FunctionEntity functionEntity = new FunctionEntity();
 			for (int i = 0; i < funcList.size(); i++) {
 				String funcName = (String) funcList.get(i)[0];
 				String funcReformContent = (String) funcList.get(i)[1];
-				String onlineDate = (String) funcList.get(i)[2];
-				String desiPerson = (String) funcList.get(i)[3];
-				String devPerson = (String) funcList.get(i)[4];
-				String testPerson = (String) funcList.get(i)[5];
+				String desiPerson = (String) funcList.get(i)[2];
+				String devPerson = (String) funcList.get(i)[3];
+				String testPerson = (String) funcList.get(i)[4]; 
 				functionEntity.setDesiPerson(desiPerson);
 				functionEntity.setDevPerson(devPerson);
 				functionEntity.setFuncName(funcName);
-				functionEntity.setOnlineDate(onlineDate);
 				functionEntity.setFuncReformContent(funcReformContent);
 				functionEntity.setTestPerson(testPerson);
 				functionEntity.setCreateUser(userName);
 				functionEntity.setCreateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-				int count = funcService.findByName(funcName);//这里功能点和改造内容的判断有些问题，有没有可能出现同一个功能点对应多个改造内容，如果这样的话，就需要都去判断，才能更新
+				int count = funcService.findByName(funcName);// 这里功能点和改造内容的判断有些问题，有没有可能出现同一个功能点对应多个改造内容，如果这样的话，就需要都去判断，才能更新
 				if (count > 0) {
 					String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-					FunctionEntity functionEntity2 = new FunctionEntity(funcName, funcReformContent, desiPerson, devPerson,
-							testPerson, onlineDate, modiDate);
+					FunctionEntity functionEntity2 = new FunctionEntity(funcName, funcReformContent, desiPerson,
+							devPerson, testPerson,  modiDate);
 					funcService.updateExcelFunc(functionEntity2);
 				} else {
 					funcService.insertFunc(functionEntity);
@@ -95,34 +93,34 @@ public class FuncController {
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return e.getMessage();
+			return "error";
 		}
 		return "success";
 	}
 
 	// 新增功能点
-		@PostMapping("/addFunc")
-		public String addFunc(HttpServletRequest request) {
-			// Form接参
-			String funcName = request.getParameter("funcName");
-			String funcReformContent = request.getParameter("funcReformContent");
-			String desiPerson = request.getParameter("desiPerson");
-			String devPerson = request.getParameter("devPerson");
-			String testPerson = request.getParameter("testPerson");
-			String onlineDate = request.getParameter("onlineDate");
-			String createUser = request.getParameter("userName");
-			String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
-			FunctionEntity functionEntity = new FunctionEntity( funcName, funcReformContent, desiPerson, devPerson,createUser,
-					testPerson, onlineDate, createDate);
-			try {
-				funcService.insertFunc(functionEntity);
-			} catch (Exception e) {
-				log.error(e.getMessage(),e);
-				return "update Func failed! ";
-			}
-			return JSONObject.toJSONString(strSuc);
+	@PostMapping("/addFunc")
+	public String addFunc(HttpServletRequest request) {
+		// Form接参
+		String funcName = request.getParameter("funcName");
+		String funcReformContent = request.getParameter("funcReformContent");
+		String desiPerson = request.getParameter("desiPerson");
+		String devPerson = request.getParameter("devPerson");
+		String testPerson = request.getParameter("testPerson");
+		String onlineDate = request.getParameter("onlineDate");
+		String createUser = request.getParameter("userName");
+		String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+		FunctionEntity functionEntity = new FunctionEntity(funcName, funcReformContent, desiPerson, devPerson,
+				createUser, testPerson, onlineDate, createDate);
+		try {
+			funcService.insertFunc(functionEntity);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			return "update Func failed! ";
 		}
-		
+		return JSONObject.toJSONString(strSuc);
+	}
+
 	// 编辑功能点
 	@RequestMapping(value = "/updateFunc", method = RequestMethod.POST)
 	public String updateFunc(HttpServletRequest request) throws IOException {
@@ -149,12 +147,12 @@ public class FuncController {
 	}
 
 	// 删除功能点
-		@GetMapping("/delFuncById")
-		@ResponseBody
-		public String deleteFuncById(@RequestParam(value = "id") Integer id) {
-			funcService.deleteFuncById(id);
-			return JSONObject.toJSONString(strSuc);
-		}
+	@GetMapping("/delFuncById")
+	@ResponseBody
+	public String deleteFuncById(@RequestParam(value = "id") Integer id) {
+		funcService.deleteFuncById(id);
+		return JSONObject.toJSONString(strSuc);
+	}
 	/*
 	 * 导出Excel常用的方法： HSSFWorkbook wb=new HSSFWorkbook(); //创建Excel工作簿对象 HSSFSheet
 	 * sheet=wb.createSheet("newsheet"); //创建Excel工作表对象 HSSFRow

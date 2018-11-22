@@ -53,13 +53,12 @@ public class FunctionEntity implements Serializable {
 	}
 
 	public FunctionEntity(String funcName, String funcReformContent, String desiPerson, String devPerson,
-			String testPerson, String onlineDate, String modiDate) {
+			String testPerson,  String modiDate) {
 		this.funcName = funcName;
 		this.funcReformContent = funcReformContent;
 		this.desiPerson = desiPerson;
 		this.devPerson = devPerson;
 		this.testPerson = testPerson;
-		this.onlineDate = onlineDate;
 		this.modiDate = modiDate;
 	}
 }

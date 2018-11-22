@@ -11,8 +11,6 @@ public interface FuncService {
 
 	List<FunctionEntity> getAll();
 
-	List<FunctionEntity> getByParams(FunctionEntity functionEntity);
-
 	void updateFunc(FunctionEntity functionEntity);
 
 	void deleteFuncById(Integer id);

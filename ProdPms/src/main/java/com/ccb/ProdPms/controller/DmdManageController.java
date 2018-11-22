@@ -165,6 +165,7 @@ public class DmdManageController {
 
 	// 自动获取reqNo,规则是数据库当前需求PR(prod_req)-日期年月日(YYYYMMDD)-id++
 	@GetMapping("/getReqNo")
+	@ResponseBody
 	public String getReqNo() {
 		String reqNo = dmdManageService.getReqNo();
 		// reqNo ="PR" + sdf12.format(date) +reqNo;
@@ -256,7 +257,7 @@ public class DmdManageController {
 				 * " because the file was empty."; }
 				 */
 		}
-		return "upload successful";
+		return "upload success";
 	}
 	/*
 	 * public @ResponseBody String

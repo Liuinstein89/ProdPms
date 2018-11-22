@@ -58,8 +58,7 @@
     </div>
 </div>
 <script type="text/html" id="barDemo">
-<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
-    
+	<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
@@ -69,7 +68,7 @@
 <script type="text/javascript">
     layui.use(['jquery','table','form','layer','upload'], function(){
         var table = layui.table;
-        var $ = layui.jquery;
+         $ = layui.jquery;
         var form = layui.form;
         var upload = layui.upload;
         layer = parent.layer === undefined ? layui.layer : top.layer;
@@ -85,7 +84,6 @@
                 ,layout: ['prev', 'page', 'next', 'count'] //自定义分页布局
             }
             ,cellMinWidth: 80
-            
             ,toolbar: '#toolbarFunc'
             ,cols: [[
                 {field: 'id', title: '序号' , width: 80, fixed: 'left', unresize: true, sort: true,align:'left'}
@@ -99,7 +97,6 @@
                 ,{field: 'testPerson', title: '测试人员'}
                 ,{field: 'createPerson', title: '创建人',hide:true}
                 ,{title:'操作', align:'center', toolbar: '#barDemo',fixed:'right'}
-
             ]]
             ,page: true //是否显示分页
             ,limits: [5,10]
@@ -114,7 +111,6 @@
              }
         });
 
-
         //功能点管理工具条监听
         table.on('tool(func)', function (obj) {
 
@@ -128,7 +124,6 @@
             }else if (layEvent == 'del'){ //删除数据
                 delfuncList(data);
             }
-
         });
  		$("#add_func_btn").on('click',function () {
     		addfuncList();
@@ -198,18 +193,30 @@
                 }
             });
         }
-
-//导入
-        upload.render({
+        
+       //导入
+         upload.render({
             elem: '#funcUpload'
             ,url: '/importFuncExcel'
             ,accept: 'file' //普通文件
+           	,data:{userName: 'admin'}
             ,done: function(res){
                 console.log(res)
             }
-        });
-    });
-
+        }); 
+       
+       //悬停提示
+     	function showMsg(msg, id){
+    	   var layer1 = layui.layer;
+             var tip_index = 0;
+             $(document).on('mouseenter', id, function(){
+                 tip_index = layer1.tips(msg, this, {tips:[1,'#009688'],time: 0});
+             }).on('mouseleave', id, function(){
+            	 layer1.close(tip_index);
+             });
+     	}
+         showMsg("请按顺序导入除序号和创建时间以外的其他字段！",'#funcUpload');
+   });
 </script>
 </body>
 </html>

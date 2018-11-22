@@ -46,12 +46,6 @@ public class FuncServiceImpl implements FuncService {
 		return funcList;
 	}
 
-	@Override
-	public List<FunctionEntity> getByParams(FunctionEntity functionEntity) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Transactional
 	public void updateFunc(FunctionEntity functionEntity) {
 		funcMapper.updateFunc(functionEntity);

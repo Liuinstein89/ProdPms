@@ -25,6 +25,7 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.multipart.MultipartFile;
 
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -219,7 +220,7 @@ public class ExcelUtil {
 	/**
 	 * 方法名：importExcel 创建时间：2018/11/19
 	 */
-	public static List<Object[]> importExcel(String fileName, String filePath) {
+	public static List<Object[]> importExcel(String fileName, MultipartFile file) {
 		/*
 		 * 导入Excel常用的方法： POIFSFileSystem fs = new POIFSFileSystem(new FileInputStream("d:/test.xls")); 
 		 * 如果controller传的是MultipartFile格式，这里的处理方式为：new POIFSFileSystem(file.getInputStream())
@@ -230,17 +231,17 @@ public class ExcelUtil {
 		 * cellStyle=cell.getCellStyle();//得到单元格样式
 		 */
 		log.info("导入解析开始，fileName:{}", fileName);
+		List<Object[]> list = new ArrayList<>();
 		try {
-			List<Object[]> list = new ArrayList<>();
-			InputStream inputStream = new FileInputStream(fileName);
+			InputStream inputStream = file.getInputStream();
 			// Excel解析:将上传到的MultipartFile转为输入流，然后交给POI去解析即可
 			// 创建HSSFWorkbook对象
 			// Workbook workbook = WorkbookFactory.create(inputStream);
 			Workbook wb = null;
-			if (ExcelUtil.isExcel2003(filePath)) {
+			if (ExcelUtil.isExcel2003(fileName)) {
 				wb = new HSSFWorkbook(inputStream);
 			}
-			if (ExcelUtil.isExcel2007(filePath)) {
+			if (ExcelUtil.isExcel2007(fileName)) {
 				wb = new XSSFWorkbook(inputStream);
 			}
 			// 获取一共有多少sheet，然后遍历
@@ -249,6 +250,7 @@ public class ExcelUtil {
 			 * numberOfSheets; i++) { HSSFSheet sheet = workbook.getSheetAt(i);
 			 */
 			Sheet sheet = wb.getSheetAt(0);
+			
 			// 获取sheet中一共有多少行，遍历行（注意第一行是标题）
 			int physicalNumberOfRows = sheet.getPhysicalNumberOfRows();
 			for (int i = 0; i < physicalNumberOfRows; i++) {
@@ -264,7 +266,7 @@ public class ExcelUtil {
 				int index = 0;
 				for (Cell cell : row) {
 					if (cell.getCellTypeEnum().equals(CellType.NUMERIC)) {
-						objects[index] = (int) cell.getNumericCellValue();
+						objects[index] = String.valueOf(cell.getNumericCellValue());
 					}
 					if (cell.getCellTypeEnum().equals(CellType.STRING)) {
 						objects[index] = cell.getStringCellValue();
@@ -280,12 +282,12 @@ public class ExcelUtil {
 				list.add(objects);
 			}
 			log.info("导入文件解析成功！");
-			return list;
+			//return list;
 		} catch (Exception e) {
 			log.info("导入文件解析失败！");
 			e.printStackTrace();
 		}
-		return null;
+		return list;
 	}
 
 	public static boolean isExcel2003(String filePath) {

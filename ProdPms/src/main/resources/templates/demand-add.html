@@ -38,6 +38,13 @@ body {
 			action="" id="add_demand_form">
 
 			<div class="layui-form-item">
+	<label class="layui-form-label">需求编号：</label>
+				<div class="layui-input-block">
+					<input type="text" name="reqNo" id="addDemReqNo" readonly='' autocomplete="off" class="layui-input" style="background-color: #e0e0e0"/>
+				</div>
+			</div>
+
+			<div class="layui-form-item">
 				<label class="layui-form-label">需求标题：</label>
 				<div class="layui-input-block">
 					<input type="text" name="reqName" id="title" lay-verify="title"
@@ -206,7 +213,7 @@ body {
 					//dataType : 'json',
 					success : function(obj) {
 						//layer.close(index);//关闭   
-						if (obj.success) {
+						if (obj=="upload success") {
 							pubUtil.msg(obj.msg, layer, 1, function() {
 								$("#close").click();
 							}, 500);
