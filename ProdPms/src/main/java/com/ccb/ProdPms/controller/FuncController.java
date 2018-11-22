@@ -3,7 +3,9 @@ package com.ccb.ProdPms.controller;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -59,21 +61,25 @@ public class FuncController {
 
 	// 数据导入主要涉及三个步骤 1.文件上传；2.Excel解析；3.数据插入。
 	@RequestMapping(value = "/importFuncExcel", method = RequestMethod.POST)
-	public String importFuncExcel(MultipartFile file,
-			@RequestParam(value = "userName") String userName) {
+	public String importFuncExcel(MultipartFile file, @RequestParam(value = "userName") String userName) {
 		if (file == null)
 			return "file不能为空";
 		String fileName = file.getOriginalFilename();
-		//String filePath = new File(fileName).getPath();
+		// String filePath = new File(fileName).getPath();
 		try {
 			List<Object[]> funcList = ExcelUtil.importExcel(fileName, file);
 			FunctionEntity functionEntity = new FunctionEntity();
+			Map<String, Object> map = new HashMap<String, Object>();
+			map.put("code", "-1");
+			if (funcList.size() == 0)
+				return JSONObject.toJSONString(map);
+
 			for (int i = 0; i < funcList.size(); i++) {
 				String funcName = (String) funcList.get(i)[0];
 				String funcReformContent = (String) funcList.get(i)[1];
 				String desiPerson = (String) funcList.get(i)[2];
 				String devPerson = (String) funcList.get(i)[3];
-				String testPerson = (String) funcList.get(i)[4]; 
+				String testPerson = (String) funcList.get(i)[4];
 				functionEntity.setDesiPerson(desiPerson);
 				functionEntity.setDevPerson(devPerson);
 				functionEntity.setFuncName(funcName);
@@ -85,7 +91,7 @@ public class FuncController {
 				if (count > 0) {
 					String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 					FunctionEntity functionEntity2 = new FunctionEntity(funcName, funcReformContent, desiPerson,
-							devPerson, testPerson,  modiDate);
+							devPerson, testPerson, modiDate);
 					funcService.updateExcelFunc(functionEntity2);
 				} else {
 					funcService.insertFunc(functionEntity);
@@ -93,9 +99,11 @@ public class FuncController {
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return "error";
+			RestRespEntity restResp = new RestRespEntity(RespCode.WARN, null);
+			return JSONObject.toJSONString(restResp);
 		}
-		return "success";
+		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, null);
+		return JSONObject.toJSONString(restResp);
 	}
 
 	// 新增功能点
