@@ -36,7 +36,7 @@ public class DmTest {
 	@Test
 	public void testQuery() throws Exception {
 		//List<DmdItemEntity> dmd = dmdManageMapper.getAllReqItem();
-		System.out.println(funcMapper.findByName("11"));
+		//System.out.println(funcMapper.findByName("11"));
 	}
 
 	// @Test

@@ -105,13 +105,13 @@ var laydate = layui.laydate;
                 success : function(obj) {
                     // layer.close(index);//关闭
                     if (obj=="success") {
-                        pubUtil.msg(obj.msg, layer, 1, function() {
+                        pubUtil.msg("新增成功！", layer, 1, function() {
                             $("#close").click();
  								location.reload();
-                        }, 300);
+                        }, 1000);
                     } else {
-                        pubUtil.msg(obj.msg, layer, 2, function() {
-                        }, 5 * 100);
+                        pubUtil.msg("新增失败！", layer, 2, function() {
+                        }, 1000);
                     }
                 }
             });

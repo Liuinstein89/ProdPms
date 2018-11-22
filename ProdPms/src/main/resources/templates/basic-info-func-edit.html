@@ -18,17 +18,7 @@
             padding: 20px;
             padding-top: 20px;
         }
-        #sele_file_btn{
-            position: relative;
-            /*margin-right: 30px;*/
-        }
-        #sele_file{
-            position: relative;
-            width:100px;
-            opacity: 0;
-            cursor: pointer;
-            left: -110px;
-        }
+        
     </style>
 </head>
 <body>
@@ -111,13 +101,13 @@
                 success : function(obj) {
                     // layer.close(index);//关闭
                     if (obj=="success") {
-                        pubUtil.msg(obj.msg, layer, 1, function() {
+                        pubUtil.msg("编辑成功！", layer, 1, function() {
                             $("#close").click();
 location.reload();
-                        }, 300);
+                        }, 1000);
                     } else {
-                        pubUtil.msg(obj.msg, layer, 2, function() {
-                        }, 5 * 100);
+                        pubUtil.msg("编辑失败！", layer, 2, function() {
+                        }, 1000);
                     }
                 }
             });

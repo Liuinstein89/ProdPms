@@ -169,7 +169,7 @@ public class DmdManageController {
 	public String getReqNo() {
 		String reqNo = dmdManageService.getReqNo();
 		// reqNo ="PR" + sdf12.format(date) +reqNo;
-		return "PR" + new SimpleDateFormat("yyyyMMdd").format(new Date()) + reqNo;
+		return "PR" + new SimpleDateFormat("yyMMdd").format(new Date()) + reqNo;
 	}
 
 	// 创建需求,提交多个文件,可以使office、pdf、图片等格式

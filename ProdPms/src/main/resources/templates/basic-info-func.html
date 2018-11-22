@@ -5,8 +5,10 @@
     <meta name="renderer" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>ProductMS</title>
+    <title>功能点管理</title>
     <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
+<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/src/public.js" charset="utf-8"></script>
     <style type="text/css">
         /* .layui-form select{
             display: block;
@@ -18,10 +20,10 @@
         }
         .grid-demo{ line-height: 50px;  background-color: #79C48C; color: #fff;font-size: 16px;}
         .layui-card{
-            box-shadow: 2px 2px 8px 2px rgba(50,50,50,0.25);
-        }
-        .layui-collapse{
-            box-shadow: 2px 2px 8px 2px rgba(50,50,50,0.25);
+            
+        
+        
+box-shadow: 2px 2px 8px 2px rgba(50,50,50,0.25);
         }
         .layui-table{
             margin-top:-15px;
@@ -40,9 +42,7 @@
     </div>
 </script>
 
-<div class="wrap-container">
-    <div class="layui-row layui-col-space10">
-        <div class="layui-col-md9">
+
             <div class="layui-card">
                 <div class="layui-card-header grid-demo">
                     功能点管理
@@ -50,20 +50,18 @@
                 <div class="layui-card-body">
                     <!-- 功能点管理 -->
                     <table id="func" lay-filter="func"></table>
-                </div>
-            </div>
+             
         </div>
 
 
     </div>
-</div>
+
 <script type="text/html" id="barDemo">
 	<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
 </script>
 
-<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
-<script src="../static/src/public.js" charset="utf-8"></script>
+
 
 <script type="text/javascript">
     layui.use(['jquery','table','form','layer','upload'], function(){
@@ -72,7 +70,7 @@
         var form = layui.form;
         var upload = layui.upload;
         layer = parent.layer === undefined ? layui.layer : top.layer;
-        //部门管理表格渲染
+        //功能点管理表格渲染
         table.render({
             elem: '#func'
             ,url:'/listFunc'
@@ -86,17 +84,18 @@
             ,cellMinWidth: 80
             ,toolbar: '#toolbarFunc'
             ,cols: [[
-                {field: 'id', title: '序号' , width: 80, fixed: 'left', unresize: true, sort: true,align:'left'}
+                {field: 'id', title: '序号' , width: 80, fixed: 'left', unresize: true, sort: true,align:'center'}
                 ,{field: 'funcName', title: '功能点'}
                 ,{field: 'funcReformContent', title: '功能点改造内容', width: 200}
-                ,{field: 'createDate', title: '创建时间', sort: true, align:'center'}
+                
                 ,{field: 'modiDate', title: '修改时间',hide:true}
                 ,{field: 'onlineDate', title: '上线时间',hide:true}
                 ,{field: 'desiPerson', title: '设计人员'}
                 ,{field: 'devPerson', title: '开发人员'}
                 ,{field: 'testPerson', title: '测试人员'}
+,{field: 'createDate', title: '创建时间', sort: true, align:'center', width: 120}
                 ,{field: 'createPerson', title: '创建人',hide:true}
-                ,{title:'操作', align:'center', toolbar: '#barDemo',fixed:'right'}
+                ,{title:'操作', align:'center', toolbar: '#barDemo',fixed:'right', width: 100}
             ]]
             ,page: true //是否显示分页
             ,limits: [5,10]
@@ -137,7 +136,7 @@
                 skin: 'layui-layer-molv',
                 shadeClose: false,
                 shade: 0.3,
-                area: ['600px', '500px'],
+                area: ['600px', '520px'],
                 content: ['/basicInfo/funcEdit','yes'],//跳转的页面
                 success : function(layero, index){
                     var body = layer.getChildFrame('body', index);
@@ -151,7 +150,7 @@
         }
  
         function delfuncList(data){
-            layer.confirm('是否确定删除该条记录',function (index) {
+            layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'},function (index) {
                 $.ajax({
                     url: '/delFuncById',
                     data: {
@@ -162,12 +161,12 @@
                     success: function (repData) {
                         // layer.close(loadindex);//关闭进程对话框
                         if (repData == "success") {
-                            pubUtil.msg(repData, layer, 1, function () {
+                            pubUtil.msg("删除成功", layer, 1, function () {
                                 location.reload();//刷新
-                            }, 300);
+                            }, 1000);
                         } else {
-                            pubUtil.msg(repData, layer, 2, function () {
-                            }, 5 * 100);
+                            pubUtil.msg("删除失败", layer, 2, function () {
+                            }, 1000);
                         }
                     }
                 });
@@ -201,7 +200,15 @@
             ,accept: 'file' //普通文件
            	,data:{userName: 'admin'}
             ,done: function(res){
-                console.log(res)
+                console.log(res);
+ if (res.code == 0) {
+                     pubUtil.msg("导入成功", layer, 1, function () {
+                         location.reload();//刷新
+                     }, 1000);
+                 } else  {
+                     pubUtil.msg("导入失败", layer, 2, function () {
+                     },  2000);
+                 }
             }
         }); 
        
