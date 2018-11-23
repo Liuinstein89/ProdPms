@@ -54,6 +54,20 @@
 		<result column="modi_date" property="modiDate" jdbcType="DATE" />
 		<result column="has_func" property="hasFunc" jdbcType="INTEGER" />
 	</resultMap>
+	
+	<resultMap id="UploadFileMap"
+		type="com.ccb.ProdPms.entity.UploadFileEntity">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
+		<result column="path" property="path" jdbcType="VARCHAR" />
+		<result column="type" property="type"
+			jdbcType="VARCHAR" />
+		<result column="user" property="user" jdbcType="VARCHAR" />
+		<result column="datetime" property="datetime"
+			jdbcType="DATE" />
+		<result column="req_no" property="reqNo"
+			jdbcType="VARCHAR" />
+	</resultMap>
 	<!-- ==================定义sql片段============== sql:是sql片段标签属性,可被其他语句引用的可重用语句块 
 		id是该片段的唯一标识 -->
 	<sql id="Basic_Req_Columns">
@@ -101,6 +115,13 @@
 		select
 		id,req_no,req_item_desc,op_person,req_item_name,create_date,modi_date,req_item_dev,online_datetime,req_item_status,has_func
 		from req_item
+		where is_deleted = 0 and req_no = #{reqNo,jdbcType=VARCHAR}
+	</select>
+	<!-- 获取某需求全部需求项列表 -->
+	<select id="getUploadFileOfReq" resultMap="UploadFileMap" parameterType="java.lang.String">
+		select
+		id,req_no,file_name,path,type,user,datetime
+		from upload_file
 		where is_deleted = 0 and req_no = #{reqNo,jdbcType=VARCHAR}
 	</select>
 	<!-- 什么时候用where，什么时候用<where>标签？ 查询的时候如果某些条件没有，可能sql拼装会有问题 解决办法： 1.给where 

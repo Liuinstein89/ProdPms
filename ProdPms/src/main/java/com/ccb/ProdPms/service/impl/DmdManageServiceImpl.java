@@ -150,6 +150,17 @@ public class DmdManageServiceImpl implements DmdManageService {
 		return dmdItemList;
 	}
 
+	@Override
+	public List<UploadFileEntity> getRelateFile(String reqNo) {
+		List<UploadFileEntity> upList = new ArrayList<UploadFileEntity>();
+		try {
+			upList = dmdManageMapper.getUploadFileOfReq(reqNo);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return upList;
+	}
+
 	/*
 	 * @Transactional public KeywordReply updateKeywordRule(KeywordRuleDto rule) {
 	 * KeywordReply keywordReply = keywordReplyRepo.findOne(rule.getId());

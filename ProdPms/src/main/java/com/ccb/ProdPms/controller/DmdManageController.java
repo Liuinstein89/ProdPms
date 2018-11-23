@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartResolver;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
@@ -115,6 +113,8 @@ public class DmdManageController {
 		return "demand-detail";
 	}
 
+	Map<String, Object> map = new HashMap<String, Object>();
+
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")
 	@ResponseBody
@@ -156,7 +156,6 @@ public class DmdManageController {
 		PageHelper.startPage(pageNum, pageSize);
 		dmdSearList = dmdManageService.getByParams(queryParams);
 		PageInfo<DmdManageEntity> dsPageInfo = new PageInfo<>(dmdSearList);
-		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("code", 0);
 		map.put("msg", "ok");
 		map.put("data", dsPageInfo);
@@ -176,7 +175,6 @@ public class DmdManageController {
 	@RequestMapping(value = "/submitMultiUpload", method = RequestMethod.POST)
 	@ResponseBody
 	public String addReq(HttpServletRequest request) throws IOException {
-
 		// Form接参
 		String reqNo = request.getParameter("reqNo");
 		String reqName = request.getParameter("reqName");
@@ -192,10 +190,6 @@ public class DmdManageController {
 		DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
 				cooTeam, nowUser, nextUser, createUser, createDate, "reqAddStatus", 0);
 
-		// 多文件上传接参
-		// MultipartHttpServletRequest rq = (MultipartHttpServletRequest) request;
-		// System.out.println("@@@@@@@@@@@"+rq.toString());
-
 		// 创建一个多分解的容器
 		// CommonsMultipartResolver cmr = new
 		// CommonsMultipartResolver(request.getSession().getServletContext());
@@ -205,14 +199,13 @@ public class DmdManageController {
 		// if(cmr.isMultipart(request)){
 		// 将request转换成多分解请求
 		// MultipartHttpServletRequest mhs = cmr.resolveMultipart(request);
-
-		MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
+		
+		//为什么注释掉下面三行？一只获取不到filelist，怎么解决呢？
+		/*MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
 		MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
-		List<MultipartFile> fileList = multipartRequest.getFiles("file");
+		List<MultipartFile> fileList = multipartRequest.getFiles("file");*/
+		List<MultipartFile> fileList =((MultipartHttpServletRequest)request).getFiles("file");
 
-		// List<MultipartFile> fileList = ((MultipartHttpServletRequest)
-		// request).getFiles("file");
-		System.out.println("111111" + fileList.size());
 		// 新增需求主表项
 		try {
 			dmdManageService.addReq(dmdManageEntity);
@@ -220,12 +213,11 @@ public class DmdManageController {
 			e.getMessage();
 			return "create req failed! ";
 		}
-
 		// 循环插入上传文件到指定路径
 		for (MultipartFile file : fileList) {
-			System.out.println("2222" + file.getName());
 			if (file.isEmpty()) {
-				return "no upload file!";
+				map.put("code", -1);
+				map.put("msg", "no upload file");
 			}
 			if (!file.isEmpty()) {
 				String fileName = file.getOriginalFilename();
@@ -242,7 +234,6 @@ public class DmdManageController {
 				try {
 					file.transferTo(dest);
 					try {
-						System.out.println("333" + file.getName());
 						dmdManageService.insertUpload(uploadFileEntity);
 					} catch (Exception e) {
 						e.getMessage();
@@ -252,12 +243,11 @@ public class DmdManageController {
 					e.printStackTrace();
 					return "You failed to upload " + file.getName() + " => " + e.getMessage();
 				}
-			} /*
-				 * else { return "You failed to upload " + file.getName() +
-				 * " because the file was empty."; }
-				 */
+			}
+			map.put("code", 0);
+			map.put("msg", "upload success");
 		}
-		return "upload success";
+		return JSONObject.toJSONString(map);
 	}
 	/*
 	 * public @ResponseBody String
@@ -283,7 +273,6 @@ public class DmdManageController {
 		String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
 				cooTeam, nowUser, nextUser, "reqAddStatus", modiDate);
-
 		// 修改需求主表项
 		try {
 			dmdManageService.updateReq(dmdManageEntity);
@@ -294,6 +283,21 @@ public class DmdManageController {
 		return JSONObject.toJSONString(strSuc);
 	}
 
+	// 点击某需求，查看详情时列出相关联的上传文件
+		@GetMapping("/listRelateUploadFile")
+		@ResponseBody
+		public String listUploadFileOfReq(@RequestParam(value = "reqNo") String reqNo,@RequestParam(value = "page") Integer pageNum,
+				@RequestParam(value = "limit") Integer pageSize) {
+			List<UploadFileEntity> upList = new ArrayList<UploadFileEntity>();
+			PageHelper.startPage(pageNum, pageSize);
+			upList = dmdManageService.getRelateFile(reqNo);
+			PageInfo<UploadFileEntity> upPageInfo = new PageInfo<>(upList);
+			map.put("code", 0);
+			map.put("msg", "ok");
+			map.put("data", upPageInfo);
+			return JSONObject.toJSONString(map);
+		}
+	
 	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
 	@PostMapping("/addReqItem")
 	public String addReqItem(DmdItemFuncDto dmdItemFuncDto) {

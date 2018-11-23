@@ -33,10 +33,11 @@ public class DmTest {
 	private UploadFileController uploadFileController;
 	@Autowired
 	FuncMapper funcMapper;
+
 	@Test
 	public void testQuery() throws Exception {
 		//List<DmdItemEntity> dmd = dmdManageMapper.getAllReqItem();
-		//System.out.println(funcMapper.findByName("11"));
+		System.out.println(dmdManageMapper.getUploadFileOfReq("3"));
 	}
 
 	// @Test

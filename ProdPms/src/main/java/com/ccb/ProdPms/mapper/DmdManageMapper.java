@@ -83,6 +83,8 @@ public interface DmdManageMapper {
 
 	List<DmdItemEntity> getReqItem(String reqNo);
 
+	List<UploadFileEntity> getUploadFileOfReq(String reqNo);
+
 	
 
 }

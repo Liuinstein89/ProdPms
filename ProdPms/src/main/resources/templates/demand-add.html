@@ -162,7 +162,7 @@ body {
 					<button type="button" class="layui-btn" id="sele_file_btn">选择文件</button>
 				</div>
 				<div class="layui-inline">
-					<input type="file" class="layui-input" name="sele_file"
+					<input type="file" class="layui-input" name="file"
 						multiple="multiple" id="sele_file" />
 				</div>
 			</div>
@@ -219,7 +219,7 @@ body {
 							}, 500);
 						} else {
 							pubUtil.msg(obj.msg, layer, 2, function() {
-
+								$("#close").click();
 							}, 5 * 1000);
 						}
 					}

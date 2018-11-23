@@ -31,6 +31,8 @@ public interface DmdManageService {
 
 	List<DmdItemEntity> getReqItem(String reqNo);
 
+	List<UploadFileEntity> getRelateFile(String reqNo);
+
 	
 
 }
