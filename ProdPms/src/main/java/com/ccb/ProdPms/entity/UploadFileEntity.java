@@ -20,4 +20,7 @@ public class UploadFileEntity implements Serializable {
 		this.reqNo = reqNo;
 		this.isDeleted = isDeleted;
 	}
+//这里无参构造是因为一直报错no 构造各种类型，加了无参后好了，原因未知   No constructor found in
+	public UploadFileEntity() {
+	}
 }

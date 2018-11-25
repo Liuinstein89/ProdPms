@@ -108,11 +108,31 @@ public class DmdManageController {
 		return "demand-search";
 	}
 
-	@RequestMapping("/admin/detail")
+	@RequestMapping("/admin/onplan")
 	public String detail() {
 		return "demand-detail";
 	}
 
+	@RequestMapping("/onplan/list")
+	public String opList() {
+		return "onplan-list";
+	}
+
+	@RequestMapping("/onplan/add")
+	public String opAdd() {
+		return "onplan-add";
+	}
+
+	@RequestMapping("/onplan/edit")
+	public String opEdit() {
+		return "onplan-edit";
+	}
+
+	@RequestMapping("/demand/audit")
+	public String dmAudit() {
+		return "demand-audit";
+	}
+	
 	// 部门管理
 	@RequestMapping("/basicinfo/dept")
 	public String basicDept() {

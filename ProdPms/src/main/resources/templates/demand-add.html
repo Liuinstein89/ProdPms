@@ -40,7 +40,7 @@ margin: 0;
 </head>
 <body>
 	<div class="wrap-container">
-		<form class="layui-form" enctype="multipart/form-data" method="post" action="" id="add_demand_form">
+		<form class="layui-form" enctype="multipart/form-data" method="post" action="" id="add_demand_form" name="form">
 
 			<div class="layui-form-item">
 	<label class="layui-form-label">需求编号：</label>
@@ -59,13 +59,7 @@ margin: 0;
 			<div class="layui-form-item">
 				<label class="layui-form-label">需求来源：</label>
 				<div class="layui-input-block">
-					<select name="reqSource" lay-verify="pass">
-						<option value=""></option>
-						<option value="个人部">个人部</option>
-						<option value="运维">运维</option>
-						<option value="金融科技部">金融科技部</option>
-						<option value="网络金融部">网络金融部</option>
-						<option value="托管业务部">托管业务部</option>
+					<select name="reqSource" id="reqSource" lay-verify="pass">
 					</select>
 				</div>
 			</div>
@@ -73,13 +67,7 @@ margin: 0;
 			<div class="layui-form-item">
 				<label class="layui-form-label">提出部门：</label>
 				<div class="layui-input-block">
-					<select name="dept" lay-verify="pass">
-						<option value=""></option>
-						<option value="个人部">个人部</option>
-						<option value="运维">运维</option>
-						<option value="金融科技部">金融科技部</option>
-						<option value="网络金融部">网络金融部</option>
-						<option value="托管业务部">托管业务部</option>
+					<select name="dept" id="dept" lay-verify="pass">
 					</select>
 				</div>
 			</div>
@@ -87,13 +75,7 @@ margin: 0;
 			<div class="layui-form-item">
 				<label class="layui-form-label">受理状态：</label>
 				<div class="layui-input-block">
-					<select name="reqStatus" lay-verify="pass">
-						<option value=""></option>
-					<option value="未实施">未实施</option>
-						<option value="正在实施">正在实施</option>
-						<option value="不实施">不实施</option>
-						<option value="正在开发">正在开发</option>
-						<option value="关闭">关闭</option>
+					<select name="reqStatus" id="reqStatus" lay-verify="pass">
 					</select>
 				</div>
 			</div>
@@ -101,10 +83,7 @@ margin: 0;
 			<div class="layui-form-item">
 				<label class="layui-form-label">实施方式：</label>
 				<div class="layui-input-block">
-					<select name="execType" lay-verify="pass">
-						<option value=""></option>
-						<option value="日常优化">日常优化</option>
-	<option value="项目">项目</option>
+					<select name="execType" id="execType" lay-verify="pass">
 					</select>
 				</div>
 			</div>
@@ -112,11 +91,7 @@ margin: 0;
 			<div class="layui-form-item">
 				<label class="layui-form-label">牵头组：</label>
 				<div class="layui-input-block">
-					<select name="leadTeam" lay-verify="pass">
-						<option value=""></option>
-						<option value="代理基金">代理基金</option>
-						<option value="龙财富">龙财富</option>
-						<option value="海外理财">海外理财</option>
+					<select name="leadTeam" id="leadTeam" lay-verify="pass">
 					</select>
 				</div>
 			</div>
@@ -124,13 +99,7 @@ margin: 0;
 			<div class="layui-form-item">
 				<label class="layui-form-label">受理人：</label>
 				<div class="layui-input-block">
-					<select name="nextUser" lay-verify="pass">
-						<option value=""></option>
-							<option value="张晓科">张晓科</option>
-						<option value="邓昌胜">邓昌胜</option>
-						<option value="朱琳">朱琳</option>
-						<option value="谭文">谭文</option>
-						<option value="彭东脉">彭东脉</option>
+				<select name="nextUser" id="nextUser" lay-verify="pass">
 					</select>
 				</div>
 			</div>
@@ -138,11 +107,7 @@ margin: 0;
 			<div class="layui-form-item">
 				<label class="layui-form-label">配合组：</label>
 				<div class="layui-input-block">
-					<select name="cooTeam">
-						<option value=""></option>
-						<option value="代理基金">代理基金</option>
-						<option value="龙财富">龙财富</option>
-						<option value="海外理财">海外理财</option>
+				<select name="cooTeam" id="cooTeam">
 					</select>
 				</div>
 			</div>
@@ -154,7 +119,7 @@ margin: 0;
 					<div class="layui-upload">
 						<button type="button" class="layui-btn" id="seleFileList">选择多文件</button>
 						<div class="layui-upload-list">
-							<table class="layui-table">
+							<table class="layui-table"  lay-size="sm">
 								<thead>
 									<th>文件名</th>
 									<th>操作</th>
@@ -197,6 +162,32 @@ margin: 0;
 				}
 			});
 			form.render();
+ //加载下拉菜单
+            function loadSelect(form,url,id,selval,selname,value){
+				$.ajax({
+					url : url,
+					type : "post",
+					async : false,
+					dataType:"json",
+					async: true,//异步执行
+                    success : function(data) {
+                        //layer.msg(JSON.stringify(data));
+                        $("#"+id).html("");
+                        $("#"+id).append('<option selected="" value="">请选择</option>');
+                        for(var i=0;i<data.length;i++){
+                            if(data[i][selval]==value){
+                                $("#"+id).append('<option selected="" value='+data[i][selval]+'>'+data[i][selname]+'</option>');
+                            }else{
+                                $("#"+id).append('<option value='+data[i][selval]+'>'+data[i][selname]+'</option>');
+                            }
+
+                        }
+                        form.render();//重新渲染
+                    }
+				});
+            }
+			//提出部门下拉框自动填充
+            loadSelect(form, url, 'dept');
 			//监听提交
 			form.on('submit(add_form_btn)', function(data) {
 				//layer.alert(JSON.stringify(data.field));
@@ -258,7 +249,7 @@ margin: 0;
                             // , '<td>等待上传</td>'
                             , '<td>'
                             // , '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
-                            , '<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+                            , '<button class="layui-btn layui-btn-sm layui-btn-danger demo-delete">删除</button>'
                             , '</td>'
                             , '</tr>'].join(''));
 
@@ -299,6 +290,72 @@ margin: 0;
                 // }
             });
 
+        });
+	</script>
+<script>
+        layui.use(["jquery","form"],function () {
+            var form = layui.form;
+            var $ = layui.jquery;
+
+            //加载下拉菜单
+            // id 下拉框id
+            // selval 下拉框每个选项的value
+            // selname 下拉框每个value对应的内容
+            // value 选中的值
+            function loadSelect(form,url,id,selval,selname,value){
+                $.ajax({
+                    url : url,
+                    type : "GET",
+                    async : false,
+                    data:{page:1,limit:10000},
+                    dataType:"json",
+                    async: true,//异步执行
+                    success : function(res) {
+                        // layer.alert(JSON.stringify(res.data.list));
+                        $("#"+id).html("");
+                        $("#"+id).append('<option selected="" value="">请选择</option>');
+
+                        data1 = (res.data.list);
+
+                        // layer.alert(data1[0][selval]);
+
+                        // /*<![CDATA[*/
+                        // for(var i=0;i<res.data.total;i++){
+                        //     if(data1[i].id==value){
+                        //         $("#"+id).append('<option selected="" value='+data1[i].id+'>'+data1[i].funcName+'</option>');
+                        //     }else{
+                        //         $("#"+id).append('<option value='+data1[i].id+'>'+data1[i].funcName+'</option>');
+                        //     }
+                        // }
+                        // /*]]>*/
+
+                        /*<![CDATA[*/
+                        for(var i=0;i<res.data.total;i++){
+                            if(data1[i][selval]==value){
+                                $("#"+id).append('<option selected="" value='+data1[i][selval]+'>'+data1[i][selname]+'</option>');
+                            }else{
+                                $("#"+id).append('<option value='+data1[i][selval]+'>'+data1[i][selname]+'</option>');
+                            }
+                        }
+                        /*]]>*/
+                        form.render();//重新渲染
+                    }
+                });
+            }
+			// 需求来源
+            loadSelect(form, '/listReqSource','reqSource','id','souceName');
+            // 提出部门
+            loadSelect(form, '/listDept','dept','id','dptName');
+            // 受理状态
+            loadSelect(form, '/getAllState','reqStatus','id','stateName');
+            // 实施方式
+            loadSelect(form, '/getAllExecType','execType','id','typeName');
+            // 受理人
+            loadSelect(form, '/getAllUser','nextUser','id','userName');
+            // 牵头项目组
+            loadSelect(form, '/listProTeam','leadTeam','id','teamName');
+            // 配合项目组
+            loadSelect(form, '/listProTeam','cooTeam','id','teamName');
         });
 	</script>
 </body>

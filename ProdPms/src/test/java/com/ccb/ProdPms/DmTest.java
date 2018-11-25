@@ -37,7 +37,7 @@ public class DmTest {
 	@Test
 	public void testQuery() throws Exception {
 		//List<DmdItemEntity> dmd = dmdManageMapper.getAllReqItem();
-		System.out.println(dmdManageMapper.getUploadFileOfReq("3"));
+		System.out.println(dmdManageMapper.getUploadFileOfReq("PR1811251017"));
 	}
 
 	// @Test
