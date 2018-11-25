@@ -135,7 +135,6 @@ public class DmdManageController {
 	@ResponseBody
 	public String search(@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize,
 			HttpServletRequest request) {
-
 		// Form接参
 		String reqNo = request.getParameter("reqNo");
 		String reqName = request.getParameter("reqName");
