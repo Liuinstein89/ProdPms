@@ -30,13 +30,22 @@
     <div class="layui-card-header" style="height: 55px">
         <div class="demoTable layui-inline" style="margin-top: 6px">
             <div class="layui-inline">
-                <input type="text" class="layui-input"  id="demoReload" style="width:300px" autocomplete="off" placeholder="请输入需求标题"/>
+  <input type="text" class="layui-input" id="reqName"
+  
+                       
+              style="width: 200px" autocomplete="off" placeholder="请输入需求标题" />
             </div>
-            <button class="layui-btn search_btn" id="demand_search" data-type="reload" type="button">查询</button>
-            <!--<button class="layui-btn layui-btn-xs layui-btn-primary" data-method="offset" data-type="t" id="hSearch" type="button" style="margin-left: 8px">高级查询</button>-->
+ <div class="layui-inline">
+                <input type="text" class="layui-input" id="onplanDate"
+                       style="width: 200px" autocomplete="off" placeholder="请选择上线时间" />
+            </div>
+           <button class="layui-btn search_btn" id="onplan_search" data-type="reload">
+                <i class="layui-icon">查询</i>
+            </button>
         </div>
-        <a  style="float:right;margin-top: 8px;" href="javascript:location.replace(location.href);" title="刷新">
-            <i class="layui-icon" style="font-size: 30px">&#xe9aa;</i>
+ <a style="float: right; margin-top: 8px;" 
+              href="javascript:location.replace(location.href);" title="刷新">  <i 
+			  class="layui-icon" style="font-size: 30px">&#xe9aa;</i>
         </a>
     </div>
     <div class="layui-card-body" style="margin-top: -15px">
@@ -46,71 +55,71 @@
     </div>
 </div>
 
-<!--<table class="layui-hide" id="test" lay-filter="test"></table>-->
+
 
 
 
 <script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-primary layui-btn-xs" lay-event="detail">查看</a>
+  
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<script type="text/html" id="reqnoTpl">
-    <a href="/admin/detail" class="layui-table-link" >{{ d.req_no }}</a>
-</script>
+
 
 
 <script src="../static/src/layui.js" charset="utf-8"></script>
 <script src="../static/src/public.js" charset="utf-8"></script>
 <script>
-    layui.use(['jquery','table','form','layer'], function () {
+     layui.use(['jquery','table','form','layer','laydate'], function () {
         var table = layui.table;
         var $ = layui.jquery;
         var form = layui.form;
+        var laydate = layui.laydate;
         layer = parent.layer === undefined ? layui.layer : top.layer;
-
-        // var index = layer.load(1);
+        var index = layer.load(1);
         //渲染
         var tableIns = table.render({
             elem: '#onplan_table'
-            // , height: 535
-            , title: '需求主表'
-            , url:'../static/demo2.json'//url: '/demand''
-            , page: {}
-            //,loading: false
+
+            , title: '上线计划主表'
+            , page: true
             , totalRow: false
             , limit: 10
             , toolbar: '#toolbarDemo'
-            , id:'testReload'
-
-            ,cols: [[
+            , id:'onplanReload'
+            , done: function (res, curr, count) {
+                //加载后回调
+                layer.close(index);//关闭
+            }
+            , cols: [[
                 {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
-                , {field: 'online_datetime', title: '上线时间', width: 120, fixed: 'left', unresize: true, sort: true,align:'center'}
-                , {field: 'req_no', title: '需求编号',width: 120,sort: true,templet: '#reqnoTpl'}
-                , {field: 'func_item', title: '需求项',  width: 100}
-                , {field: 'op_person', title: '用户', width: 100}
-
-                , {field: 'dev_no', title: '开发任务编号', width: 100}
-                , {field: 'online_plan_name', title: '上线计划名称', width: 120}
-                , {field: 'online_plan_desc', title: '上线计划描述'}
-                , {field: 'online_plan_status', title: '上线计划状态', width: 120}
-                , {field: 'create_date', title: '创建时间', width: 120, sort: true}
-                , {field: 'change_date', title: '修改时间', width: 100, hide:true,sort: true}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 165,unresize:true}
+                , {field: 'onlineDatetime', title: '上线时间', width: 100, fixed: 'left', unresize: true, sort: true,align:'left'}
+                , {field: 'onlinePlanDesc', title: '上线描述'}
+                , {field: 'reqNo', title: '需求编号', width: 120}
+                , {field: 'funcItem', title: '功能点',  width: 150}
+                , {field: 'devNo', title: '开发任务编号', width: 150}
+                , {field: 'id', title: 'id', width: 80,hide : true}
+                , {field: 'onlinePlanName', title: '上线计划名称', width: 120}
+                , {field: 'onlinePlanStatus', title: '上线计划状态',  width: 120}
+                , {field: 'reqName', title: '需求名称',  width: 150}
+                , {field: 'createDate', title: '创建日期',sort: true,width: 150}
+                , {field: 'changeDate', title: '修改日期',sort: true,width: 150,hide : true}
+                , {field: 'opPerson', title: '用户', width: 120,hide : true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 140}
             ]]
-
-            // ,response: {
-            //   statusName: 'status'
-            //   ,statusCode: 200
-            // }
-            // ,parseData: function(res){
-            //   return {
-            //     "status": res.status
-            //     ,"msg": res.message
-            //     ,"count": res.total
-            //     ,"data": res.data.list
-            //   };
+            ,data:[{
+                "reqNo":"sjdjf",
+                "onlineDatetime":"2018-6-7",
+            }]
+               // ,parseData: function(res){
+        
+            //     return {
+            //         "code": res.code
+            //         ,"msg": res.msg
+            //         ,"count": res.data.total
+            //         ,"data": res.data.list
+            //     };
             // }
 
         });
@@ -126,15 +135,15 @@
                         type:2,
                         maxmin: true,
                         skin: 'layui-layer-molv',
-                        title:'创建需求',
-                        area:['640px', '650px'],
-                        content: '/plan/add',
+                        title:'创建上线计划',
+                        area:['580px', '520px'],
+                        content: '/onplan/oadd',
                         success: function (layero, lockIndex) {
                             var body = layer.getChildFrame('body', lockIndex);
-                            //绑定解锁按钮的点击事件
+                          
                             body.find('button#close').on('click', function () {
                                 layer.close(lockIndex);
-                                //location.reload();//刷新
+                                location.reload();
                             });
                         }
                     });
@@ -153,93 +162,96 @@
 
         });
 
-        $("#demand_search").on("click",function(){
+ //普通搜索
+        $("#onplan_search").on("click",function(){
             // index = layer.load(1);//开启进度条
-            var demoReload = $('#demoReload').val();
-
-            if(demoReload != ''){
-                table.reload("testReload",{
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    },
+            var reqName = $('#reqName').val();
+            var onplanDate = $('#onplanDate').val();
+            if(reqName != ''||onplanDate != ''){
+                table.reload("onplanReload",{
                     where: {
-                        key: demoReload  //搜索的关键字
+                        reqName: reqName,  //搜索的关键字
+                        onlineDatetime:onplanDate,
                     },
-                    url:'',
-                    method:'post'
+                    url:'/search',
+                    method:'GET',
                 })
+            }else{
+                location.reload();
             }
-        });
+       
+ });
 
+        
 
-        //监听行工具事件
-        table.on('tool(onplan_table)', function (obj) {
-            var data = obj.data;
-            //console.log(obj)
-            if (obj.event === 'del') {
-                layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
-                    obj.del();
-                    layer.close(index);
-                    // $.get("删除文章接口",{
-                    //     newsId : data.newsId  //将需要删除的newsId作为参数传入
-                    //     },function(data){
-                    //         tableIns.reload();
-                    //         layer.close(index);
-                    // })
-                });
-            } else if (obj.event === 'edit') {
-                editDemandList(data);
-            }
-        });
-        function editDemandList(data){
-            parent.layer.open({
-                title : "编辑页面",
-                type : 2,
-                maxmin: true,
-                skin: 'layui-layer-molv',
-                shadeClose: false,
-                shade: 0.3,
-                area: ['640px', '650px'],
-                // area : [ '100%', '100%' ],
-                content: ['/plan/edit','yes'],//跳转的页面
-                success : function(layero, index){
-
-                    var body = parent.layer.getChildFrame('body', index);
-
-                    body.find('button#close').on('click', function() {
-                        parent.layer.close(index);
-                        location.reload();//刷新
-                    });
-                    pubUtil.load(body, data);//填充表单
-                }
-            })
-
-        }
-
-        //监听表格行点击
+//监听表格行点击
         table.on('tr', function (obj) {
             console.log(obj)
         });
-
         //监听表格复选框选择
         table.on('checkbox(onplan_table)', function (obj) {
             console.log(obj)
         });
 
-        //监听表格单选框选择
-        table.on('rowDouble(onplan_table)', function (obj) {
-            console.log(obj);
+        //监听行工具事件
+        table.on('tool(onplan_table)', function (obj) {
+            var data = obj.data;
+           
+            if (obj.event === 'del') {
+              
+delOnplanList(data);
+            } else if (obj.event === 'edit') {
+                 editOnplanList(data);
+            }
         });
+       function editOnplanList(data){
+            layer.open({
+                title : "编辑上线计划",
+                type : 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area:['580px', '520px'],
+                boolean: true,
+                content:  '/onplan/oedit',//跳转的页面
+                success : function(layero, index){
+                    var body = layer.getChildFrame('body', index);
+                    body.find('button#close').on('click', function() {
+                        layer.close(index);
+                        location.reload();//刷新
+                    });
+                    pubUtil.load(body, data);//填充表单
+                }
+            })
+        }
 
-        //监听单元格编辑
-        table.on('edit(onplan_table)', function (obj) {
-            var value = obj.value //得到修改后的值
-                , data = obj.data //得到所在行所有键值
-                , field = obj.field; //得到字段
-
-            console.log(obj)
-        });
-
+      
+  function delOnplanList(data) {
+            layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
+                $.ajax({
+                    url: '/delReqById',
+                    data: {
+                        id: data.id //将需要删除的Id作为参数传入
+                    },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // layer.close(loadindex);//关闭进程对话框
+                        if (data == "success") {
+                            pubUtil.msg("删除成功", layer, 1, function () {
+                                location.reload();//刷新
+                            }, 1000);
+                        } else {
+                            pubUtil.msg("删除成功", layer, 2, function () {
+                            
+                      }, 1000);  
+                    }
+ }
+                });
+            });
+      
+  }
 
         //监听排序
         table.on('sort(onplan_table)', function (obj) {
@@ -257,6 +269,13 @@
             });
         });
 
+  //上线时间选择
+        var onplanDate= laydate.render({
+            elem: '#onplanDate',//选择器结束时间
+            theme: 'molv',
+            min:"1970-1-1",//设置min默认最小值
+            max:"2099-12-31",
+        });
 
         var $ = layui.jquery, active = {
             parseTable: function () {

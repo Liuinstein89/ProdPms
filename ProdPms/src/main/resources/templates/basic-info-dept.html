@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>部门管理</title>
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
+<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/src/public.js" charset="utf-8"></script>
+    <style type="text/css">
+        /* .layui-form select{
+            display: block;
+        } */
+        body{
+            padding: 10px 20px 170px 20px;
+            /* padding-bottom: 180px; */
+            /* background: #eee; */
+        }
+        .grid-demo{ line-height: 50px;  background-color: #79C48C; color: #fff;font-size: 16px;}
+        .layui-card{
+            
+        
+        
+box-shadow: 2px 2px 8px 2px rgba(50,50,50,0.25);
+        }
+        .layui-table{
+            margin-top:-15px;
+        }
+        .layui-table-body{
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body >
+
+<script type="text/html" id="toolbarDpt">
+    <div class="layui-btn-container layui-inline ">
+        <button class="layui-btn layui-btn-sm layui-btn-warm" id="add_dpt_btn" lay-event="addDpt"><i class="layui-icon">&#xe654;</i>&nbsp;新增</button>
+        <button class="layui-btn layui-btn-sm " id="dptUpload" lay-event="imexecel"><i class="layui-icon">&#xe621;</i>&nbsp;导入</button>
+    </div>
+</script>
+
+
+            <div class="layui-card">
+                <div class="layui-card-header grid-demo">
+                    部门管理
+                </div>
+                <div class="layui-card-body">
+                    <!-- 部门管理 -->
+                    <table id="dpt" lay-filter="dpt"></table>
+             
+        </div>
+
+
+    </div>
+
+<script type="text/html" id="barDemo">
+	<a class="layui-btn layui-btn-xs" lay-event="edit"><i class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+</script>
+
+
+
+<script type="text/javascript">
+    layui.use(['jquery','table','form','layer','upload'], function(){
+        var table = layui.table;
+         $ = layui.jquery;
+        var form = layui.form;
+        var upload = layui.upload;
+        layer = parent.layer === undefined ? layui.layer : top.layer;
+        //部门管理表格渲染
+        table.render({
+            elem: '#dpt'
+            ,url:'/listDept'
+            ,page: { 
+                curr: 5
+                ,groups: 1
+                ,first: false
+                ,last: false
+                ,layout: ['prev', 'page', 'next', 'count'] //自定义分页布局
+            }
+            ,cellMinWidth: 80
+            ,toolbar: '#toolbarDpt'
+            ,cols: [[
+                {field: 'id', title: '序号' , width: 100, fixed: 'left', unresize: true, sort: true,align:'left'}
+                ,{field: 'dptName', title: '部门名称'}
+                ,{field: 'dptCode', title: '部门编号', width: 100}
+                ,{field: 'createTime', title: '创建时间'}
+                ,{field: 'changeTime', title: '修改时间'}
+                ,{field: 'opPerson', title: '创建人', width: 100}
+                ,{title:'操作', align:'center', toolbar: '#barDemo',fixed:'right', width: 100}
+            ]]
+            ,page: true //是否显示分页
+            ,limits: [5,10]
+            ,limit: 5 //每页默认显示的数量
+            ,parseData: function(res){
+				return {
+	                     "code": res.code
+	                     ,"msg": res.msg
+	                     ,"count": res.data.total
+	                     ,"data": res.data.list
+	                   };
+             }
+        });
+
+        //功能点管理工具条监听
+        table.on('tool(dpt)', function (obj) {
+
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的DOM对象
+
+            if (layEvent === 'edit'){ //编辑数据
+                editdptList(data);
+
+            }else if (layEvent == 'del'){ //删除数据
+                deldptList(data);
+            }
+        });
+ 		$("#add_dpt_btn").on('click',function () {
+    		adddptList();
+        })
+        
+        function editdptList(data){
+            layer.open({
+                title : "编辑页面",
+                type : 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area: ['600px', '520px'],
+                content: ['/basicinfo/deptedit','yes'],//跳转的页面
+                success : function(layero, index){
+                    var body = layer.getChildFrame('body', index);
+                    body.find('button#close').on('click', function() {
+                        layer.close(index);
+                        location.reload();
+                    });
+                    pubUtil.load(body, data);//填充表单
+                }
+            })
+        }
+ 
+        function deldptList(data){
+            layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'},function (index) {
+                $.ajax({
+                    url: '/delDptById',
+                    data: {
+                        id: data.id //将需要删除的Id作为参数传入
+                    },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (repData) {
+                        // layer.close(loadindex);//关闭进程对话框
+                        if (repData == "success") {
+                            pubUtil.msg("删除成功", layer, 1, function () {
+                                location.reload();//刷新
+                            }, 1000);
+                        } else {
+                            pubUtil.msg("删除失败", layer, 2, function () {
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+        }
+        
+        function adddptList() {
+            //增加
+            layer.open({
+                type: 2,
+                title: '增加页面',
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area: ['580px', '460px'],
+                content: '/basicinfo/deptadd',//跳转的页面
+                success:function(layero,index){
+                    var body = layer.getChildFrame('body', index);
+                    body.find('button#close').on('click', function() {
+                        layer.close(index);
+                        location.reload();
+                    });
+                }
+            });
+        }
+        
+       //导入
+         upload.render({
+            elem: '#dptUpload'
+            ,url: '/importDptExcel'
+            ,accept: 'file' //普通文件
+           	,data:{userName: 'admin'}
+            ,done: function(res){
+                console.log(res);
+ if (res.code == 0) {
+                     pubUtil.msg("导入成功", layer, 1, function () {
+                         location.reload();//刷新
+                     }, 1000);
+                 } else  {
+                     pubUtil.msg("导入失败", layer, 2, function () {
+                     },  2000);
+                 }
+            }
+        }); 
+       
+       //悬停提示
+     	function showMsg(msg, id){
+    	   var layer1 = layui.layer;
+             var tip_index = 0;
+             $(document).on('mouseenter', id, function(){
+                 tip_index = layer1.tips(msg, this, {tips:[1,'#009688'],time: 0});
+             }).on('mouseleave', id, function(){
+            	 layer1.close(tip_index);
+             });
+     	}
+         showMsg("请按顺序导入除序号和创建时间以外的其他字段！",'#dptUpload');
+   });
+</script>
+</body>
+</html>

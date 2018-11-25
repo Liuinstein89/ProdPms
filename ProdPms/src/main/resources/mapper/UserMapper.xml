@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<!-- xml的namespace要写成mapper接口的路径 -->
+<mapper namespace="com.ccb.ProdPms.mapper.UserMapper">
+
+    <resultMap id="userMapper" type="com.ccb.ProdPms.entity.UserEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="user_password" property="userPassword" jdbcType="VARCHAR"/>
+        <result column="user_dep" property="userDep" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="call" property="call" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime" jdbcType="DATE"/>
+        <result column="modi_time" property="modiTime" jdbcType="DATE"/>
+    </resultMap>
+
+    <sql id="Basic_User_Columns">
+		id,user_name,user_password,user_dep,
+        email,call,create_time,modi_time,sex
+	</sql>
+
+    <!-- 查询表中的所有记录 -->
+    <select id="selectAllUser" resultMap="userMapper">
+        select *
+        <!--<include refid="Basic_User_Columns" />-->
+        from user
+        where is_deleted=0
+    </select>
+
+    <!-- 通过条件查询某个用户 -->
+    <select id="selectUserByParams" parameterType="com.ccb.ProdPms.entity.UserQueryEntity" resultMap="userMapper">
+        select id, user_name, user_password, user_dep, email, call, sex, create_time, modi_time, sex
+        from user
+        where is_deleted=0
+        <if test="id!=null and id!=''">
+            and id like '%${id}%'
+        </if>
+        <if test="userName!=null and userName!=''">
+            and user_name like '%${userName}%'
+        </if>
+        <if test="userPassword!=null and userPassword!=''">
+            and user_password like '%${userPassword}%'
+        </if>
+        <if test="userDep!=null and userDep!=''">
+            and user_dep like '%${userDep}%'
+        </if>
+        <if test="email!=null and email!=''">
+            and email like '%${email}%'
+        </if>
+        <if test="call!=null and call!=''">
+            and call like '%${call}%'
+        </if>
+        <if test="sex!=null and sex!=''">
+            and sex like '%${sex}%'
+        </if>
+        <if test="beginTime!=null and endTime!=null">
+            and create_time between #{beginTime} and #{endTime}
+        </if>
+    </select>
+
+    <!-- 通过username查询某个用户 -->
+    <select id="selectByName" resultMap="userMapper">
+        select id, user_name, user_password, user_dep, email, call, sex, create_time, modi_time, sex
+        from user
+        where user_name like '%${userName}%'
+    </select>
+
+    <!-- 新增用户 -->
+    <!-- call为关键字，应该为`call` -->
+    <insert id="insertUser" parameterType="com.ccb.ProdPms.entity.UserEntity">
+        insert into user
+        (user_name, user_password, user_dep, email, `call`, sex, create_time, modi_time, is_deleted)
+        values (#{userName,jdbcType=VARCHAR},
+        #{userPassword,jdbcType=VARCHAR}, #{userDep,jdbcType=VARCHAR},
+        #{email,jdbcType=VARCHAR}, #{call,jdbcType=VARCHAR},
+        #{sex,jdbcType=VARCHAR}, now(), null, 0)
+    </insert>
+
+    <!-- 修改用户信息 -->
+    <update id="updateUser" parameterType="com.ccb.ProdPms.entity.UserEntity">
+        update user set
+        user_name = #{userName,jdbcType=VARCHAR},
+        user_password = #{userPassword,jdbcType=VARCHAR},
+        user_dep = #{userDep,jdbcType=VARCHAR},
+        email = #{email,jdbcType=VARCHAR},
+        `call` = #{call,jdbcType=VARCHAR},
+        sex = #{sex,jdbcType=VARCHAR},
+        modi_time=#{modiTime,jdbcType=VARCHAR}
+        where
+        is_deleted = 0 and
+        id=#{id,jdbcType=INTEGER}
+    </update>
+
+    <!-- 删除用户 -->
+    <update id="deletedUser" parameterType="com.ccb.ProdPms.entity.UserEntity">
+        update user
+        set is_deleted = 1
+        where id=#{id}
+    </update>
+
+</mapper>

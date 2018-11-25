@@ -3,41 +3,91 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ccb.ProdPms.mapper.ReqSourceMapper">
-    <select id="queryReqSource" resultType="com.ccb.ProdPms.entity.ReqSourceEntity">
-        SELECT *
-        FROM req_source
+
+    <resultMap id="ReqSourceMap"
+               type="com.ccb.ProdPms.entity.ReqSourceEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="souce_name" property="souceName"
+                jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime"
+                jdbcType="DATE" />
+        <result column="change_time" property="changeTime" jdbcType="DATE" />
+        <result column="op_person"
+                property="opPerson" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Basic_ReqSource_Columns">
+        id, souce_name, create_time,change_time,op_person
+    </sql>
+
+    <!-- 获取全部 -->
+    <select id="getAll" resultMap="ReqSourceMap">
+        select
+        <include refid="Basic_ReqSource_Columns" />
+        from req_source
+        where is_deleted = 0
     </select>
 
-    <select id="queryReqSourceById" resultType="com.ccb.ProdPms.entity.ReqSourceEntity">
-        SELECT *
-        FROM req_source
-        WHERE id=#{id}
+    <!-- 获取指定 -->
+    <select id="findByName" parameterType="java.lang.String" resultType="Integer">
+        select
+        count(*)
+        from req_source
+        where is_deleted = 0 and souce_name = #{souceName,jdbcType=VARCHAR}
     </select>
 
-    <insert id="insertReqSource" useGeneratedKeys="true" keyProperty="id"
-            keyColumn="id" parameterType="com.ccb.ProdPms.entity.ReqSourceEntity">
-        INSERT INTO
-        req_source(souce_name,
-        create_time,change_time,is_deleted,op_person)
-        VALUES
-        (#{souceName},
-        #{createTime},#{changeTime},#{isDeleted},#{opPerson})
+    <!-- 添加信息，参数的初始值在代码中做处理 -->
+    <insert id="insertReqSource"
+            parameterType="com.ccb.ProdPms.entity.ReqSourceEntity">
+        insert into
+        req_source
+        (souce_name, create_time,change_time,is_deleted,op_person)
+        values
+        (#{souceName,jdbcType=VARCHAR},
+        #{createTime,jdbcType=VARCHAR},
+        #{changeTime,jdbcType=VARCHAR},
+        0,
+        #{opPerson,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateReqSource" parameterType="com.ccb.ProdPms.entity.ReqSourceEntity">
-        update req_source
-        <set>
-            <if test="souceName != null">souce_name=#{souceName},</if>
-            <if test="createTime != null">create_time=#{createTime},</if>
-            <if test="changeTime != null">change_time=#{changeTime},</if>
-            <if test="isDeleted != null">is_deleted=#{isDeleted},</if>
-            <if test="opPerson != null">op_person=#{opPerson}</if>
-        </set>
-        where id=#{id}
+    <!-- 修改信息，参数的初始值在代码中做处理 -->
+    <update id="updateReqSource"
+            parameterType="com.ccb.ProdPms.entity.ReqSourceEntity">
+        update req_source set
+        souce_name=#{souceName,jdbcType=VARCHAR},
+        change_time=#{changeTime,jdbcType=VARCHAR},
+        op_person=#{opPerson,jdbcType=VARCHAR}
+        where
+        is_deleted =0 and
+        id=#{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteReqSource">
-        DELETE FROM  req_source
-        WHERE id = #{id}
-    </delete>
+    <!-- 修改信息，参数的初始值在代码中做处理 -->
+    <update id="updateExcelReqSource"
+            parameterType="com.ccb.ProdPms.entity.ReqSourceEntity">
+        update req_source set
+        souce_name=#{souceName,jdbcType=VARCHAR},
+        change_time=#{changeTime,jdbcType=VARCHAR}
+        where
+        is_deleted =0 and
+        souce_name=#{souceName,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 获取指定 -->
+    <select id="findOne" resultMap="ReqSourceMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Basic_ReqSource_Columns" />
+        from req_source
+        where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 假删除-->
+    <update id="deleteById" parameterType="java.lang.Integer">
+        update req_source set
+        is_deleted =1
+        where
+        id = #{id,jdbcType=INTEGER}
+    </update>
+
 </mapper>

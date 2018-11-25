@@ -1,15 +1,38 @@
 package com.ccb.ProdPms.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ReqSourceEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private String souceName,opPerson;
-    private Date createTime, changeTime;
+    private String createTime, changeTime;
     private int isDeleted;
+
+    public ReqSourceEntity() {
+    }
+
+    public ReqSourceEntity(String souceName, String opPerson, String createTime) {
+
+        this.souceName = souceName;
+        this.opPerson = opPerson;
+        this.createTime = createTime;
+    }
+
+    public ReqSourceEntity(Long id, String souceName,String changeTime) {
+        this.id = id;
+        this.souceName = souceName;
+//        this.opPerson = opPerson;
+        this.changeTime = changeTime;
+    }
+
+    public ReqSourceEntity(String souceName,   String changeTime) {
+
+        this.souceName = souceName;
+
+        this.changeTime = changeTime;
+    }
 
     public Long getId() {
         return id;
@@ -35,19 +58,19 @@ public class ReqSourceEntity implements Serializable {
         this.opPerson = opPerson;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getChangeTime() {
+    public String getChangeTime() {
         return changeTime;
     }
 
-    public void setChangeTime(Date changeTime) {
+    public void setChangeTime(String changeTime) {
         this.changeTime = changeTime;
     }
 

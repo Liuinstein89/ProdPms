@@ -3,46 +3,103 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ccb.ProdPms.mapper.ProjectTeamMapper">
-    <select id="queryProjectTeam" resultType="com.ccb.ProdPms.entity.ProjectTeamEntity">
-        SELECT *
-        FROM project_team
+
+
+    <resultMap id="ProjectTeamMap"
+               type="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="team_name" property="teamName" jdbcType="VARCHAR" />
+        <result column="belong_dpt_code" property="belongDptCode" jdbcType="VARCHAR" />
+        <result column="team_leader" property="teamLeader" jdbcType="VARCHAR" />
+        <result column="teammate_num" property="teammateNum" jdbcType="INTEGER" />
+        <result column="teammate" property="teammate" jdbcType="VARCHAR" />
+        <result column="create_time" property="createTime" jdbcType="DATE" />
+        <result column="change_time" property="changeTime" jdbcType="DATE" />
+        <result column="op_person" property="opPerson" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Basic_ProjectTeam_Columns">
+        id, team_name,belong_dpt_code,team_leader,teammate_num,teammate,create_time,change_time,op_person
+    </sql>
+
+    <!-- 获取全部 -->
+    <select id="getAll" resultMap="ProjectTeamMap">
+        select
+        <include refid="Basic_ProjectTeam_Columns" />
+        from project_team
+        where is_deleted = 0
     </select>
 
-    <select id="queryProjectTeamById" resultType="com.ccb.ProdPms.entity.ProjectTeamEntity">
-        SELECT *
-        FROM project_team
-        WHERE id=#{id}
+    <!-- 获取指定数目 -->
+    <select id="findByName" parameterType="java.lang.String" resultType="Integer">
+        select
+        count(*)
+        from project_team
+        where is_deleted = 0 and team_name = #{teamName,jdbcType=VARCHAR}
     </select>
 
-    <insert id="insertProjectTeam" useGeneratedKeys="true" keyProperty="id"
-            keyColumn="id" parameterType="com.ccb.ProdPms.entity.ProjectTeamEntity">
-        INSERT INTO
-        project_team(team_name,belong_dpt_code,team_leader,teammate_num,teammate,
-        create_time,change_time,is_deleted,op_person)
-        VALUES
-        (#{teamName},#{belongDptCode},#{teamLeader},#{teammateNum},#{teammate},
-        #{createTime},#{changeTime},#{isDeleted},#{opPerson})
+    <!-- 添加，参数的初始值在代码中做处理 -->
+    <insert id="insertProjectTeam"
+            parameterType="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        insert into
+        project_team
+        (team_name,belong_dpt_code,team_leader,teammate_num,teammate,create_time,change_time,is_deleted,op_person)
+        values
+        (#{teamName,jdbcType=VARCHAR},
+        #{belongDptCode,jdbcType=VARCHAR},
+        #{teamLeader,jdbcType=VARCHAR},
+        #{teammateNum,jdbcType=INTEGER},
+        #{teammate,jdbcType=VARCHAR},
+        #{createTime,jdbcType=VARCHAR},
+        #{changeTime,jdbcType=VARCHAR},
+        0, #{opPerson,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateProjectTeam" parameterType="com.ccb.ProdPms.entity.ProjectTeamEntity">
-        update project_team
-        <set>
-            <if test="teamName != null">team_name=#{teamName},</if>
-            <if test="belongDptCode != null">belong_dpt_code=#{belongDptCode},</if>
-            <if test="teamLeader != null">team_leader=#{teamLeader},</if>
-            <if test="teammateNum != null">teammate_num=#{teammateNum},</if>
-            <if test="teammate != null">is_deleted=#{teammate},</if>
-            <if test="createTime != null">create_time=#{createTime},</if>
-            <if test="changeTime != null">change_time=#{changeTime},</if>
-            <if test="isDeleted != null">is_deleted=#{isDeleted},</if>
-            <if test="opPerson != null">op_person=#{opPerson}</if>
-        </set>
-        where id=#{id}
+    <!-- 修改信息，参数的初始值在代码中做处理 -->
+    <update id="updateProjectTeam"
+            parameterType="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        update project_team set
+        team_name=#{teamName,jdbcType=VARCHAR},
+        belong_dpt_code=#{belongDptCode,jdbcType=VARCHAR},
+        team_leader=#{teamLeader,jdbcType=VARCHAR},
+        teammate_num=#{teammateNum,jdbcType=INTEGER},
+        teammate=#{teammate,jdbcType=VARCHAR},
+        change_time=#{changeTime,jdbcType=VARCHAR}
+        where
+        is_deleted =0 and
+        id=#{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteProjectTeam">
-        DELETE FROM
-        project_team
-        WHERE id =#{id}
-    </delete>
+    <!-- 修改信息，参数的初始值在代码中做处理 -->
+    <update id="updateExcelProjectTeam"
+            parameterType="com.ccb.ProdPms.entity.ProjectTeamEntity">
+        update project_team set
+        team_name=#{teamName,jdbcType=VARCHAR},
+        belong_dpt_code=#{belongDptCode,jdbcType=VARCHAR},
+        team_leader=#{teamLeader,jdbcType=VARCHAR},
+        teammate_num=#{teammateNum,jdbcType=INTEGER},
+        teammate=#{teammate,jdbcType=VARCHAR},
+        change_time=#{changeTime,jdbcType=VARCHAR}
+        where
+        is_deleted =0 and
+        team_name=#{teamName,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 获取指定 -->
+    <select id="findOne" resultMap="ProjectTeamMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Basic_ProjectTeam_Columns" />
+        from project_team
+        where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 假删除 -->
+    <update id="deleteById" parameterType="java.lang.Integer">
+        update project_team set
+        is_deleted =1
+        where
+        id = #{id,jdbcType=INTEGER}
+    </update>
+
 </mapper>

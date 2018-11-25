@@ -22,7 +22,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">需求编号：</label>
 					<div class="layui-input-block">
-						<input type="text" name="reqNo"  id="edit_id"  disabled="disabled" autocomplete="off" class="layui-input"/>
+							<input type="text" name="reqNo" id="edit_id" readonly="" autocomplete="off" class="layui-input" style="background-color: #e0e0e0"/>
 					</div>
 
 				</div>
@@ -86,9 +86,9 @@
 				</div>
 
 				<div class="layui-form-item">
-					<div class="layui-input-block">
-						<button class="layui-btn "  id="edit_form_btn" lay-submit="" lay-filter="edit_form_btn">确认</button>
-						<button type="button" id="close" class="layui-btn layui-btn-primary">关闭</button>
+						<div class="layui-input-block" style="float: right">
+						<button type="button" class="layui-btn layui-btn-primary" id="close">关闭</button>
+						<button class="layui-btn" id="edit_form_btn" lay-submit="" lay-filter="edit_form_btn">立即提交</button>
 					</div>
 				</div>
 			</form>
@@ -112,13 +112,13 @@
                         success : function(obj) {
                             //layer.close(index);//关闭
                             if (obj=="success") {
-                                pubUtil.msg(obj.msg, layer, 1, function() {
+                                pubUtil.msg("编辑成功", layer, 1, function() {
                                     $("#close").click();
                                     location.reload();
-                                }, 300);
+                                }, 1000);
                             } else {
-                                pubUtil.msg(obj.msg, layer, 2, function() {
-                                }, 5 * 100);
+                                pubUtil.msg("编辑失败", layer, 2, function() {
+                                }, 1000);
                             }
                         }
                     });

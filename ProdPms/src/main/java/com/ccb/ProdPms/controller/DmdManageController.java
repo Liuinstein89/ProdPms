@@ -56,7 +56,7 @@ public class DmdManageController {
 
 	@Autowired
 	DmdOnlinePlanService dmdOnlinePlanService;
-
+	Map<String, Object> map = new HashMap<String, Object>();
 	// 查询: @GetMapping
 	// 插入，H5调用跨域用Jsonp: @PostMapping
 	// 更新 @PutMapping
@@ -113,7 +113,101 @@ public class DmdManageController {
 		return "demand-detail";
 	}
 
-	Map<String, Object> map = new HashMap<String, Object>();
+	// 部门管理
+	@RequestMapping("/basicinfo/dept")
+	public String basicDept() {
+		return "basic-info-dept";
+	}
+
+	@RequestMapping("/basicinfo/deptedit")
+	public String deptEdit() {
+		return "basic-info-dept-edit";
+	}
+
+	@RequestMapping("/basicinfo/deptadd")
+	public String deptAdd() {
+		return "basic-info-dept-add";
+	}
+
+//需求来源管理
+	@RequestMapping("/basicinfo/reqSource")
+	public String basicreqSource() {
+		return "basic-info-req";
+	}
+
+	@RequestMapping("/basicinfo/reqSourceedit")
+	public String reqSourceEdit() {
+		return "basic-info-req-edit";
+	}
+
+	@RequestMapping("/basicinfo/reqSourceadd")
+	public String reqSourceAdd() {
+		return "basic-info-req-add";
+	}
+
+//项目组管理
+	@RequestMapping("/basicinfo/proTeam")
+	public String basicproTeam() {
+		return "basic-info-proj";
+	}
+
+	@RequestMapping("/basicinfo/proTeamedit")
+	public String reqproTeamEdit() {
+		return "basic-info-proj-edit";
+	}
+
+	@RequestMapping("/basicinfo/proTeamadd")
+	public String reqproTeamAdd() {
+		return "basic-info-proj-add";
+	}
+
+	// ========用户管理===========================================
+	@RequestMapping("/basicinfo/user")
+	public String basicuser() {
+		return "basic-info-user";
+	}
+
+	@RequestMapping("basicinfo/useredit")
+	public String useredit() {
+		return "basic-info-user-edit";
+	}
+
+	@RequestMapping("basicinfo/useradd")
+	public String useradd() {
+		return "basic-info-user-add";
+	}
+
+	// ========状态管理===========================================
+	@RequestMapping("/basicinfo/state")
+	public String basicstate() {
+		return "basic-info-state";
+	}
+
+	@RequestMapping("basicinfo/stateedit")
+	public String stateedit() {
+		return "basic-info-state-edit";
+	}
+
+	@RequestMapping("basicinfo/stateadd")
+	public String stateadd() {
+		return "basic-info-state-add";
+	}
+
+// ========实施方式===========================================
+	@RequestMapping("/basicinfo/exectype")
+	public String basicexectype() {
+		return "basic-info-exectype";
+	}
+
+	@RequestMapping("basicinfo/exectypeedit")
+	public String exectypeedit() {
+		return "basic-info-exectype-edit";
+	}
+
+	@RequestMapping("basicinfo/exectypeadd")
+	public String exectypeadd() {
+		return "basic-info-exectype-add";
+	}
 
 	// 初始化列表显示全部已创建需求项，注意分页显示
 	@GetMapping("/demand")
@@ -198,12 +292,16 @@ public class DmdManageController {
 		// if(cmr.isMultipart(request)){
 		// 将request转换成多分解请求
 		// MultipartHttpServletRequest mhs = cmr.resolveMultipart(request);
-		
-		//为什么注释掉下面三行？一只获取不到filelist，怎么解决呢？
-		/*MultipartResolver resolver = new CommonsMultipartResolver(request.getSession().getServletContext());
-		MultipartHttpServletRequest multipartRequest = resolver.resolveMultipart(request);
-		List<MultipartFile> fileList = multipartRequest.getFiles("file");*/
-		List<MultipartFile> fileList =((MultipartHttpServletRequest)request).getFiles("file");
+
+		// 为什么注释掉下面三行？一只获取不到filelist，怎么解决呢？
+		/*
+		 * MultipartResolver resolver = new
+		 * CommonsMultipartResolver(request.getSession().getServletContext());
+		 * MultipartHttpServletRequest multipartRequest =
+		 * resolver.resolveMultipart(request); List<MultipartFile> fileList =
+		 * multipartRequest.getFiles("file");
+		 */
+		List<MultipartFile> fileList = ((MultipartHttpServletRequest) request).getFiles("file");
 
 		// 新增需求主表项
 		try {
@@ -283,20 +381,20 @@ public class DmdManageController {
 	}
 
 	// 点击某需求，查看详情时列出相关联的上传文件
-		@GetMapping("/listRelateUploadFile")
-		@ResponseBody
-		public String listUploadFileOfReq(@RequestParam(value = "reqNo") String reqNo,@RequestParam(value = "page") Integer pageNum,
-				@RequestParam(value = "limit") Integer pageSize) {
-			List<UploadFileEntity> upList = new ArrayList<UploadFileEntity>();
-			PageHelper.startPage(pageNum, pageSize);
-			upList = dmdManageService.getRelateFile(reqNo);
-			PageInfo<UploadFileEntity> upPageInfo = new PageInfo<>(upList);
-			map.put("code", 0);
-			map.put("msg", "ok");
-			map.put("data", upPageInfo);
-			return JSONObject.toJSONString(map);
-		}
-	
+	@GetMapping("/listRelateUploadFile")
+	@ResponseBody
+	public String listUploadFileOfReq(@RequestParam(value = "reqNo") String reqNo,
+			@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize) {
+		List<UploadFileEntity> upList = new ArrayList<UploadFileEntity>();
+		PageHelper.startPage(pageNum, pageSize);
+		upList = dmdManageService.getRelateFile(reqNo);
+		PageInfo<UploadFileEntity> upPageInfo = new PageInfo<>(upList);
+		map.put("code", 0);
+		map.put("msg", "ok");
+		map.put("data", upPageInfo);
+		return JSONObject.toJSONString(map);
+	}
+
 	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
 	@PostMapping("/addReqItem")
 	public String addReqItem(DmdItemFuncDto dmdItemFuncDto) {

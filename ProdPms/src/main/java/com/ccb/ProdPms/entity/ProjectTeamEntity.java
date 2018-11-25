@@ -1,15 +1,59 @@
 package com.ccb.ProdPms.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class ProjectTeamEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id,teammateNum;
     private String teamName,belongDptCode,teamLeader,teammate,opPerson;
-    private Date createTime, changeTime;
+    private String createTime, changeTime;
     private int isDeleted;
+
+    public ProjectTeamEntity() {
+    }
+
+    public ProjectTeamEntity( Long teammateNum,String teamName, String belongDptCode, String teamLeader, String teammate,
+                              String opPerson,String createTime) {
+
+        this.teammateNum = teammateNum;
+        this.teamName = teamName;
+        this.belongDptCode = belongDptCode;
+        this.teamLeader = teamLeader;
+        this.teammate = teammate;
+        this.teamLeader = teamLeader;
+        this.teamLeader = teamLeader;
+        this.opPerson = opPerson;
+        this.createTime = createTime;
+    }
+
+    public ProjectTeamEntity( Long id,Long teammateNum,String teamName, String belongDptCode, String teamLeader, String teammate,String changeTime) {
+        this.id = id;
+        this.teammateNum = teammateNum;
+        this.teamName = teamName;
+        this.belongDptCode = belongDptCode;
+        this.teamLeader = teamLeader;
+        this.teammate = teammate;
+        this.teamLeader = teamLeader;
+        this.teamLeader = teamLeader;
+//        this.opPerson = opPerson;
+        this.changeTime = changeTime;
+    }
+
+
+    public ProjectTeamEntity(Long teammateNum,String teamName, String belongDptCode, String teamLeader, String teammate, String changeTime) {
+
+        this.teammateNum = teammateNum;
+        this.teamName = teamName;
+        this.belongDptCode = belongDptCode;
+        this.teamLeader = teamLeader;
+        this.teammate = teammate;
+        this.teamLeader = teamLeader;
+        this.teamLeader = teamLeader;
+        this.opPerson = opPerson;
+        this.changeTime = changeTime;
+    }
+
 
     public Long getId() {
         return id;
@@ -67,19 +111,19 @@ public class ProjectTeamEntity implements Serializable {
         this.opPerson = opPerson;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getChangeTime() {
+    public String getChangeTime() {
         return changeTime;
     }
 
-    public void setChangeTime(Date changeTime) {
+    public void setChangeTime(String changeTime) {
         this.changeTime = changeTime;
     }
 

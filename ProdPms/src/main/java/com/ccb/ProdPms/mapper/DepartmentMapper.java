@@ -5,43 +5,18 @@ import com.ccb.ProdPms.entity.DepartmentEntity;
 import java.util.List;
 
 public interface DepartmentMapper {
+    List<DepartmentEntity> getAll();
 
+    void updateDept(DepartmentEntity departmentEntity);
 
-    /**
-     * 列出部门列表
-     *
-     * @return departmentList
-     */
-    List<DepartmentEntity> queryDepartment();
+    DepartmentEntity findOne(Integer id);
 
-    /**
-     * 根据Id列出具体部门
-     *
-     * @return department
-     */
-    DepartmentEntity queryDepartmentById(int id);
+    void deleteById(Integer id);
 
-    /**
-     * 插入部门信息
-     *
-     * @param department
-     * @return
-     */
-    int insertDepartment(DepartmentEntity department);
+    void insertDept(DepartmentEntity departmentEntity);
 
-    /**
-     * 更新部门信息
-     *
-     * @param department
-     * @return
-     */
-    int updateDepartment(DepartmentEntity department);
+    int findByName(String departmentName);
 
-    /**
-     * 删除部门信息
-     *
-     * @param id
-     * @return
-     */
-    int deleteDepartment(int id);
+    void updateExcelDept(DepartmentEntity departmentEntity2);
+
 }

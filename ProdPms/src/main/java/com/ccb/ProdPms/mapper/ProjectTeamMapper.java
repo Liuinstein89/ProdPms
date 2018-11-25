@@ -6,41 +6,19 @@ import java.util.List;
 
 public interface ProjectTeamMapper {
 
-    /**
-     * 列出项目组列表
-     *
-     * @return projectTeamList
-     */
-    List<ProjectTeamEntity> queryProjectTeam();
+    List<ProjectTeamEntity> getAll();
 
-    /**
-     * 根据Id列出具体项目组
-     *
-     * @return projectTeam
-     */
-    ProjectTeamEntity queryProjectTeamById(int id);
+    void updateProjectTeam(ProjectTeamEntity projectTeamEntity);
 
-    /**
-     * 插入项目组信息
-     *
-     * @param projectTeam
-     * @return
-     */
-    int insertProjectTeam(ProjectTeamEntity projectTeam);
+    ProjectTeamEntity findOne(Integer id);
 
-    /**
-     * 更新项目组信息
-     *
-     * @param projectTeam
-     * @return
-     */
-    int updateProjectTeam(ProjectTeamEntity projectTeam);
+    void deleteById(Integer id);
 
-    /**
-     * 删除项目组信息
-     *
-     * @param id
-     * @return
-     */
-    int deleteProjectTeam(int id);
+    void insertProjectTeam(ProjectTeamEntity projectTeamEntity);
+
+    int findByName(String teamName);
+
+    void updateExcelProjectTeam(ProjectTeamEntity projectTeamEntity2);
+
+
 }

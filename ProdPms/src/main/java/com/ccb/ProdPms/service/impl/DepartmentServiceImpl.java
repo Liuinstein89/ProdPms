@@ -1,13 +1,14 @@
 package com.ccb.ProdPms.service.impl;
 
 import com.ccb.ProdPms.entity.DepartmentEntity;
+import com.ccb.ProdPms.exception.ResourceNotFoundException;
 import com.ccb.ProdPms.mapper.DepartmentMapper;
 import com.ccb.ProdPms.service.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 //@service 服务（注入dao）,用于标注服务层，主要用来进行业务的逻辑处理
@@ -17,84 +18,55 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Autowired
     private DepartmentMapper departmentMapper;
 
-
     @Override
-    public List<DepartmentEntity> getDepartmentList() {
-        // 返回所有的部门信息
-        return departmentMapper.queryDepartment();
-    }
-
-    @Override
-    public DepartmentEntity getDepartmentById(int id) {
-        return departmentMapper.queryDepartmentById(id);
-    }
-
-    //@Transactional 事务管理的目的:在出现异常的情况下,保证数据的一致性;数据提交操作回滚至异常发生前的状态
-    @Transactional
-    @Override
-    public boolean addDepartment(DepartmentEntity department) {
-        // 空值判断，主要是判断departmentName不为空
-        if (department.getDptName() != null && !"".equals(department.getDptName())) {
-            // 设置默认值
-            department.setCreateTime(new Date());
-            department.setChangeTime(new Date());
-            try {
-                int effectedNum = departmentMapper.insertDepartment(department);
-                if (effectedNum > 0) {
-                    return true;
-                } else {
-                    throw new RuntimeException("添加部门信息失败!");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("添加部门信息失败:" + e.toString());
-            }
-        } else {
-            throw new RuntimeException("部门信息不能为空！");
+    public List<DepartmentEntity> getAll(){
+        List<DepartmentEntity> deptList = new ArrayList<DepartmentEntity>();
+        try {
+            deptList = departmentMapper.getAll();
+        } catch (Exception e) {
+            e.getMessage();
         }
+        return deptList;
+    }
+
+    @Override
+    public List<DepartmentEntity> getByParams(DepartmentEntity departmentEntity){
+
+        return null;
     }
 
     @Transactional
-    @Override
-    public boolean modifyDepartment(DepartmentEntity department) {
-        // 空值判断，主要是id不为空
-        if (department.getId() != null && department.getId() > 0) {
-            // 设置默认值
-            department.setChangeTime(new Date());
-
-            try {
-                // 更新部门信息
-                int effectedNum = departmentMapper.updateDepartment(department);
-                if (effectedNum > 0) {
-                    return true;
-                } else {
-                    throw new RuntimeException("更新部门信息失败!");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("更新部门信息失败:" + e.toString());
-            }
-        } else {
-            throw new RuntimeException("部门信息不能为空！");
-        }
-
+    public void updateDept(DepartmentEntity departmentEntity){
+        departmentMapper.updateDept(departmentEntity);
     }
 
     @Transactional
-    @Override
-    public boolean deleteDepartment(int id) {
-        if (id > 0) {
-            try {
-                // 删除部门信息
-                int effectedNum = departmentMapper.deleteDepartment(id);
-                if (effectedNum > 0) {
-                    return true;
-                } else {
-                    throw new RuntimeException("删除部门信息失败!");
-                }
-            } catch (Exception e) {
-                throw new RuntimeException("删除部门信息失败:" + e.toString());
-            }
-        } else {
-            throw new RuntimeException("部门Id不能为空！");
+    public void deleteDeptById(Integer id){
+        DepartmentEntity departmentEntity = departmentMapper.findOne(id);
+        if (departmentEntity == null) {
+            throw new ResourceNotFoundException("找不到关键词，id：" + id);
+        }
+        try {
+            departmentMapper.deleteById(id);
+        } catch (Exception e) {
+            e.getMessage();
         }
     }
+    @Override
+    public int findByName(String departmentName){
+        int count = departmentMapper.findByName(departmentName);
+        return count;
+    }
+
+    @Transactional
+    public void insertDept(DepartmentEntity departmentEntity){
+        departmentMapper.insertDept(departmentEntity);
+    }
+
+
+    @Transactional
+    public void updateExcelDept(DepartmentEntity departmentEntity2){
+        departmentMapper.updateExcelDept(departmentEntity2);
+    }
+
 }

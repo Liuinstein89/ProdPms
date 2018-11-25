@@ -1,15 +1,39 @@
 package com.ccb.ProdPms.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class DepartmentEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long id;
     private String dptName, dptCode, opPerson;
-    private Date createTime, changeTime;
+    private String createTime, changeTime;
     private int isDeleted;
+
+    public DepartmentEntity() {
+    }
+
+    public DepartmentEntity(String dptName, String dptCode, String opPerson, String createTime) {
+
+        this.dptName = dptName;
+        this.dptCode = dptCode;
+        this.opPerson = opPerson;
+        this.createTime = createTime;
+    }
+
+    public DepartmentEntity(Long id, String dptName, String dptCode, String changeTime) {
+        this.id = id;
+        this.dptName = dptName;
+        this.dptCode = dptCode;
+//        this.opPerson = opPerson;
+        this.changeTime = changeTime;
+    }
+    public DepartmentEntity(String dptName, String dptCode, String changeTime) {
+
+        this.dptName = dptName;
+        this.dptCode = dptCode;
+        this.changeTime = changeTime;
+    }
 
     public Long getId() {
         return id;
@@ -43,19 +67,19 @@ public class DepartmentEntity implements Serializable {
         this.opPerson = opPerson;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getChangeTime() {
+    public String getChangeTime() {
         return changeTime;
     }
 
-    public void setChangeTime(Date changeTime) {
+    public void setChangeTime(String changeTime) {
         this.changeTime = changeTime;
     }
 

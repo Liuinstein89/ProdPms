@@ -3,38 +3,96 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ccb.ProdPms.mapper.DepartmentMapper">
-    <select id="queryDepartment" resultType="com.ccb.ProdPms.entity.DepartmentEntity">
-        SELECT *
-        FROM department
+
+    <resultMap id="DeptMap"
+               type="com.ccb.ProdPms.entity.DepartmentEntity">
+        <id column="id" property="id" jdbcType="INTEGER" />
+        <result column="dpt_name" property="dptName"
+                jdbcType="VARCHAR" />
+        <result column="dpt_code"
+                property="dptCode" jdbcType="INTEGER" />
+        <result column="create_time" property="createTime"
+                jdbcType="DATE" />
+        <result column="change_time" property="changeTime" jdbcType="DATE" />
+        <result column="op_person"
+                property="opPerson" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Basic_Dpt_Columns">
+        id, dpt_name,dpt_code, create_time,change_time,op_person
+    </sql>
+
+    <!-- 获取全部 -->
+    <select id="getAll" resultMap="DeptMap">
+        select
+        <include refid="Basic_Dpt_Columns" />
+        from department
+        where is_deleted = 0
     </select>
 
-    <select id="queryDepartmentById" resultType="com.ccb.ProdPms.entity.DepartmentEntity">
-        SELECT *
-        FROM department
-        WHERE id=#{id}
+    <!-- 获取指定 -->
+    <select id="findByName" parameterType="java.lang.String" resultType="Integer">
+        select
+        count(*)
+        from department
+        where is_deleted = 0 and dpt_name = #{dptName,jdbcType=VARCHAR}
     </select>
 
-    <insert id="insertDepartment" useGeneratedKeys="true" keyProperty="id"
-            keyColumn="id" parameterType="com.ccb.ProdPms.entity.DepartmentEntity">
-        INSERT INTO department(dpt_name,dpt_code,create_time,change_time,is_deleted,op_person)
-        VALUES(#{dptName},#{dptCode}, #{createTime},#{changeTime},#{isDeleted},#{opPerson})
+    <!-- 添加信息，参数的初始值在代码中做处理 -->
+    <insert id="insertDept"
+            parameterType="com.ccb.ProdPms.entity.DepartmentEntity">
+        insert into
+        department
+        (dpt_name,dpt_code, create_time,change_time,is_deleted,op_person)
+        values
+         (#{dptName,jdbcType=VARCHAR},
+        #{dptCode,jdbcType=VARCHAR},
+        #{createTime,jdbcType=VARCHAR},
+        #{changeTime,jdbcType=VARCHAR},
+        0,
+        #{opPerson,jdbcType=VARCHAR})
     </insert>
 
-    <update id="updateDepartment" parameterType="com.ccb.ProdPms.entity.DepartmentEntity">
-        update department
-        <set>
-            <if test="dptName != null">dpt_name=#{dptName},</if>
-            <if test="dptCode != null">dpt_code=#{dptCode},</if>
-            <if test="changeTime != null">change_time=#{changeTime},</if>
-            <if test="isDeleted != null">is_deleted=#{isDeleted},</if>
-            <if test="opPerson != null">op_person=#{opPerson}</if>
-        </set>
-        where id=#{id}
+    <!-- 修改信息，参数的初始值在代码中做处理 -->
+    <update id="updateDept"
+            parameterType="com.ccb.ProdPms.entity.DepartmentEntity">
+        update department set
+        dpt_name=#{dptName,jdbcType=VARCHAR},
+        dpt_code=#{dptCode,jdbcType=VARCHAR},
+        change_time=#{changeTime,jdbcType=VARCHAR}
+        where
+        is_deleted =0 and
+        id=#{id,jdbcType=INTEGER}
     </update>
 
-    <delete id="deleteDepartment">
-        DELETE FROM
-        department
-        WHERE id =#{id}
-    </delete>
+    <!-- 修改信息，参数的初始值在代码中做处理 -->
+    <update id="updateExcelDept"
+            parameterType="com.ccb.ProdPms.entity.DepartmentEntity">
+        update department set
+        dpt_name=#{dptName,jdbcType=VARCHAR},
+        dpt_code=#{dptCode,jdbcType=VARCHAR},
+        change_time=#{changeTime,jdbcType=VARCHAR}
+        where
+        is_deleted =0 and
+        dpt_name=#{dptName,jdbcType=VARCHAR}
+    </update>
+
+    <!-- 获取指定 -->
+    <select id="findOne" resultMap="DeptMap"
+            parameterType="java.lang.Integer">
+        select
+        <include refid="Basic_Dpt_Columns" />
+        from department
+        where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 假删除-->
+    <update id="deleteById" parameterType="java.lang.Integer">
+        update department set
+        is_deleted =1
+        where
+        id = #{id,jdbcType=INTEGER}
+    </update>
+
+
 </mapper>

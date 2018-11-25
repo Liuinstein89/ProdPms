@@ -6,43 +6,19 @@ import java.util.List;
 
 public interface ProjectTeamService {
 
-    /**
-     * 获取项目组列表
-     *
-     * @return
-     */
-    List<ProjectTeamEntity> getProjectTeamList();
+    List<ProjectTeamEntity> getAll();
 
-    /**
-     * 通过Id获取项目组信息
-     *
-     * @param id
-     * @return
-     */
-    ProjectTeamEntity getProjectTeamById(int id);
+    void updateProjectTeam(ProjectTeamEntity projectTeamEntity);
 
-    /**
-     * 增加项目组信息
-     *
-     * @param projectTeam
-     * @return
-     */
-    boolean addProjectTeam(ProjectTeamEntity projectTeam);
+    List<ProjectTeamEntity> getByParams(ProjectTeamEntity projectTeamEntity);
 
-    /**
-     * 修改项目组信息
-     *
-     * @param projectTeam
-     * @return
-     */
-    boolean modifyProjectTeam(ProjectTeamEntity projectTeam);
+    void deleteById(Integer id);
 
-    /**
-     * 删除项目组信息
-     *
-     * @param id
-     * @return
-     */
-    boolean deleteProjectTeam(int id);
+    void insertProjectTeam(ProjectTeamEntity projectTeamEntity);
+
+    int findByName(String teamName);
+
+    void updateExcelProjectTeam(ProjectTeamEntity projectTeamEntity2);
+
 
 }

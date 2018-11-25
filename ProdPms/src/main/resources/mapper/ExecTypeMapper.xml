@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.ccb.ProdPms.mapper.ExecTypeMapper">
+
+    <resultMap id="exectype" type="com.ccb.ProdPms.entity.ExecTypeEntity">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="type_name" property="typeName" jdbcType="VARCHAR"/>
+        <result column="op_person" property="opPerson" jdbcType="VARCHAR"/>
+        <result column="create_date" property="createDate" jdbcType="DATE"/>
+        <result column="modi_date" property="modiDate" jdbcType="DATE"/>
+
+    </resultMap>
+
+
+    <!-- 查找全部 -->
+    <select id="selectAllExec" resultMap="exectype">
+        select *
+        from exec_type
+        where is_deleted=0
+    </select>
+
+    <!-- 条件查找 -->
+    <select id="selectExecByParams" parameterType="com.ccb.ProdPms.entity.ExecQueryEntity"
+            resultMap="exectype">
+        select id, type_name, op_person, create_time, change_time
+        from exec_type
+        where isdeleted=0
+        <if test="id!=null and id!=''">
+            and id like '%${id}%'
+        </if>
+        <if test="typeName!=null and typeName!=''">
+            and type_name like '%${typeName}%'
+        </if>
+        <if test="opPerson!=null and opPerson!=''">
+            and op_person like '%${opPerson}%'
+        </if>
+        <if test="beginTime!=null and endTime!=null">
+            and create_time between #{beginTime} and #{endTime}
+        </if>
+    </select>
+
+    <!-- 新增数据 -->
+    <insert id="insertExec" parameterType="com.ccb.ProdPms.entity.ExecTypeEntity">
+        insert into exec_type(type_name, create_date, modi_date, op_person, is_deleted)
+        values (#{typeName}, now(), null, #{opPerson}, 0)
+    </insert>
+
+    <!-- 修改数据 -->
+    <update id="updateExec" parameterType="com.ccb.ProdPms.entity.ExecTypeEntity">
+        update exec_type
+        set
+        type_name=#{typeName, jdbcType=VARCHAR},
+        modi_date=#{modiDate, jdbcType=VARCHAR},
+        op_person=#{opPerson, jdbcType=VARCHAR}
+        where
+        is_deleted=0 and id=#{id}
+    </update>
+
+    <!-- 假删除 -->
+    <update id="deletedExec" parameterType="com.ccb.ProdPms.entity.ExecTypeEntity">
+        update exec_type
+        set is_deleted = 1
+        where id=#{id}
+    </update>
+</mapper>

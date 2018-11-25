@@ -1,21 +1,47 @@
 package com.ccb.ProdPms.entity;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.io.Serializable;
 import java.util.Date;
 
 public class StateEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
     private String stateType, stateName, opPerson;
-    private Date createTime, changeTime;
+    private String createTime, changeTime;
     private int isDeleted;
 
-    public Long getId() {
+    public StateEntity(){
+
+    }
+
+    public StateEntity(String stateType, String stateName, String createTime, String changeTime, String opPerson){
+        this.stateType=stateType;
+        this.stateName=stateName;
+        this.opPerson=opPerson;
+        this.createTime=createTime;
+        this.changeTime=changeTime;
+    }
+
+    public StateEntity(Integer id, String stateType, String stateName, String changeTime,String opPerson){
+        this.id=id;
+        this.stateType=stateType;
+        this.stateName=stateName;
+        this.changeTime=changeTime;
+        this.opPerson=opPerson;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -43,19 +69,19 @@ public class StateEntity implements Serializable {
         this.opPerson = opPerson;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
-    public Date getChangeTime() {
+    public String getChangeTime() {
         return changeTime;
     }
 
-    public void setChangeTime(Date changeTime) {
+    public void setChangeTime(String changeTime) {
         this.changeTime = changeTime;
     }
 
@@ -65,5 +91,12 @@ public class StateEntity implements Serializable {
 
     public void setIsDeleted(int isDeleted) {
         this.isDeleted = isDeleted;
+    }
+
+    public String toString(){
+    return "[The State is: Id="+this.getId()
+            +",state_type="+this.getStateType()
+            +",state_name="+this.getStateName()
+            +",op_person="+this.getOpPerson()+"]";
     }
 }

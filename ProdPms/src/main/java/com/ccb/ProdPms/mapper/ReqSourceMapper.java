@@ -6,42 +6,19 @@ import java.util.List;
 
 public interface ReqSourceMapper {
 
+    List<ReqSourceEntity> getAll();
 
-    /**
-     * 列出需求来源列表
-     *
-     * @return reqSourceList
-     */
-    List<ReqSourceEntity> queryReqSource();
+    void updateReqSource(ReqSourceEntity reqSourceEntity);
 
-    /**
-     * 根据Id列出具体需求来源
-     *
-     * @return reqSource
-     */
-    ReqSourceEntity queryReqSourceById(int id);
+    ReqSourceEntity findOne(Integer id);
 
-    /**
-     * 插入需求来源信息
-     *
-     * @param reqSource
-     * @return
-     */
-    int insertReqSource(ReqSourceEntity reqSource);
+    void deleteById(Integer id);
 
-    /**
-     * 更新需求来源信息
-     *
-     * @param reqSource
-     * @return
-     */
-    int updateReqSource(ReqSourceEntity reqSource);
+    void insertReqSource(ReqSourceEntity reqSourceEntity);
 
-    /**
-     * 删除需求来源信息
-     *
-     * @param id
-     * @return
-     */
-    int deleteReqSource(int id);
+    int findByName(String reqSourceEntity);
+
+    void updateExcelReqSource(ReqSourceEntity reqSourceEntity2);
+
+
 }

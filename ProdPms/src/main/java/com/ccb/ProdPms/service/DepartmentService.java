@@ -6,44 +6,19 @@ import java.util.List;
 
 public interface DepartmentService {
 
+    List<DepartmentEntity> getAll();
 
-    /**
-     * 获取部门列表
-     *
-     * @return
-     */
-    List<DepartmentEntity> getDepartmentList();
+    List<DepartmentEntity> getByParams(DepartmentEntity departmentEntity);
 
-    /**
-     * 通过Id获取部门信息
-     *
-     * @param id
-     * @return
-     */
-    DepartmentEntity getDepartmentById(int id);
+    void updateDept(DepartmentEntity departmentEntity);
 
-    /**
-     * 增加部门信息
-     *
-     * @param department
-     * @return
-     */
-    boolean addDepartment(DepartmentEntity department);
+    void deleteDeptById(Integer id);
 
-    /**
-     * 修改部门信息
-     *
-     * @param department
-     * @return
-     */
-    boolean modifyDepartment(DepartmentEntity department);
+    int findByName(String departmentName);
 
-    /**
-     * 删除部门信息
-     *
-     * @param id
-     * @return
-     */
-    boolean deleteDepartment(int id);
+    void insertDept(DepartmentEntity departmentEntity);
+
+    void updateExcelDept(DepartmentEntity departmentEntity2);
+
 
 }

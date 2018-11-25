@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="UTF-8">
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+			<meta charset="UTF-8"/>
+	<meta name="renderer" content="webkit"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>ProductMS</title>
 		<link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
@@ -22,11 +22,11 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">审核结果</label>
 					<div class="layui-input-block">
-						<select id="" class="form-control">
-                        <option>请选择</option>
-                        <option>需求审核通过</option>
-                        <option>不实施</option>
-                        <option>需求变更</option>
+							<select name="reqResult" lay-verify="required" class="form-control">
+					<option value="">请选择</option>
+					<option value="需求审核通过">需求审核通过</option>
+					<option value="不实施">不实施</option>
+					<option value="需求变更">需求变更</option>
                     </select>
 					</div>
 					
@@ -37,11 +37,11 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">后续受理人</label>
 					<div class="layui-input-block">
-						<select id=" " class="form-control">
-                            <option>请选择</option>
-                            <option>张三</option>
-                            <option>李四</option>
-                            <option>王五</option>
+						<select  name="nextUser" class="form-control">
+					<option value=""></option>
+					<option value="张三">张三</option>
+					<option value="李四">李四</option>
+					<option value="王五">王五</option>
                         </select>
 					</div>
 				</div>
@@ -49,7 +49,7 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">审核意见</label>
 					<div class="layui-input-block">
-						<textarea name="textarea" id="text_audit" placeholder="请输入需求审核意见" ></textarea>
+						<textarea name="textarea" id="text_audit" lay-verify="audit_advice" placeholder="请输入需求审核意见" ></textarea>
 					</div>
 				</div>
 
@@ -57,7 +57,7 @@
 				<div class="layui-form-item">
 					<div class="layui-input-block" style="float: right">
 						<button type="button" class="layui-btn layui-btn-primary" id="close">取消</button>
-						<button type="button" class="layui-btn " id="btnAudit" >审核提交</button>
+							<button type="button" class="layui-btn " id="btnAudit" lay-submit="" lay-filter="btnAudit">审核提交</button>
 					</div>
 				</div>
 			</form>
@@ -66,20 +66,46 @@
 		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
 		<script type="text/javascript">
 			//Demo
-			layui.use(['form','layedit'], function() {
-				var form = layui.form;
-				var layedit = layui.layedit;
-				form.render();
-				//监听提交
-				form.on('submit(formDemo)', function(data) {
-					layer.msg(JSON.stringify(data.field));
+		 layui.use(['form','layedit','jquery'], function() {
+        var form = layui.form;
+        var $ = layui.jquery;
+        var layedit = layui.layedit;
+        form.render();
+        //富文本
+        var index=layedit.build('text_audit',{
+            height:180
+        });
+        form.verify({
+            audit_advice: function(value){
+                layedit.sync(index);
+            }
+});
+        				//监听提交
+			  form.on('submit(btnAudit)', function(data) {
+            layer.alert(JSON.stringify(data.field));
+            $.ajax({
+                url : '/',
+                data : data.field,
+                type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                dataType : 'json',
+                success : function(obj) {
+                    //layer.close(index);//关闭
+                    if (obj=="success") {
+                        pubUtil.msg("审核提交成功", layer, 1, function() {
+                            $("#close").click();
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        pubUtil.msg("审核提交失败", layer, 2, function() {
+                        }, 1000);
+                    }
+                }
+            });
 					return false;
 				});
-				//富文本
-				layedit.build('text_audit',{
-					height:180
+		
 				});
-			});
+		
 
 
 		</script>

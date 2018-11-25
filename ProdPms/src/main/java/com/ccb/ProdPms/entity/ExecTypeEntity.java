@@ -1,21 +1,41 @@
 package com.ccb.ProdPms.entity;
 
-import java.io.Serializable;
-import java.util.Date;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
-public class ExecTypeEntity implements Serializable {
+public class ExecTypeEntity {
     private static final long serialVersionUID = 1L;
 
-    private Long id;
-    private String typeName,opPerson;
-    private Date createDate, modiDate;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    private String typeName, createDate, modiDate, opPerson;
     private int isDeleted;
 
-    public Long getId() {
+    public ExecTypeEntity(){
+
+    }
+
+    public ExecTypeEntity(Integer id, String typeName, String modiDate, String opPerson){
+        this.id=id;
+        this.typeName=typeName;
+        this.modiDate=modiDate;
+        this.opPerson=opPerson;
+    }
+
+    public ExecTypeEntity(String typeName, String createDate, String modiDate, String opPerson){
+        this.typeName=typeName;
+        this.createDate=createDate;
+        this.modiDate=modiDate;
+        this.opPerson=opPerson;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -27,28 +47,28 @@ public class ExecTypeEntity implements Serializable {
         this.typeName = typeName;
     }
 
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getModiDate() {
+        return modiDate;
+    }
+
+    public void setModiDate(String modiDate) {
+        this.modiDate = modiDate;
+    }
+
     public String getOpPerson() {
         return opPerson;
     }
 
     public void setOpPerson(String opPerson) {
         this.opPerson = opPerson;
-    }
-
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-
-    public Date getModiDate() {
-        return modiDate;
-    }
-
-    public void setModiDate(Date modiDate) {
-        this.modiDate = modiDate;
     }
 
     public int getIsDeleted() {

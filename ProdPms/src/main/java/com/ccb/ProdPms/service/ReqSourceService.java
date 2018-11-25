@@ -6,43 +6,17 @@ import java.util.List;
 
 public interface ReqSourceService {
 
-    /**
-     * 获取需求来源列表
-     *
-     * @return
-     */
-    List<ReqSourceEntity> getReqSourceList();
+    List<ReqSourceEntity> getAll();
 
-    /**
-     * 通过Id获取需求来源信息
-     *
-     * @param id
-     * @return
-     */
-    ReqSourceEntity getReqSourceById(int id);
+    void updateReqSource(ReqSourceEntity reqSourceEntity);
 
-    /**
-     * 增加需求来源信息
-     *
-     * @param reqSource
-     * @return
-     */
-    boolean addReqSource(ReqSourceEntity reqSource);
+    void deleteById(Integer id);
 
-    /**
-     * 修改需求来源信息
-     *
-     * @param reqSource
-     * @return
-     */
-    boolean modifyReqSource(ReqSourceEntity reqSource);
+    void insertReqSource(ReqSourceEntity reqSourceEntity);
 
-    /**
-     * 删除需求来源信息
-     *
-     * @param id
-     * @return
-     */
-    boolean deleteReqSource(int id);
+    int findByName(String sourceName);
+
+    void updateExcelReqSource(ReqSourceEntity reqSourceEntity2);
+
 
 }

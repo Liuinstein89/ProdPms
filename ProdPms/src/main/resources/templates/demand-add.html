@@ -20,22 +20,27 @@ body {
 }
 
 #sele_file_btn {
-	position: relative;
+	position: absolute;
+margin: 0;
+		margin-top: -20px;
+		float:right;
+		margin-left:8px;
 }
 
 #sele_file {
 	position: relative;
-	width: 100px;
-	opacity: 0;
-	cursor: pointer;
-	left: -110px;
+	width: 75px;
+		opacity: 0;
+		cursor: pointer;
+		/*left: -10px;*/
+		margin: 0;
+		padding: 0;
 }
 </style>
 </head>
 <body>
 	<div class="wrap-container">
-		<form class="layui-form" enctype="multipart/form-data" method="post"
-			action="" id="add_demand_form">
+		<form class="layui-form" enctype="multipart/form-data" method="post" action="" id="add_demand_form">
 
 			<div class="layui-form-item">
 	<label class="layui-form-label">需求编号：</label>
@@ -56,11 +61,11 @@ body {
 				<div class="layui-input-block">
 					<select name="reqSource" lay-verify="pass">
 						<option value=""></option>
-						<option value="1">个人部</option>
-						<option value="2">运维</option>
-						<option value="3">金融科技部</option>
-						<option value="4">网络金融部</option>
-						<option value="5">托管业务部</option>
+						<option value="个人部">个人部</option>
+						<option value="运维">运维</option>
+						<option value="金融科技部">金融科技部</option>
+						<option value="网络金融部">网络金融部</option>
+						<option value="托管业务部">托管业务部</option>
 					</select>
 				</div>
 			</div>
@@ -70,11 +75,11 @@ body {
 				<div class="layui-input-block">
 					<select name="dept" lay-verify="pass">
 						<option value=""></option>
-						<option value="1">个人部</option>
-						<option value="2">运维</option>
-						<option value="3">金融科技部</option>
-						<option value="4">网络金融部</option>
-						<option value="5">托管业务部</option>
+						<option value="个人部">个人部</option>
+						<option value="运维">运维</option>
+						<option value="金融科技部">金融科技部</option>
+						<option value="网络金融部">网络金融部</option>
+						<option value="托管业务部">托管业务部</option>
 					</select>
 				</div>
 			</div>
@@ -84,11 +89,11 @@ body {
 				<div class="layui-input-block">
 					<select name="reqStatus" lay-verify="pass">
 						<option value=""></option>
-						<option value="1">个人部</option>
-						<option value="2">运维</option>
-						<option value="3">金融科技部</option>
-						<option value="4">网络金融部</option>
-						<option value="5">托管业务部</option>
+					<option value="未实施">未实施</option>
+						<option value="正在实施">正在实施</option>
+						<option value="不实施">不实施</option>
+						<option value="正在开发">正在开发</option>
+						<option value="关闭">关闭</option>
 					</select>
 				</div>
 			</div>
@@ -98,11 +103,8 @@ body {
 				<div class="layui-input-block">
 					<select name="execType" lay-verify="pass">
 						<option value=""></option>
-						<option value="1">个人部</option>
-						<option value="2">运维</option>
-						<option value="3">金融科技部</option>
-						<option value="4">网络金融部</option>
-						<option value="5">托管业务部</option>
+						<option value="日常优化">日常优化</option>
+	<option value="项目">项目</option>
 					</select>
 				</div>
 			</div>
@@ -112,11 +114,9 @@ body {
 				<div class="layui-input-block">
 					<select name="leadTeam" lay-verify="pass">
 						<option value=""></option>
-						<option value="1">个人部</option>
-						<option value="2">运维</option>
-						<option value="3">金融科技部</option>
-						<option value="4">网络金融部</option>
-						<option value="5">托管业务部</option>
+						<option value="代理基金">代理基金</option>
+						<option value="龙财富">龙财富</option>
+						<option value="海外理财">海外理财</option>
 					</select>
 				</div>
 			</div>
@@ -126,11 +126,11 @@ body {
 				<div class="layui-input-block">
 					<select name="nextUser" lay-verify="pass">
 						<option value=""></option>
-						<option value="1">个人部</option>
-						<option value="2">运维</option>
-						<option value="3">金融科技部</option>
-						<option value="4">网络金融部</option>
-						<option value="5">托管业务部</option>
+							<option value="张晓科">张晓科</option>
+						<option value="邓昌胜">邓昌胜</option>
+						<option value="朱琳">朱琳</option>
+						<option value="谭文">谭文</option>
+						<option value="彭东脉">彭东脉</option>
 					</select>
 				</div>
 			</div>
@@ -140,39 +140,39 @@ body {
 				<div class="layui-input-block">
 					<select name="cooTeam">
 						<option value=""></option>
-						<option value="1">个人部</option>
-						<option value="2">运维</option>
-						<option value="3">金融科技部</option>
-						<option value="4">网络金融部</option>
-						<option value="5">托管业务部</option>
+						<option value="代理基金">代理基金</option>
+						<option value="龙财富">龙财富</option>
+						<option value="海外理财">海外理财</option>
 					</select>
 				</div>
 			</div>
 
 			<div class="layui-form-item">
-				<div class="layui-inline">
-					<label class="layui-form-label">文件上传：</label>
-					<div class="layui-input-block ">
-						<input name="file_name_show" id="file_name_show"
-							readOnly="readOnly" class="layui-input" />
-					</div>
-				</div>
+			
+	<label class="layui-form-label">文件上传：</label>
+				<div class="layui-input-block" >
+					<div class="layui-upload">
+						<button type="button" class="layui-btn" id="seleFileList">选择多文件</button>
+						<div class="layui-upload-list">
+							<table class="layui-table">
+								<thead>
+									<th>文件名</th>
+									<th>操作</th>
+								</thead>
+								<tbody id="fileList"></tbody>
+							</table>
+						</div>
 
-				<div class="layui-inline">
-					<button type="button" class="layui-btn" id="sele_file_btn">选择文件</button>
+				
 				</div>
-				<div class="layui-inline">
-					<input type="file" class="layui-input" name="file"
-						multiple="multiple" id="sele_file" />
+				
 				</div>
 			</div>
 
 			<div class="layui-form-item">
 				<div class="layui-input-block" style="float: right">
-					<button type="button" class="layui-btn layui-btn-primary"
-						id="close">关闭</button>
-					<button class="layui-btn" id="add_form_btn" lay-submit=""
-						lay-filter="add_form_btn">立即提交</button>
+					<button type="button" class="layui-btn layui-btn-primary" id="close">关闭</button>
+					<button class="layui-btn" id="add_form_btn" lay-submit="" lay-filter="add_form_btn">立即提交</button>
 				</div>
 			</div>
 		</form>
@@ -210,15 +210,15 @@ body {
 					cache : false,
 					contentType : false,
 					processData : false,
-					//dataType : 'json',
+						dataType : 'json', //不选json获取不到返回数据的值
 					success : function(obj) {
 						//layer.close(index);//关闭   
-						if (obj=="upload success") {
-							pubUtil.msg(obj.msg, layer, 1, function() {
+							if (obj.code==0) {
+							pubUtil.msg("新增成功", layer, 1, function() {
 								$("#close").click();
 							}, 500);
 						} else {
-							pubUtil.msg(obj.msg, layer, 2, function() {
+							pubUtil.msg("新增失败", layer, 2, function() {
 								$("#close").click();
 							}, 5 * 1000);
 						}
@@ -229,142 +229,77 @@ body {
 		})
 	</script>
 	
-	<!-- reqAddAnduploadFile -->
-	<script type="text/javascript">
-		layui.use('jquery', function() {
-			var $ = layui.jquery;
-			var str = "";
-			$("#sele_file").click();
-			$("#sele_file").on("change", function() {
-				var obj = document.getElementById("sele_file");
-				var length = obj.files.length;
-				/*<![CDATA[*/
-				for (var i = 0; i < length; i++) {
-					$("#file_name_show").html("");
-					var temp = obj.files[i].name;
-					str += "" + temp + "***";
-				}
-				/*]]>*/
-				$("#file_name_show").val(str);
-			});
-		})
-	</script>
+
 	
 	<!-- 使用 upload 模块必须与 upload.render(options) 方法打交道，其中的 options即为基础参数，它是一个对象 -->
-	<!-- <script type="text/javascript">
-		layui
-				.use(
-						'upload',
-						function() {
-							var $ = layui.jquery;
-							var upload = layui.upload;//得到 upload 对象
+		<script>
+        layui.use('upload', function () {
+            var $ = layui.jquery
+			var upload = layui.upload;
 
-							//多文件列表
-							var demoListView = $('#demoList');
-							//创建一个上传组件
-							var uploadListIns = upload
-									.render({
-										elem : '#testList'//绑定元素
-										,
-										url : '/upload/'//上传接口
-										,
-										accept : 'file'//允许上传的文件类型
-										,
-										multiple : true,
-										number : 3,
-										size : 1024//最大允许上传的文件大小kb
-										,
-										auto : false,
-										bindAction : '#upListAction',
-										choose : function(obj) {
-											var files = this.files = obj
-													.pushFile(); //将每次选择的文件追加到文件队列
+            //多文件列表
+            var fileListView = $('#fileList');
+            var uploadListIns = upload.render({
+                elem: '#seleFileList'
+                // , url: ''
+                , accept: 'file'
+                , multiple: true
+                , number: 0
+                , auto: false
+                // , bindAction: '#testListAction'
+                , choose: function (obj) {
+                    var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
 
-											//读取本地文件
-											obj
-													.preview(function(index,
-															file, result) {
-														var tr = $([
-																'<tr id="upload-' + index + '">',
-																'<td style="width=50%">'
-																		+ file.name
-																		+ '</td>',
-																'<td>'
-																		+ (file.size / 1014)
-																				.toFixed(1)
-																		+ 'kb</td>',
-																'<td>等待上传</td>',
-																'<td>',
-																'<button type="button" class="layui-btn layui-btn-xs demo-reload layui-hide">重传</button>',
-																'<button class="layui-btn layui-btn-xs layui-btn-danger demo-delete">删除</button>',
-																'</td>',
-																'</tr>' ]
-																.join(''));
+                    //读取本地文件
+                    obj.preview(function (index, file, result) {
+                        var tr = $(['<tr id="upload-' + index + '">'
+                            , '<td>' + file.name + '</td>'
+                            // , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                            // , '<td>等待上传</td>'
+                            , '<td>'
+                            // , '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
+                            , '<button class="layui-btn layui-btn-mini layui-btn-danger demo-delete">删除</button>'
+                            , '</td>'
+                            , '</tr>'].join(''));
 
-														//单个重传
-														tr
-																.find(
-																		'.demo-reload')
-																.on(
-																		'click',
-																		function() {
-																			obj
-																					.upload(
-																							index,
-																							file);
-																		});
+                        //单个重传
+                        tr.find('.demo-reload').on('click', function () {
+                            obj.upload(index, file);
+                        });
 
-														//删除
-														tr
-																.find(
-																		'.demo-delete')
-																.on(
-																		'click',
-																		function() {
-																			delete files[index]; //删除对应的文件
-																			tr
-																					.remove();
-																			uploadListIns.config.elem
-																					.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-																		});
+                        //删除
+                        tr.find('.demo-delete').on('click', function () {
+                            delete files[index]; //删除对应的文件
+                            tr.remove();
+                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                        });
 
-														demoListView.append(tr);
-													});
+                        fileListView.append(tr);
+                    });
+                }
+                , done: function (res, index, upload) {
+                    if (res.code == 0) { //上传成功
+                        var tr = fileListView.find('tr#upload-' + index)
+                            , tds = tr.children();
+                        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                        tds.eq(3).html(''); //清空操作
+                        delete this.files[index]; //删除文件队列已经上传成功的文件
+                        return;
+                    }
+                    // this.error(index, upload);
+                }
+                , allDone: function (obj) {
+                    console.log(obj)
+                }
+                // , error: function (index, upload) {
+                //     var tr = fileListView.find('tr#upload-' + index)
+                //         , tds = tr.children();
+                //     tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+                //     tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+                // }
+            });
 
-										},
-										done : function(res, index, upload) {
-											//上传完毕回调
-											if (res.code == 0) { //上传成功
-												var tr = demoListView
-														.find('tr#upload-'
-																+ index), tds = tr
-														.children();
-												tds
-														.eq(2)
-														.html(
-																'<span style="color: #5FB878;">上传成功</span>');
-												tds.eq(3).html(''); //清空操作
-												delete this.files[index]; //删除文件队列已经上传成功的文件
-												return;
-											}
-											layer.alert(res.msg);
-											this.error(index, upload);
-										},
-										allDone : function(obj) {
-											console.log(obj)
-										},
-										error : function(index, upload) {
-											//请求异常回调
-											var tr = demoListView
-													.find('tr#upload-' + index), tds = tr
-													.children();
-											tds
-													.eq(2)
-													.html(
-															'<span style="color: #FF5722;">上传失败</span>');
-											tds.eq(3).find('.demo-reload')
-													.removeClass('layui-hide'); //显示重传
-						
-													</script> -->
+        });
+	</script>
 </body>
 </html>
