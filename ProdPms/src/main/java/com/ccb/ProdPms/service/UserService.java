@@ -1,5 +1,6 @@
 package com.ccb.ProdPms.service;
 
+import com.ccb.ProdPms.entity.User;
 import com.ccb.ProdPms.entity.UserEntity;
 import com.ccb.ProdPms.entity.UserQueryEntity;
 
@@ -41,4 +42,5 @@ public interface UserService {
      * @param id
      */
     void deletedUser(Integer id);
+
 }

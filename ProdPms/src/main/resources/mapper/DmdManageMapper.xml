@@ -96,6 +96,14 @@
 		from req
 		where is_deleted = 0 and id = #{Id,jdbcType=INTEGER}
 	</select>
+	<!-- 获取全部需求列表 -->
+	<select id="findUpload" resultMap="UploadFileMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Basic_Req_Columns" />
+		from req
+		where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+	</select>
 	<!-- 获取需求总数 -->
 	<select id="selectCount" resultType="java.lang.Integer">
 		select
@@ -197,6 +205,18 @@
 		#{path,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
 		#{user,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER},#{reqNo,jdbcType=VARCHAR},now())
 	</insert>
+	
+	<!-- 添加需求详情时候的上传文档, 一份一份传 -->
+	<insert id="detailInsertUpload"
+		parameterType="com.ccb.ProdPms.entity.UploadFileEntity">
+		insert into
+		upload_file
+		(file_name,path,type,user,is_deleted,req_no,datetime)
+		values
+		(#{fileName,jdbcType=VARCHAR},
+		#{path,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
+		#{user,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER},#{reqNo,jdbcType=VARCHAR},now())
+	</insert>
 
 	<!-- 添加指定需求对应的需求项, 一对多关系，keyProperty的id就是我们要返回的主键id -->
 	<!-- 执行这里的时候，一直不报错，但是数据无法插入到数据库中，最后原因是req_item_desc大小写在entity中没有写对，导致get方法无法获取到值，造成sql执行异常，但是为什么没报错这点需要继续查？ -->
@@ -244,6 +264,14 @@
 		where
 		id = #{Id,jdbcType=INTEGER}
 	</update>
+	<!-- 假删除上传文件 -->
+	<update id="deleteUpById" parameterType="java.lang.Integer">
+		update upload_file set
+		is_deleted =
+		1
+		where
+		id = #{id,jdbcType=INTEGER}
+	</update>
 	<!-- 修改需求信息，参数的初始值在代码中做处理 -->
 	<update id="updateReq"
 		parameterType="com.ccb.ProdPms.entity.DmdManageEntity">
@@ -255,7 +283,6 @@
 		lead_team=#{leadTeam,jdbcType=VARCHAR},
 		coo_team=#{cooTeam,jdbcType=VARCHAR},
 		next_user=#{nextUser,jdbcType=VARCHAR},
-		req_status=#{reqStatus,jdbcType=VARCHAR},
 		modi_date=#{modiDate,jdbcType=VARCHAR}
 		where
 		is_deleted =0 and

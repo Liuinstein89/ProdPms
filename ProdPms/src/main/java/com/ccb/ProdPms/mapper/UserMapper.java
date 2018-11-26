@@ -24,4 +24,6 @@ public interface UserMapper {
     // 删除用户
     void deletedUser(Integer id);
 
+	UserEntity getByName(String nowUser);
+
 }

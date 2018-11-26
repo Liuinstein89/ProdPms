@@ -26,7 +26,7 @@
 					<option value="">请选择</option>
 					<option value="需求审核通过">需求审核通过</option>
 					<option value="不实施">不实施</option>
-					<option value="需求变更">需求变更</option>
+					<option value="需求变更">变更</option>
                     </select>
 					</div>
 					
@@ -82,9 +82,8 @@
 });
         				//监听提交
 			  form.on('submit(btnAudit)', function(data) {
-            layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : '/',
+                url : '/auditSubmit',
                 data : data.field,
                 type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
                 dataType : 'json',

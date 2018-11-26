@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import com.alibaba.fastjson.JSONObject;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
+import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
@@ -108,7 +109,7 @@ public class DmdManageController {
 		return "demand-search";
 	}
 
-	@RequestMapping("/admin/onplan")
+	@RequestMapping("/admin/detail")
 	public String detail() {
 		return "demand-detail";
 	}
@@ -132,7 +133,7 @@ public class DmdManageController {
 	public String dmAudit() {
 		return "demand-audit";
 	}
-	
+
 	// 部门管理
 	@RequestMapping("/basicinfo/dept")
 	public String basicDept() {
@@ -149,7 +150,7 @@ public class DmdManageController {
 		return "basic-info-dept-add";
 	}
 
-//需求来源管理
+	// 需求来源管理
 	@RequestMapping("/basicinfo/reqSource")
 	public String basicreqSource() {
 		return "basic-info-req";
@@ -165,7 +166,17 @@ public class DmdManageController {
 		return "basic-info-req-add";
 	}
 
-//项目组管理
+	@RequestMapping("/detail/item-edit")
+	public String reqItemEdit() {
+		return "demand-item-edit";
+	}
+
+	@RequestMapping("/detail/item-add")
+	public String reqItemAdd() {
+		return "demand-item-add";
+	}
+
+	// 项目组管理
 	@RequestMapping("/basicinfo/proTeam")
 	public String basicproTeam() {
 		return "basic-info-proj";
@@ -213,7 +224,7 @@ public class DmdManageController {
 		return "basic-info-state-add";
 	}
 
-// ========实施方式===========================================
+	// ========实施方式===========================================
 	@RequestMapping("/basicinfo/exectype")
 	public String basicexectype() {
 		return "basic-info-exectype";
@@ -301,7 +312,7 @@ public class DmdManageController {
 		String createUser = request.getParameter("createUser");
 		String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
-				cooTeam, nowUser, nextUser, createUser, createDate, "reqAddStatus", 0);
+				cooTeam, nowUser, nextUser, createUser, createDate, "已受理", 0);
 
 		// 创建一个多分解的容器
 		// CommonsMultipartResolver cmr = new
@@ -372,6 +383,44 @@ public class DmdManageController {
 	 * public @ResponseBody String multifileUpload(HttpServletRequest request)
 	 */
 
+	// 需求详情页面附件相关文件上传，这里不需要提交因为已经确定了需求的存在，只需要上传时附带一个reqNo，传存同步，删除同理，注意分页
+	@PostMapping("/upload")
+	@ResponseBody
+	public String singleFileUpload(@RequestParam("file") MultipartFile file, @RequestParam("reqNo") String reqNo,
+			@RequestParam("User") String User) {
+		if (file.isEmpty()) {
+			map.put("code", -1);
+			map.put("msg", "no upload file");
+		}
+		if (!file.isEmpty()) {
+			String fileName = file.getOriginalFilename();
+			log.info(fileName);
+
+			File dest = new File(UPLOADED_FILEPATH + fileName);
+			UploadFileEntity uploadFileEntity = new UploadFileEntity(fileName, UPLOADED_FILEPATH, file.getContentType(),
+					User, reqNo, 0);
+			// 判断文件父目录是否存在
+			if (!dest.getParentFile().exists()) {
+				dest.getParentFile().mkdir();
+			}
+			try {
+				file.transferTo(dest);
+				try {
+					dmdManageService.detailInsertUpload(uploadFileEntity);
+				} catch (Exception e) {
+					e.getMessage();
+					log.info("insert upload" + fileName + " failed!");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				log.info("You failed to upload " + file.getName() + " => " + e.getMessage());
+			}
+			map.put("code", 0);
+			map.put("msg", "upload success");
+		}
+		return JSONObject.toJSONString(map);
+	}
+
 	// 编辑需求
 	@RequestMapping(value = "/updateReq", method = RequestMethod.POST)
 	// @PutMapping("/updateReq")
@@ -389,7 +438,7 @@ public class DmdManageController {
 		String nextUser = request.getParameter("nextUser");
 		String modiDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, reqName, reqSource, dept, execType, leadTeam,
-				cooTeam, nowUser, nextUser, "reqAddStatus", modiDate);
+				cooTeam, nowUser, nextUser, modiDate);
 		// 修改需求主表项
 		try {
 			dmdManageService.updateReq(dmdManageEntity);
@@ -444,6 +493,14 @@ public class DmdManageController {
 		return JSONObject.toJSONString(strSuc);
 	}
 
+	// 删除上传文件
+	@GetMapping("/delUploadById")
+	@ResponseBody
+	public String deleteUploadById(@RequestParam(value = "id") Integer id) {
+		dmdManageService.deleteUploadById(id);
+		return JSONObject.toJSONString(strSuc);
+	}
+
 	// 点击某条需求,展示需求对应需求项详情
 	@GetMapping("/listReqRelatedItem")
 	@ResponseBody
@@ -453,6 +510,30 @@ public class DmdManageController {
 		PageInfo<DmdItemEntity> dmdItemPageInfo = new PageInfo<>(dmdManageService.getReqItem(reqNo));
 		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdItemPageInfo);
 		return JSONObject.toJSONString(restResp);
+	}
+
+	// 提交某需求的审核结果
+	@RequestMapping(value = "/auditSubmit", method = RequestMethod.POST)
+	@ResponseBody
+	public String auditSubmitAdd(HttpServletRequest request) throws IOException {
+		// Form接参
+		String reqNo = request.getParameter("reqNo");
+		String result = request.getParameter("result");
+		String comment = request.getParameter("comment");
+		String nowUser = request.getParameter("User");
+		String nextUser = request.getParameter("nextUser");
+		AuditResultEntity auditResultEntity = new AuditResultEntity(reqNo, result, comment,nextUser);
+		// 新增需求主表项
+		try {
+			dmdManageService.auditSubmitAdd(auditResultEntity,nowUser);
+			map.put("code", 0);
+			map.put("msg", "success");
+		} catch (Exception e) {
+			e.getMessage();  
+			map.put("code", -1);
+			map.put("msg", "error");
+		}
+		return JSONObject.toJSONString(map);
 	}
 
 	// 获取参数几种常用的注解

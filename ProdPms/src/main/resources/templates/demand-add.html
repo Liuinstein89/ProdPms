@@ -162,32 +162,7 @@ margin: 0;
 				}
 			});
 			form.render();
- //加载下拉菜单
-            function loadSelect(form,url,id,selval,selname,value){
-				$.ajax({
-					url : url,
-					type : "post",
-					async : false,
-					dataType:"json",
-					async: true,//异步执行
-                    success : function(data) {
-                        //layer.msg(JSON.stringify(data));
-                        $("#"+id).html("");
-                        $("#"+id).append('<option selected="" value="">请选择</option>');
-                        for(var i=0;i<data.length;i++){
-                            if(data[i][selval]==value){
-                                $("#"+id).append('<option selected="" value='+data[i][selval]+'>'+data[i][selname]+'</option>');
-                            }else{
-                                $("#"+id).append('<option value='+data[i][selval]+'>'+data[i][selname]+'</option>');
-                            }
-
-                        }
-                        form.render();//重新渲染
-                    }
-				});
-            }
-			//提出部门下拉框自动填充
-            loadSelect(form, url, 'dept');
+ 
 			//监听提交
 			form.on('submit(add_form_btn)', function(data) {
 				//layer.alert(JSON.stringify(data.field));

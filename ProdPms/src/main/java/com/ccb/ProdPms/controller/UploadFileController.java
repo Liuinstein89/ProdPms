@@ -58,10 +58,7 @@ public class UploadFileController {
 		}
 		String fileName = file.getOriginalFilename();
 		log.info(fileName);
-		// 上传文件名
-		// String fileName = new Date().getTime() + new Random().nextInt(100) + "." +
-		// fileSuffix;
-		// File savefile = new File(uploadPath + fileName);
+	
 		File dest = new File(UPLOADED_FILEPATH + fileName);
 		// System.out.println(dest.getName() + "-->" + dest.getPath() + "-->" +
 		// dest.getParentFile() + "-->" + dest);

@@ -1,6 +1,7 @@
 package com.ccb.ProdPms.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +12,19 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
+import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
+import com.ccb.ProdPms.entity.UserEntity;
 import com.ccb.ProdPms.exception.ResourceNotFoundException;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
+import com.ccb.ProdPms.mapper.UserMapper;
 import com.ccb.ProdPms.service.DmdManageService;
+
+import lombok.extern.slf4j.Slf4j;
 
 /*因为一个Service完成一个服务，但是可能会调用很多个DAO层的功能，如果Transaction放在DAO层的话，做完一个DAO，就会提交一次事务，永久修改数据库，后面在调用另外一个DAO，
 但是throws Exception，对于整个的Service来说，应该是要完全回滚的，但是只能回滚到当前的DAO所以这就破坏了事务的ＡＣＩＤ;有一些项目的事务是在Controller层。*/
@@ -26,19 +32,20 @@ import com.ccb.ProdPms.service.DmdManageService;
 //方法的写法 (增删改要写 ReadOnly=false 为可写 针对增删改操作)@Transactional (propagation=Propagation.REQUIRED,isolation=Isolation.DEFAULT,readOnly=false)
 //Propagation.REQUIRED ：有事务就处于当前事务中，没事务就创建一个事务;isolation=Isolation.DEFAULT：事务数据库的默认隔离级别
 @Service
+@Slf4j
 public class DmdManageServiceImpl implements DmdManageService {
 	@Autowired
 	private DmdManageMapper dmdManageMapper;
+	@Autowired
+	private UserMapper userMapper;
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void addReq(DmdManageEntity dmdManageEntity) {
 		dmdManageMapper.insert(dmdManageEntity);
-		// return dmdManageEntity;
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void insertUpload(UploadFileEntity uploadFileEntity) {
-		System.out.println(uploadFileEntity.toString());
 		dmdManageMapper.insertUpload(uploadFileEntity);
 	}
 
@@ -160,6 +167,80 @@ public class DmdManageServiceImpl implements DmdManageService {
 		}
 		return upList;
 	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
+	public void detailInsertUpload(UploadFileEntity uploadFileEntity) {
+		dmdManageMapper.detailInsertUpload(uploadFileEntity);
+	}
+
+	@Override
+	public void deleteUploadById(Integer id) {
+		UploadFileEntity UploadFileEntity = dmdManageMapper.findUpload(id);
+		if (UploadFileEntity == null) {
+			throw new ResourceNotFoundException("找不到关键词，id：" + id);
+		}
+		try {
+			dmdManageMapper.deleteUpById(id);
+		} catch (Exception e) {
+			e.getMessage();
+			log.info("fail to delete file by id:" + id);
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
+	public void auditSubmitAdd(AuditResultEntity auditResultEntity, String nowUser) {
+		String reqStatus = null;
+		String comment = null;
+		String result = null;
+		String person = null;
+		Date time = null;
+		AuditResultEntity ar = new AuditResultEntity();
+		UserEntity user = userMapper.getByName(nowUser);
+		if ("".equals(user.getUserType()) || user.getUserType() == null) {
+			throw new ResourceNotFoundException("找不到该用户" + nowUser + "的类别");
+		}
+		if ("需求审核通过".equals(auditResultEntity.getResult())) {
+			if ("req".equals(user.getUserType())) {
+				reqStatus = "需求审核通过";
+				comment = auditResultEntity.getComment();
+				result = auditResultEntity.getResult();
+				person = auditResultEntity.getAuditPerson();
+				time = auditResultEntity.getAuditTime();
+			} else if ("dev".equals(user.getUserType())) {
+				reqStatus = "同意开发";
+				comment = auditResultEntity.getComment();
+				result = auditResultEntity.getResult();
+				person = auditResultEntity.getAuditPerson();
+				time = auditResultEntity.getAuditTime();
+			} else if ("design".equals(user.getUserType())) {
+				reqStatus = "设计审核通过";
+				comment = auditResultEntity.getComment();
+				result = auditResultEntity.getResult();
+				person = auditResultEntity.getAuditPerson();
+				time = auditResultEntity.getAuditTime();
+			}
+			ar.setComment(comment);
+			ar.setAuditPerson(person);
+			ar.setResult(result);
+			ar.setAuditTime(time);
+			ar.setReqNo(auditResultEntity.getReqNo());
+			ar.setNextUser(auditResultEntity.getNextUser());
+			try {
+				dmdManageMapper.insertAudit(ar);
+				dmdManageMapper.updateReqStatus(reqStatus);
+			} catch (Exception e) {
+				e.getMessage();
+			}
+		} else if ("不实施".equals(auditResultEntity.getResult())) {
+
+		} else if ("变更".equals(auditResultEntity.getResult())) {
+
+		}
+	}
+	/*
+	 * DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, dept, leadTeam,
+	 * reqStatus, nowUser, nextUser, createUser, createDate, "reqAddStatus", 0);
+	 */
 
 	/*
 	 * @Transactional public KeywordReply updateKeywordRule(KeywordRuleDto rule) {

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
+import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
@@ -32,6 +33,12 @@ public interface DmdManageService {
 	List<DmdItemEntity> getReqItem(String reqNo);
 
 	List<UploadFileEntity> getRelateFile(String reqNo);
+
+	void detailInsertUpload(UploadFileEntity uploadFileEntity);
+
+	void deleteUploadById(Integer id);
+
+	void auditSubmitAdd(AuditResultEntity auditResultEntity, String nowUser);
 
 	
 

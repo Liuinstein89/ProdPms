@@ -2,6 +2,7 @@ package com.ccb.ProdPms.mapper;
 
 import java.util.List;
 
+import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
@@ -84,6 +85,16 @@ public interface DmdManageMapper {
 	List<DmdItemEntity> getReqItem(String reqNo);
 
 	List<UploadFileEntity> getUploadFileOfReq(String reqNo);
+
+	void detailInsertUpload(UploadFileEntity uploadFileEntity);
+
+	UploadFileEntity findUpload(Integer id);
+
+	void deleteUpById(Integer id);
+
+	void updateReqStatus(String reqStatus);
+
+	void insertAudit(AuditResultEntity ar);
 
 	
 

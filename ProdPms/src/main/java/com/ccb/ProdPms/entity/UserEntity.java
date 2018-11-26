@@ -1,12 +1,10 @@
 package com.ccb.ProdPms.entity;
 
-import com.ccb.ProdPms.util.UserSexType;
+import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.Serializable;
-import java.util.Date;
 
 public class UserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -16,7 +14,7 @@ public class UserEntity implements Serializable {
     private Integer id;
     private String userName, userPassword, userDep, email, call;
     private String createTime, modiTime;
-    private String sex;
+    private String sex,userType;
     private int isDeleted;
 
     public UserEntity(){
@@ -45,7 +43,15 @@ public class UserEntity implements Serializable {
         this.sex=sex;
     }
 
-    public int getIsDeleted() {
+    public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
+	}
+
+	public int getIsDeleted() {
         return isDeleted;
     }
 

@@ -1,7 +1,6 @@
 package com.ccb.ProdPms.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import lombok.Data;
 @Data
@@ -51,6 +50,21 @@ public class DmdManageEntity implements Serializable {
 		this.createDate = modiDate;
 		this.reqStatus = reqStatus;
 	}
+
+	public DmdManageEntity(String reqNo, String reqName, String reqSource, String dept, String execType,
+			String leadTeam, String cooTeam, String nowUser, String nextUser, String modiDate) {
+		this.reqNo = reqNo;
+		this.reqName = reqName;
+		this.reqSource = reqSource;
+		this.dept = dept;
+		this.execType = execType;
+		this.leadTeam = leadTeam;
+		this.cooTeam = cooTeam;
+		this.nowUser = nowUser;
+		this.nextUser = nextUser;
+		this.createDate = modiDate;
+	}
+
 
 	@Override
 	public String toString() {
