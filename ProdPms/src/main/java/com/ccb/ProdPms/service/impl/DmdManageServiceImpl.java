@@ -192,7 +192,6 @@ public class DmdManageServiceImpl implements DmdManageService {
 		String reqStatus = null;
 		String comment = null;
 		String result = null;
-		String person = null;
 		Date time = null;
 		AuditResultEntity ar = new AuditResultEntity();
 		UserEntity user = userMapper.getByName(nowUser);
@@ -204,23 +203,20 @@ public class DmdManageServiceImpl implements DmdManageService {
 				reqStatus = "需求审核通过";
 				comment = auditResultEntity.getComment();
 				result = auditResultEntity.getResult();
-				person = auditResultEntity.getAuditPerson();
 				time = auditResultEntity.getAuditTime();
 			} else if ("dev".equals(user.getUserType())) {
 				reqStatus = "同意开发";
 				comment = auditResultEntity.getComment();
 				result = auditResultEntity.getResult();
-				person = auditResultEntity.getAuditPerson();
 				time = auditResultEntity.getAuditTime();
 			} else if ("design".equals(user.getUserType())) {
 				reqStatus = "设计审核通过";
 				comment = auditResultEntity.getComment();
 				result = auditResultEntity.getResult();
-				person = auditResultEntity.getAuditPerson();
 				time = auditResultEntity.getAuditTime();
 			}
 			ar.setComment(comment);
-			ar.setAuditPerson(person);
+			ar.setAuditPerson(nowUser);
 			ar.setResult(result);
 			ar.setAuditTime(time);
 			ar.setReqNo(auditResultEntity.getReqNo());
