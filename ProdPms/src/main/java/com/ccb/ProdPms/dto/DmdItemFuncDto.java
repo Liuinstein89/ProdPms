@@ -9,12 +9,11 @@ public class DmdItemFuncDto {
 
 	private String reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev, reqItemStatus;
 	private String onlineDatetime, createDate, modiDate;
-	private int isDeleted, hasFunc;
+	private int isDeleted;
 	private List<Long> funcId;
 
 	public DmdItemFuncDto(String reqNo, String reqItemDesc, String opPerson, String reqItemName, String reqItemDev,
-			String reqItemStatus, String onlineDatetime, String createDate, int isDeleted, int hasFunc,
-			List<Long> funcId) {
+			String reqItemStatus, String onlineDatetime, String createDate, int isDeleted, List<Long> funcId) {
 		this.reqNo = reqNo;
 		this.reqItemDesc = reqItemDesc;
 		this.opPerson = opPerson;
@@ -24,8 +23,10 @@ public class DmdItemFuncDto {
 		this.onlineDatetime = onlineDatetime;
 		this.createDate = createDate;
 		this.isDeleted = isDeleted;
-		this.hasFunc = hasFunc;
 		this.funcId = funcId;
+	}
+
+	public DmdItemFuncDto() {
 	}
 
 }

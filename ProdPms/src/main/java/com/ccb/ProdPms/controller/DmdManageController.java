@@ -466,9 +466,10 @@ public class DmdManageController {
 
 	// 新增需求对应的需求项，一对多的关系,如果第一次创建需求项时候录入了功能点，则一次性保存，如果没有录入，则单独保存
 	@PostMapping("/addReqItem")
+	@ResponseBody
 	public String addReqItem(DmdItemFuncDto dmdItemFuncDto) {
 		dmdManageService.insertDmdItem(dmdItemFuncDto);
-		return "详情列表";
+		return JSONObject.toJSONString(strSuc);
 	}
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成

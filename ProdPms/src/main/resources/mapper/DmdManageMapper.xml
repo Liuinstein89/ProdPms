@@ -40,7 +40,8 @@
 		<result column="req_name" property="reqName" jdbcType="VARCHAR" />
 		<result column="req_item_desc" property="reqItemDesc"
 			jdbcType="VARCHAR" />
-		<result column="op_person" property="opPerson" jdbcType="VARCHAR" />
+		<result column="op_person" property="opPerson"
+			jdbcType="VARCHAR" />
 		<result column="req_item_name" property="reqItemName"
 			jdbcType="VARCHAR" />
 		<result column="req_item_dev" property="reqItemDev"
@@ -52,21 +53,18 @@
 		<result column="create_date" property="createDate"
 			jdbcType="DATE" />
 		<result column="modi_date" property="modiDate" jdbcType="DATE" />
-		<result column="has_func" property="hasFunc" jdbcType="INTEGER" />
 	</resultMap>
-	
+
 	<resultMap id="UploadFileMap"
 		type="com.ccb.ProdPms.entity.UploadFileEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="file_name" property="fileName" jdbcType="VARCHAR" />
+		<result column="file_name" property="fileName"
+			jdbcType="VARCHAR" />
 		<result column="path" property="path" jdbcType="VARCHAR" />
-		<result column="type" property="type"
-			jdbcType="VARCHAR" />
+		<result column="type" property="type" jdbcType="VARCHAR" />
 		<result column="user" property="user" jdbcType="VARCHAR" />
-		<result column="datetime" property="datetime"
-			jdbcType="DATE" />
-		<result column="req_no" property="reqNo"
-			jdbcType="VARCHAR" />
+		<result column="datetime" property="datetime" jdbcType="DATE" />
+		<result column="req_no" property="reqNo" jdbcType="VARCHAR" />
 	</resultMap>
 	<!-- ==================定义sql片段============== sql:是sql片段标签属性,可被其他语句引用的可重用语句块 
 		id是该片段的唯一标识 -->
@@ -119,17 +117,31 @@
 		desc limit 1
 	</select>
 	<!-- 获取某需求全部需求项列表 -->
-	<select id="getReqItem" resultMap="DmdItemMap" parameterType="java.lang.String">
+	<select id="getReqItem" resultMap="DmdItemMap"
+		parameterType="java.lang.String">
 		select
-		id,req_no,req_item_desc,op_person,req_item_name,create_date,modi_date,req_item_dev,online_datetime,req_item_status,has_func
+		id,req_no,req_item_desc,op_person,req_item_name,create_date,modi_date,req_item_dev,online_datetime,req_item_status
 		from req_item
-		where is_deleted = 0 and req_no = #{reqNo,jdbcType=VARCHAR}
+		where is_deleted = 0 and req_no =
+		#{reqNo,jdbcType=VARCHAR}
 	</select>
 	<!-- 获取某需求全部需求项列表 -->
-	<select id="getUploadFileOfReq" resultMap="UploadFileMap" parameterType="java.lang.String">
+	<select id="hasItem" resultMap="DmdItemMap"
+		parameterType="java.lang.String">
+		select
+		id,req_no,req_item_desc,req_item_name,req_item_dev,online_datetime,req_item_status
+		from req_item
+		where is_deleted = 0 and req_no =
+		#{reqNo,jdbcType=VARCHAR} and req_item_name =
+		#{reqItemName,jdbcType=VARCHAR}
+	</select>
+	<!-- 获取某需求全部需求项列表 -->
+	<select id="getUploadFileOfReq" resultMap="UploadFileMap"
+		parameterType="java.lang.String">
 		select
 		id,req_no,file_name,path,type,user,datetime
-		from upload_file
+		from
+		upload_file
 		where is_deleted = 0 and req_no = #{reqNo,jdbcType=VARCHAR}
 	</select>
 	<!-- 什么时候用where，什么时候用<where>标签？ 查询的时候如果某些条件没有，可能sql拼装会有问题 解决办法： 1.给where 
@@ -205,7 +217,7 @@
 		#{path,jdbcType=VARCHAR},#{type,jdbcType=VARCHAR},
 		#{user,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER},#{reqNo,jdbcType=VARCHAR},now())
 	</insert>
-	
+
 	<!-- 添加需求详情时候的上传文档, 一份一份传 -->
 	<insert id="detailInsertUpload"
 		parameterType="com.ccb.ProdPms.entity.UploadFileEntity">
@@ -224,7 +236,7 @@
 		keyProperty="id" parameterType="com.ccb.ProdPms.entity.DmdItemEntity">
 		insert into
 		req_item
-		(req_no,req_item_name,req_item_desc,online_datetime,req_item_dev,req_item_status,create_time,change_time,op_person,is_deleted)
+		(req_no,req_item_name,req_item_desc,online_datetime,req_item_dev,req_item_status,create_date,modi_date,op_person,is_deleted)
 		values
 		(#{reqNo,jdbcType=VARCHAR},
 		#{reqItemName,jdbcType=VARCHAR},#{reqItemDesc,jdbcType=VARCHAR},#{onlineDatetime,jdbcType=VARCHAR},#{reqItemDev,jdbcType=VARCHAR},
@@ -236,11 +248,24 @@
 		parameterType="com.ccb.ProdPms.entity.DmdItemFuncEntity">
 		insert into
 		reqitem_func
-		(reqitem_id,func_id,create_time,change_time,op_person,is_deleted)
+		(reqitem_id,func_id,create_date,modi_date,op_person,is_deleted)
 		values
 		(#{reqitemId,jdbcType=INTEGER},
 		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
 	</insert>
+	<!-- 循环插入需求项与功能点对应关系表，这里是一个多对多的关系联结表 ,一定要注意数据库字段与bean对应 -->
+	<update id="updateDmdItemFunc"
+		parameterType="com.ccb.ProdPms.entity.DmdItemFuncEntity">
+		update 
+		reqitem_func set 
+		func_id = #{funcId,jdbcType=INTEGER},
+		modi_date,
+		op_person,
+		is_deleted
+		where reqitem_id = #{id,jdbcType=INTEGER}
+		(#{reqitemId,jdbcType=INTEGER},
+		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
+	</update>
 
 	<!-- 修改用户信息 -->
 	<!-- <update id="update" parameterType="com.po.UserinfoPO"> update userinfo 
@@ -264,6 +289,12 @@
 		where
 		id = #{Id,jdbcType=INTEGER}
 	</update>
+	<!-- 假删除需求 -->
+	<delete id="deleteItemFuncById" parameterType="java.lang.Integer">
+		delete from reqitem_func 
+		where
+		reqitem_id = #{Id,jdbcType=INTEGER}
+	</delete>
 	<!-- 假删除上传文件 -->
 	<update id="deleteUpById" parameterType="java.lang.Integer">
 		update upload_file set
@@ -287,5 +318,19 @@
 		where
 		is_deleted =0 and
 		req_no=#{reqNo,jdbcType=VARCHAR}
+	</update>
+	<!-- 修改需求信息，参数的初始值在代码中做处理 -->
+	<update id="updateDmdItem"
+		parameterType="com.ccb.ProdPms.entity.DmdItemEntity">
+		update req_item set
+		req_item_desc=#{reqItemDesc,jdbcType=VARCHAR},
+		online_datetime=#{onlineDatetime,jdbcType=VARCHAR},
+		req_item_dev=#{reqItemDev,jdbcType=VARCHAR},
+		req_item_status=#{reqItemStatus,jdbcType=VARCHAR},
+		modi_date=now()
+		where
+		is_deleted =0 and
+		req_no=#{reqNo,jdbcType=VARCHAR} and req_item_name =
+		#{reqItemName,jdbcType=VARCHAR}
 	</update>
 </mapper>

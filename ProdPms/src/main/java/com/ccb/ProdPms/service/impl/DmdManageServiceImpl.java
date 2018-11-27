@@ -60,24 +60,19 @@ public class DmdManageServiceImpl implements DmdManageService {
 		String reqItemName = dmdItemFuncDto.getReqItemName();
 		String reqItemStatus = dmdItemFuncDto.getReqItemStatus();
 		String createDate = dmdItemFuncDto.getCreateDate();
-		int hasFunc = dmdItemFuncDto.getHasFunc();
+		List<Long> list = dmdItemFuncDto.getFuncId();
+		DmdItemEntity ie = dmdManageMapper.hasItem(reqNo, reqItemName);
 		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,
-				reqItemStatus, onlineDatetime, createDate, modiDate, 0, hasFunc);
-		// System.out.println(itemEntity.toString());
-		if (hasFunc == 0) {
-			try {
-				dmdManageMapper.insertDmdItem(itemEntity);
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		} else {
-			try {
-				dmdManageMapper.insertDmdItem(itemEntity);
+				reqItemStatus, onlineDatetime, createDate, modiDate, 0);
+		if (ie == null) {
+			String tableName = "req_item";
+			dmdManageMapper.alterTableAutoIncre(tableName);
+			dmdManageMapper.insertDmdItem(itemEntity);
+			if (list.size() != 0) {
 				Long req_item_id = itemEntity.getId();
-				List<Long> list = dmdItemFuncDto.getFuncId();
-				// System.out.println(req_item_id + "^^^^^^^^^^^^^^^^^^^^^^^^^" +
-				// list.toString());
 				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
+				tableName = "reqitem_func";
+				dmdManageMapper.alterTableAutoIncre(tableName);
 				for (Long func_id : list) {
 					dmdItemFuncEntity.setFuncId(func_id);
 					dmdItemFuncEntity.setReqitemId(req_item_id);
@@ -86,8 +81,23 @@ public class DmdManageServiceImpl implements DmdManageService {
 					dmdItemFuncEntity.setIsDeleted(0);
 					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
 				}
-			} catch (Exception e) {
-				e.getMessage();
+			}
+		} else {
+			dmdManageMapper.updateDmdItem(itemEntity);
+			if (list.size() != 0) {
+				Long id = ie.getId();
+				dmdManageMapper.deleteItemFuncById(id.intValue());
+				String tableName = "reqitem_func";
+				dmdManageMapper.alterTableAutoIncre(tableName);
+				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
+				for (Long func_id : list) {
+					dmdItemFuncEntity.setFuncId(func_id);
+					dmdItemFuncEntity.setReqitemId(id);
+					dmdItemFuncEntity.setOpPerson(opPerson);
+					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setIsDeleted(0);
+					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
+				}
 			}
 		}
 	}

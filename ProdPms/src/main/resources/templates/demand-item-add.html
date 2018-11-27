@@ -43,7 +43,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">上线日期</label>
             <div class="layui-input-block">
-                <input type="text" id="onplan_date" name="onlineDateTime" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="onplan_date" name="onlineDatetime" autocomplete="off"  class="layui-input"/>
             </div>
 
         </div>
@@ -54,6 +54,14 @@
             </div>
 
         </div>
+        
+         <div class="layui-form-item" style="display:none">
+            <label class="layui-form-label">操作人</label>
+            <div class="layui-input-block">
+                <input type="text" name="opPerson" value="admin" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        
         <div class="layui-form-item">
             <label class="layui-form-label">需求项状态</label>
             <div class="layui-input-block">
@@ -65,7 +73,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">功能点</label>
             <div class="layui-input-block">
-                <select name="func" xm-select="select2" xm-select-direction="up" xm-select-show-count="4" xm-select-height="36px">
+                <select name="funcId" xm-select="select2" xm-select-direction="up" xm-select-show-count="4" xm-select-height="36px">
                     <option value="">请选择功能点</option>
                     <option value="1" >基金认购</option>
                     <option value="2" >基金申购</option>
@@ -106,7 +114,7 @@
             // layer.alert("zzf");
             layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : '/',
+                url : '/addReqItem',
                 data : data.field,
                 type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
                 dataType : 'json',

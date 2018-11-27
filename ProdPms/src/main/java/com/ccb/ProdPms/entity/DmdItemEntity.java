@@ -9,15 +9,9 @@ public class DmdItemEntity implements Serializable {
 	private Long id;
 	private String reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev, reqItemStatus;
 	private String onlineDatetime, createDate, modiDate;
-	private int isDeleted, hasFunc;
+	private int isDeleted;
 
-	public int getHasFunc() {
-		return hasFunc;
-	}
-
-	public void setHasFunc(int hasFunc) {
-		this.hasFunc = hasFunc;
-	}
+	
 
 	public String getReqItemName() {
 		return reqItemName;
@@ -108,8 +102,7 @@ public class DmdItemEntity implements Serializable {
 	}
 
 	public DmdItemEntity(String reqNo, String reqItemDesc, String opPerson, String reqItemName, String reqItemDev,
-			String reqItemStatus, String onlineDatetime, String createDate, String modiDate, int isDeleted,
-			int hasFunc) {
+			String reqItemStatus, String onlineDatetime, String createDate, String modiDate, int isDeleted) {
 		this.reqNo = reqNo;
 		this.reqItemDesc = reqItemDesc;
 		this.opPerson = opPerson;
@@ -120,11 +113,10 @@ public class DmdItemEntity implements Serializable {
 		this.createDate = createDate;
 		this.modiDate = modiDate;
 		this.isDeleted = isDeleted;
-		this.hasFunc = hasFunc;
 	}
 
 	public DmdItemEntity(String reqNo, String reqItemDesc, String opPerson, String reqItemName, String reqItemDev,
-			String onlineDatetime, String reqItemStatus, int hasFunc) {
+			String onlineDatetime, String reqItemStatus) {
 		this.reqNo = reqNo;
 		this.reqItemDesc = reqItemDesc;
 		this.opPerson = opPerson;
@@ -132,7 +124,7 @@ public class DmdItemEntity implements Serializable {
 		this.reqItemDev = reqItemDev;
 		this.onlineDatetime = onlineDatetime;
 		this.reqItemStatus = reqItemStatus;
-		this.hasFunc = hasFunc;
+		
 	}
 
 	@Override
@@ -140,7 +132,7 @@ public class DmdItemEntity implements Serializable {
 		return "DmdItemEntity [id=" + id + ", reqNo=" + reqNo + ", reqItemDesc=" + reqItemDesc + ", opPerson="
 				+ opPerson + ", reqItemName=" + reqItemName + ", reqItemDev=" + reqItemDev + ", reqItemStatus="
 				+ reqItemStatus + ", onlineDatetime=" + onlineDatetime + ", createDate=" + createDate + ", modiDate="
-				+ modiDate + ", isDeleted=" + isDeleted + ", hasFunc=" + hasFunc + "]";
+				+ modiDate + ", isDeleted=" + isDeleted + "]";
 	}
 
 	public DmdItemEntity() {

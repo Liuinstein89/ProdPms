@@ -44,9 +44,9 @@ public class ProdPmsApplicationTests {
 		ArrayList<Long> list = new ArrayList<>();
 		list.add(0, (long) 1);
 		list.add(1, (long) 2);
-		DmdItemFuncDto dmdItemEntity = new DmdItemFuncDto("PR201823333", "描述", "YH", "需求项1", "开发任务1", "未上线",
+		/*DmdItemFuncDto dmdItemEntity = new DmdItemFuncDto("PR201823333", "描述", "YH", "需求项1", "开发任务1", "未上线",
 				"2018-11-24 00:00:00", "", 0, 1, list);
-		dmdManageController.addReqItem(dmdItemEntity);
+		dmdManageController.addReqItem(dmdItemEntity);*/
 		// DmdItemFuncEntity dmdItemFuncEntity = new
 		// DmdItemFuncEntity((long)8,(long)1,"YH",null,0);
 		// dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);

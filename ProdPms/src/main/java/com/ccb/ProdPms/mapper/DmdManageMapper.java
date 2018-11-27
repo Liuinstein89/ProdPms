@@ -2,6 +2,8 @@ package com.ccb.ProdPms.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdItemFuncEntity;
@@ -61,7 +63,7 @@ public interface DmdManageMapper {
 	void insertUpload(UploadFileEntity uploadFileEntity);
 
 	void insertDmdItem(DmdItemEntity dmdItemEntity);
-	
+
 	void insertDmdItemFunc(DmdItemFuncEntity dmdItemFuncEntity);
 
 	// There is no getter for property named 'tableName' in 'class
@@ -96,6 +98,13 @@ public interface DmdManageMapper {
 
 	void insertAudit(AuditResultEntity ar);
 
-	
+	// 这里传参一直报错找不到参数，这么处理的
+	DmdItemEntity hasItem(@Param("reqNo") String reqNo, @Param("reqItemName") String reqItemName);
+
+	void updateDmdItem(DmdItemEntity itemEntity);
+
+	void updateDmdItemFunc(DmdItemFuncEntity dmdItemFuncEntity);
+
+	void deleteItemFuncById(int id);
 
 }
