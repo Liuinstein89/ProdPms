@@ -22,7 +22,9 @@ import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.mapper.FuncMapper;
+import com.ccb.ProdPms.mapper.OnlinePlanMapper;
 import com.ccb.ProdPms.service.DmdManageService;
+import com.ccb.ProdPms.service.OnlinePlanService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,6 +40,10 @@ public class DmTest {
 	private DmdManageService dmdManageService;
 	@Autowired
 	FuncMapper funcMapper;
+	@Autowired
+	OnlinePlanService onlinePlanService;
+	@Autowired
+	OnlinePlanMapper onlinePlanMapper;
 
 	@Test
 	public void testQuery() throws Exception {
@@ -50,6 +56,7 @@ public class DmTest {
 		 * DmdItemFuncDto("3", "4", "4", "4", "4", "4", "2019-02-01 00:23:22", null, 0,
 		 * list); dmdManageController.addReqItem(dmdItemFuncDto);
 		 */
+		System.out.println(onlinePlanMapper.getAll());
 	}
 
 	// @Test

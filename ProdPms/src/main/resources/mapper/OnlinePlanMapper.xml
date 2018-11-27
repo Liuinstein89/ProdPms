@@ -2,41 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.ccb.ProdPms.mapper.OnlinePlanMapper">
-	<resultMap id="FuncMap"
-		type="com.ccb.ProdPms.entity.FunctionEntity">
+	<resultMap id="OnlinePlanMap"
+		type="com.ccb.ProdPms.entity.OnlinePlanEntity">
 		<id column="id" property="id" jdbcType="INTEGER" />
-		<result column="func_name" property="funcName"
+		<result column="online_datetime" property="onlineDatetime"
+			jdbcType="DATE" />
+		<result column="req_no" property="reqNo" jdbcType="VARCHAR" />
+		<result column="func_item" property="funcItem"
 			jdbcType="VARCHAR" />
-		<result column="func_reform_content"
-			property="funcReformContent" jdbcType="VARCHAR" />
-		<result column="desi_person" property="desiPerson"
+		<result column="op_person" property="opPerson"
 			jdbcType="VARCHAR" />
-		<result column="dev_person" property="devPerson"
+		<result column="dev_no" property="devNo" jdbcType="VARCHAR" />
+		<result column="online_plan_desc" property="onlinePlanDesc"
 			jdbcType="VARCHAR" />
-		<result column="test_person" property="testPerson"
+		<result column="online_plan_name" property="onlinePlanName"
 			jdbcType="VARCHAR" />
-		<result column="online_date" property="onlineDate"
+		<result column="online_plan_status" property="onlinePlanStatus"
 			jdbcType="VARCHAR" />
-		<result column="create_user" property="createUser"
-			jdbcType="VARCHAR" />
-		<result column="func_status" property="funcStatus"
-			jdbcType="VARCHAR" />
+		<result column="req_name" property="reqName" jdbcType="VARCHAR" />
 		<result column="create_date" property="createDate"
 			jdbcType="DATE" />
 		<result column="modi_date" property="modiDate" jdbcType="DATE" />
 	</resultMap>
 
-	<sql id="Basic_Func_Columns">
-		id, func_name,
-		func_reform_content,desi_person,dev_person,test_person,online_date,
-		create_user,func_status,create_date,modi_date
+	<sql id="Basic_OnP_Columns">
+		id, online_datetime,req_no,
+		func_item,op_person,dev_no,online_plan_desc,online_plan_name,
+		online_plan_status,req_name,create_date,modi_date
 	</sql>
 
 	<!-- 获取全部需求列表 -->
-	<select id="getAll" resultMap="FuncMap">
+	<select id="getAll" resultMap="OnlinePlanMap">
 		select
-		<include refid="Basic_Func_Columns" />
-		from func
+		<include refid="Basic_OnP_Columns" />
+		from online_plan
 		where is_deleted = 0
 	</select>
 	<!-- 获取某需求全部需求项列表 -->
@@ -49,7 +48,8 @@
 		from
 		func a LEFT
 		JOIN reqitem_func b on a.id = b.func_id
-		where a.is_deleted = 0 and b.reqitem_id = #{reqItemId,jdbcType=INTEGER}
+		where a.is_deleted = 0 and
+		b.reqitem_id = #{reqItemId,jdbcType=INTEGER}
 	</select>
 	<!-- 获取指定功能点数目 -->
 	<select id="findByName" parameterType="java.lang.String"
