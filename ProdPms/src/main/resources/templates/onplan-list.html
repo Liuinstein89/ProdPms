@@ -31,8 +31,6 @@
         <div class="demoTable layui-inline" style="margin-top: 6px">
             <div class="layui-inline">
   <input type="text" class="layui-input" id="reqName"
-  
-                       
               style="width: 200px" autocomplete="off" placeholder="请输入需求标题" />
             </div>
  <div class="layui-inline">
@@ -50,23 +48,13 @@
     </div>
     <div class="layui-card-body" style="margin-top: -15px">
         <table class="layui-hide" id="onplan_table" lay-filter="onplan_table"></table>
-
-
     </div>
 </div>
 
-
-
-
-
 <script type="text/html" id="barDemo">
-  
     <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
-
-
-
 
 <script src="../static/src/layui.js" charset="utf-8"></script>
 <script src="../static/src/public.js" charset="utf-8"></script>
@@ -81,7 +69,7 @@
         //渲染
         var tableIns = table.render({
             elem: '#onplan_table'
-
+            ,url :'/lsitOnlinePlan'
             , title: '上线计划主表'
             , page: true
             , totalRow: false
@@ -108,20 +96,14 @@
                 , {field: 'opPerson', title: '用户', width: 120,hide : true}
                 , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 140}
             ]]
-            ,data:[{
-                "reqNo":"sjdjf",
-                "onlineDatetime":"2018-6-7",
-            }]
-               // ,parseData: function(res){
-        
-            //     return {
-            //         "code": res.code
-            //         ,"msg": res.msg
-            //         ,"count": res.data.total
-            //         ,"data": res.data.list
-            //     };
-            // }
-
+              ,parseData: function(res){
+                return {
+                     "code": res.code
+                    ,"msg": res.msg
+                    ,"count": res.data.total
+                    ,"data": res.data.list
+               };
+           }
         });
 
         //工具栏事件

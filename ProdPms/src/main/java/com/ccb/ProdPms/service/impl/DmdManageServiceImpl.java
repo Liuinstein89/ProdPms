@@ -17,10 +17,12 @@ import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdItemFuncEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
+import com.ccb.ProdPms.entity.FunctionEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.entity.UserEntity;
 import com.ccb.ProdPms.exception.ResourceNotFoundException;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
+import com.ccb.ProdPms.mapper.FuncMapper;
 import com.ccb.ProdPms.mapper.UserMapper;
 import com.ccb.ProdPms.service.DmdManageService;
 
@@ -38,6 +40,8 @@ public class DmdManageServiceImpl implements DmdManageService {
 	private DmdManageMapper dmdManageMapper;
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private FuncMapper funcMapper;
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void addReq(DmdManageEntity dmdManageEntity) {
@@ -243,10 +247,86 @@ public class DmdManageServiceImpl implements DmdManageService {
 
 		}
 	}
-	/*
-	 * DmdManageEntity dmdManageEntity = new DmdManageEntity(reqNo, dept, leadTeam,
-	 * reqStatus, nowUser, nextUser, createUser, createDate, "reqAddStatus", 0);
-	 */
+
+
+	@Override
+	public List<FunctionEntity> getReqItemFunc(Integer reqItemId) {
+		List<FunctionEntity> reqFuncList = new ArrayList<FunctionEntity>();
+		try {
+			reqFuncList = funcMapper.getReqItemFunc(reqItemId);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return reqFuncList;
+	}
+
+	@Override
+	public void delReqRalateItemById(Integer id) {
+		DmdItemEntity dmdItemEntity = dmdManageMapper.findReqRalateItem(id);
+		if (dmdItemEntity == null) {
+			throw new ResourceNotFoundException("找不到关键词，id：" + id);
+		}
+		try {
+			dmdManageMapper.deleteReqRalateItemById(id);
+			dmdManageMapper.delReqItemFuncById(id);
+		} catch (Exception e) {
+			e.getMessage();
+			log.info("fail to delete file by id:" + id);
+		}
+	}
+
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
+	public void updateDmdItem(DmdItemFuncDto dmdItemFuncDto) {
+		String reqNo = dmdItemFuncDto.getReqNo();
+		String reqItemDesc = dmdItemFuncDto.getReqItemDesc();
+		String opPerson = dmdItemFuncDto.getOpPerson();
+		String modiDate = dmdItemFuncDto.getModiDate();
+		String onlineDatetime = dmdItemFuncDto.getOnlineDatetime();
+		String reqItemDev = dmdItemFuncDto.getReqItemDev();
+		String reqItemName = dmdItemFuncDto.getReqItemName();
+		String reqItemStatus = dmdItemFuncDto.getReqItemStatus();
+		String createDate = dmdItemFuncDto.getCreateDate();
+		List<Long> list = dmdItemFuncDto.getFuncId();
+		DmdItemEntity ie = dmdManageMapper.hasItem(reqNo, reqItemName);
+		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,
+				reqItemStatus, onlineDatetime, createDate, modiDate, 0);
+		if (ie == null) {
+			String tableName = "req_item";
+			dmdManageMapper.alterTableAutoIncre(tableName);
+			dmdManageMapper.insertDmdItem(itemEntity);
+			if (list.size() != 0) {
+				Long req_item_id = itemEntity.getId();
+				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
+				tableName = "reqitem_func";
+				dmdManageMapper.alterTableAutoIncre(tableName);
+				for (Long func_id : list) {
+					dmdItemFuncEntity.setFuncId(func_id);
+					dmdItemFuncEntity.setReqitemId(req_item_id);
+					dmdItemFuncEntity.setOpPerson(opPerson);
+					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setIsDeleted(0);
+					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
+				}
+			}
+		} else {
+			dmdManageMapper.updateDmdItem(itemEntity);
+			if (list.size() != 0) {
+				Long id = ie.getId();
+				dmdManageMapper.deleteItemFuncById(id.intValue());
+				String tableName = "reqitem_func";
+				dmdManageMapper.alterTableAutoIncre(tableName);
+				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
+				for (Long func_id : list) {
+					dmdItemFuncEntity.setFuncId(func_id);
+					dmdItemFuncEntity.setReqitemId(id);
+					dmdItemFuncEntity.setOpPerson(opPerson);
+					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setIsDeleted(0);
+					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
+				}
+			}
+		}
+	}
 
 	/*
 	 * @Transactional public KeywordReply updateKeywordRule(KeywordRuleDto rule) {

@@ -66,6 +66,7 @@
 		<result column="datetime" property="datetime" jdbcType="DATE" />
 		<result column="req_no" property="reqNo" jdbcType="VARCHAR" />
 	</resultMap>
+	
 	<!-- ==================定义sql片段============== sql:是sql片段标签属性,可被其他语句引用的可重用语句块 
 		id是该片段的唯一标识 -->
 	<sql id="Basic_Req_Columns">
@@ -135,6 +136,26 @@
 		#{reqNo,jdbcType=VARCHAR} and req_item_name =
 		#{reqItemName,jdbcType=VARCHAR}
 	</select>
+	<!-- 获取某需求全部需求项列表 -->
+	<select id="findReqRalateItem" resultMap="DmdItemMap"
+		parameterType="java.lang.Integer">
+		select
+		*
+		from req_item
+		where is_deleted = 0 and id =#{id,jdbcType=INTEGER} 
+	</select>
+	<!-- 获取某需求全部需求项列表 -->
+	<update id="deleteReqRalateItemById" 
+		parameterType="java.lang.Integer">
+		update req_item set is_deleted = 1
+		where id =#{id,jdbcType=INTEGER} 
+	</update>
+	<!-- 获取某需求全部需求项列表 -->
+	<update id="delReqItemFuncById" 
+		parameterType="java.lang.Integer">
+		update reqitem_func set is_deleted = 1
+		where reqitem_id =#{id,jdbcType=INTEGER} 
+	</update>
 	<!-- 获取某需求全部需求项列表 -->
 	<select id="getUploadFileOfReq" resultMap="UploadFileMap"
 		parameterType="java.lang.String">

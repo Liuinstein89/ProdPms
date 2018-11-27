@@ -9,6 +9,7 @@ import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
+import com.ccb.ProdPms.entity.FunctionEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 
 @Service
@@ -39,6 +40,12 @@ public interface DmdManageService {
 	void deleteUploadById(Integer id);
 
 	void auditSubmitAdd(AuditResultEntity auditResultEntity, String nowUser);
+
+	List<FunctionEntity> getReqItemFunc(Integer reqItemId);
+
+	void delReqRalateItemById(Integer id);
+
+	void updateDmdItem(DmdItemFuncDto dmdItemFuncDto);
 
 	
 

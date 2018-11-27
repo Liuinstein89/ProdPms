@@ -19,4 +19,6 @@ public interface FuncMapper {
 	int findByName(String funcName);
 
 	void updateExcelFunc(FunctionEntity functionEntity2);
+
+	List<FunctionEntity> getReqItemFunc(Integer reqItemId);
 }

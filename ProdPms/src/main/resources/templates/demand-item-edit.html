@@ -23,14 +23,14 @@ body {
 		<form class="layui-form layui-form-pane" style="width: 100%;"
 			method="post" action="" name="form">
 
-			<div class="layui-form-item ">
+			<!-- <div class="layui-form-item ">
 				<label class="layui-form-label">需求项编号</label>
 				<div class="layui-input-block">
 					<input type="text" name="ID" disabled="disabled" autocomplete="off"
 						class="layui-input" />
 				</div>
 
-			</div>
+			</div> -->
 
 			<div class="layui-form-item">
 				<label class="layui-form-label">需求项</label>
@@ -52,13 +52,13 @@ body {
 			<div class="layui-form-item">
 				<label class="layui-form-label">上线日期</label>
 				<div class="layui-input-block">
-					<input type="text" id="onplan_date" name="onlineDateTime"
+					<input type="text" id="onplan_date" name="onlineDatetime"
 						autocomplete="off" class="layui-input" />
 				</div>
 
 			</div>
 			<div class="layui-form-item">
-				<label class="layui-form-label">对应开发任务</label>
+				<label class="layui-form-label">开发任务</label>
 				<div class="layui-input-block">
 					<input type="text" name="reqItemDev" autocomplete="off"
 						class="layui-input" />
@@ -86,7 +86,7 @@ body {
 			<div class="layui-form-item">
 				<label class="layui-form-label">功能点</label>
 				<div class="layui-input-block">
-					<select name="func" xm-select="select2" xm-select-direction="up"
+					<select name="funcId" xm-select="select2" xm-select-direction="up"
 						xm-select-show-count="4" xm-select-height="36px">
 						<option value="">请选择功能点</option>
 						<option value="1">基金认购</option>
@@ -128,23 +128,20 @@ body {
 
 					//监听提交
 					form.on('submit(edit_form_btn)', function(data) {
-						// layer.alert("zzf");
-						layer.alert(JSON.stringify(data.field));
 						$.ajax({
 							url : '/updateReqItem',
 							data : data.field,
 							type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
 							dataType : 'json',
 							success : function(obj) {
-								// layer.close(index);//关闭
-								if (obj.success) {
-									pubUtil.msg(obj.msg, layer, 1, function() {
-										$("#close").click();
-									}, 1000);
-								} else {
-									pubUtil.msg(obj.msg, layer, 2, function() {
-									}, 1000);
-								}
+								if (obj == 'success') {
+			                        pubUtil.msg("修改成功", layer, 1, function() {
+			                            $("#close").click();
+			                        }, 1000);
+			                    } else {
+			                        pubUtil.msg("修改失败", layer, 2, function() {
+			                        }, 1000);
+			                    }
 							}
 						});
 						return false;

@@ -289,14 +289,14 @@
 	            	"reqNo" : reqNoid
 	            }
 	            , page: {}
-	            
+	            ,id : "demItemReload"
 	            , totalRow: false
 	            , limit: 5
 	            // , toolbar: '#toolbarDemo'
 	            , cols: [[
 	                  {field: 'reqItemName', title: '需求项', fixed: 'left', unresize: true,align:'center'}
 	                , {field: 'reqItemDesc', title: '需求项描述'}
-	                , {field: 'ID', title: 'id',hide:true}
+	                , {field: 'id', title: 'id',hide:true}
 	                , {field: 'onlineDatetime', title: '上线日期', width:110,sort: true}
 	                , {field: 'reqItemDev', title: '对应开发任务'}
 	                , {field: 'reqItemStatus', title: '需求项状态'}
@@ -346,19 +346,21 @@
 	            //功能点表格渲染
 	               table.render({
 	                   elem: '#dfunction'
-	                   ,page: false
+	                   ,page: {}
 	                   , title: '关联功能点表'
-	                   , url: '/listReqFunc'
+	                   , url: '/listReqRalateFunc'
+	                   ,limit : 5
+	                   , totalRow: false
 	                   ,where: {id:data.id}
 	                   ,cellMinWidth: 80
 	                   ,cols: [[
-	                        {field: 'funcName', title: '功能点名称（标准数据导入）' }
+	                        {field: 'funcName', title: '功能点名称' }
 						   ,{field: 'funcReformContent', title: '功能点改造内容'}
 						   ,{field: 'desiPerson', title: '设计人员'}
 						   ,{field: 'devPerson', title: '开发人员'}
 						   ,{field: 'testPerson', title: '测试人员'}
 	                   ]]
- ,parseData: function(res){
+ 					   ,parseData: function(res){
 						   return {
 							   "code": res.code
 							   ,"msg": res.msg
@@ -392,7 +394,11 @@
 
                         body.find('button#close').on('click', function() {
                             layer.close(index);
-
+                            table.reload("demItemReload",{
+                                where: {
+                                    reqNo: reqNoid, //搜索的关键字
+                                },
+                            });
                         });
                         body.contents().find("#demandItemReqNo").val(reqNoid);
                     }
@@ -416,6 +422,11 @@
 		                                    
 							body.find('button#close').on('click', function() {
 		                        layer.close(index);
+		                        table.reload("demItemReload",{
+	                                where: {
+	                                    reqNo: reqNoid, //搜索的关键字
+	                                },
+	                            });
 		            		});
 		                    pubUtil.load(body, data);//填充表单
 		                }
@@ -426,17 +437,20 @@
 		        function delDemandItem(data){
 		        	layer.confirm('是否确定删除该条需求项记录',function (index) {
 		 				$.ajax({
-		                    url: '/delReqById',
+		                    url: '/delReqRalateItemById',
 		                    data: {
 		                        id: data.id //将需要删除的Id作为参数传入
 		                    },
 		                    type: 'GET',
 		                    dataType: 'json',
 		                    success: function (data) {
-		                        // layer.close(loadindex);//关闭进程对话框
 		 						if (data == "success") {
 		                            pubUtil.msg("需求项删除成功", layer, 1, function () {
-									location.reload();//刷新
+		                            	 table.reload("demItemReload",{
+		                                     where: {
+		                                         reqNo: reqNoid, //搜索的关键字
+		                                     },
+		                                 });
 								}, 1000);
 							}else {
 								pubUtil.msg("需求项删除失败", layer, 2, function () {
@@ -480,7 +494,7 @@
 		            , cols: [[
 		                {field: 'auditTeam', title: '审核团队', fixed: 'left', unresize: true,align:'center', width:120}
 		                , {field: 'result', title: '审核结果', width:130,sort: true}
-		                , {field: 'ID', title: 'id',hide:true}
+		                , {field: 'id', title: 'id',hide:true}
 		                , {field: 'comment', title: '审核意见'}
 		                , {field: 'auditPerson', title: '审核人' , width:110,sort: true,align:'center'}
 		                , {field: 'auditTime', title: '审核时间', sort: true, fixed: 'right',width:200,align:'center'}

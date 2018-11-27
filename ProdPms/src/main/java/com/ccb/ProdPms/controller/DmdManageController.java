@@ -32,6 +32,7 @@ import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
+import com.ccb.ProdPms.entity.FunctionEntity;
 import com.ccb.ProdPms.entity.OnlinePlanEntity;
 import com.ccb.ProdPms.entity.RestRespEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
@@ -449,6 +450,17 @@ public class DmdManageController {
 		return JSONObject.toJSONString(strSuc);
 	}
 
+	// 点击某需求需求项查看按钮，弹窗显示对应的功能点，一对多关系
+	@GetMapping("/listReqRalateFunc")
+	@ResponseBody
+	public String listReqFunc(@RequestParam(value = "id") Integer reqItemId,
+			@RequestParam(value = "page") Integer pageNum, @RequestParam(value = "limit") Integer pageSize) {
+		PageHelper.startPage(pageNum, pageSize);
+		PageInfo<FunctionEntity> dmdItemPageInfo = new PageInfo<>(dmdManageService.getReqItemFunc(reqItemId));
+		RestRespEntity restResp = new RestRespEntity(RespCode.SUCCESS, dmdItemPageInfo);
+		return JSONObject.toJSONString(restResp);
+	}
+
 	// 点击某需求，查看详情时列出相关联的上传文件
 	@GetMapping("/listRelateUploadFile")
 	@ResponseBody
@@ -471,6 +483,22 @@ public class DmdManageController {
 		dmdManageService.insertDmdItem(dmdItemFuncDto);
 		return JSONObject.toJSONString(strSuc);
 	}
+	
+	// 编辑修改某个需求项
+		@PostMapping("/updateReqItem")
+		@ResponseBody
+		public String updateReqItem(DmdItemFuncDto dmdItemFuncDto) {
+			dmdManageService.updateDmdItem(dmdItemFuncDto);
+			return JSONObject.toJSONString(strSuc);
+		}
+	
+	// 删除某需求对应的一个需求项，同步删除该需求项和功能点对应关系
+		@GetMapping("/delReqRalateItemById")
+		@ResponseBody
+		public String delReqRalateItemById(@RequestParam(value = "id") Integer id) {
+			dmdManageService.delReqRalateItemById(id);
+			return JSONObject.toJSONString(strSuc);
+		}
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
 	@PostMapping("/addOnlinePlan")
@@ -523,14 +551,14 @@ public class DmdManageController {
 		String comment = request.getParameter("comment");
 		String nowUser = request.getParameter("User");
 		String nextUser = request.getParameter("nextUser");
-		AuditResultEntity auditResultEntity = new AuditResultEntity(reqNo, result, comment,nextUser);
+		AuditResultEntity auditResultEntity = new AuditResultEntity(reqNo, result, comment, nextUser);
 		// 新增需求主表项
 		try {
-			dmdManageService.auditSubmitAdd(auditResultEntity,nowUser);
+			dmdManageService.auditSubmitAdd(auditResultEntity, nowUser);
 			map.put("code", 0);
 			map.put("msg", "success");
 		} catch (Exception e) {
-			e.getMessage();  
+			e.getMessage();
 			map.put("code", -1);
 			map.put("msg", "error");
 		}

@@ -107,4 +107,10 @@ public interface DmdManageMapper {
 
 	void deleteItemFuncById(int id);
 
+	DmdItemEntity findReqRalateItem(Integer id);
+
+	void deleteReqRalateItemById(Integer id);
+
+	void delReqItemFuncById(Integer id);
+
 }
