@@ -328,42 +328,4 @@ public class DmdManageServiceImpl implements DmdManageService {
 		}
 	}
 
-	/*
-	 * @Transactional public KeywordReply updateKeywordRule(KeywordRuleDto rule) {
-	 * KeywordReply keywordReply = keywordReplyRepo.findOne(rule.getId());
-	 * keywordReply.setRuleName(rule.getRuleName());
-	 * keywordReply.setKeywords(rule.getKeywords());
-	 * keywordReply.setReplyAll(rule.isReplyAll()); mergeReplyMsgs(keywordReply,
-	 * rule.getReplyMsgs()); return keywordReplyRepo.save(keywordReply); } private
-	 * void mergeReplyMsgs(KeywordReply keywordReply, List<ReplyMsgDto>
-	 * replyMsgDtos) { removeReplyMsgsIfHasRemovedFromDto(keywordReply,
-	 * replyMsgDtos); addOrUpdateReplyMsgs(keywordReply, replyMsgDtos); }
-	 */
-
-	/*
-	 * private void addOrUpdateReplyMsgs(KeywordReply keywordReply,
-	 * List<ReplyMsgDto> replyMsgDtos) { Set<ReplyMsg> replyMsgs =
-	 * keywordReply.getReplyMsgs(); for (ReplyMsgDto replyMsgDto : replyMsgDtos) {
-	 * ReplyMsg msg = null; if (StringUtils.isEmpty(replyMsgDto.getId())) { msg =
-	 * new ReplyMsg(); replyMsgs.add(msg); } else { msg =
-	 * replyMsgs.stream().filter(m ->
-	 * m.getId().equals(replyMsgDto.getId())).findFirst().orElse(msg); }
-	 * 
-	 * msg.setReplyType(ReplyType.KEYWORD_AUTO_REPLY);
-	 * msg.setKeywordReplyId(keywordReply.getId());
-	 * msg.setMsgtype(replyMsgDto.getMsgtype());
-	 * msg.setContent(replyMsgDto.getContent());
-	 * msg.setMediaId(replyMsgDto.getMediaId());
-	 * msg.setTitle(replyMsgDto.getTitle());
-	 * msg.setDescription(replyMsgDto.getDescription());
-	 * msg.setUrl(replyMsgDto.getUrl()); msg.setPicurl(replyMsgDto.getPicurl()); } }
-	 */
-
-	/*
-	 * private void removeReplyMsgsIfHasRemovedFromDto(KeywordReply keywordReply,
-	 * List<ReplyMsgDto> replyMsgDtos) { Set<ReplyMsg> replyMsgs =
-	 * keywordReply.getReplyMsgs(); if (!CollectionUtils.isEmpty(replyMsgs)) {
-	 * replyMsgs.removeIf(replyMsg -> hasRemovedFromDto(replyMsg.getId(),
-	 * replyMsgDtos)); } }
-	 */
 }

@@ -295,7 +295,7 @@ location.reload();
                     shade: 0.3,
                     area: ['600px', '580px'],
                     boolean: true,
-                    content:  ['/admin/edit','yes'],//跳转的页面
+                    content:  ['/admin/edit?obj=' + encodeURIComponent(JSON.stringify(data)),'yes'],//跳转的页面
                     success : function(layero, index){
                         var body = layer.getChildFrame('body', index);
                         body.find('button#close').on('click', function() {

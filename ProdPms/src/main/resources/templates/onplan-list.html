@@ -146,7 +146,6 @@
 
  //普通搜索
         $("#onplan_search").on("click",function(){
-            // index = layer.load(1);//开启进度条
             var reqName = $('#reqName').val();
             var onplanDate = $('#onplanDate').val();
             if(reqName != ''||onplanDate != ''){
@@ -155,13 +154,12 @@
                         reqName: reqName,  //搜索的关键字
                         onlineDatetime:onplanDate,
                     },
-                    url:'/search',
+                    url:'/opSearch',
                     method:'GET',
                 })
             }else{
                 location.reload();
             }
-       
  });
 
         
@@ -180,10 +178,9 @@
             var data = obj.data;
            
             if (obj.event === 'del') {
-              
-delOnplanList(data);
+				delOnplanList(data);
             } else if (obj.event === 'edit') {
-                 editOnplanList(data);
+                editOnplanList(data);
             }
         });
        function editOnplanList(data){
@@ -207,12 +204,11 @@ delOnplanList(data);
                 }
             })
         }
-
       
-  function delOnplanList(data) {
+  		function delOnplanList(data) {
             layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
                 $.ajax({
-                    url: '/delReqById',
+                    url: '/deleteOnlinePlanById',
                     data: {
                         id: data.id //将需要删除的Id作为参数传入
                     },
@@ -225,20 +221,17 @@ delOnplanList(data);
                                 location.reload();//刷新
                             }, 1000);
                         } else {
-                            pubUtil.msg("删除成功", layer, 2, function () {
-                            
-                      }, 1000);  
-                    }
- }
+                            pubUtil.msg("删除失败", layer, 2, function () {
+                      		}, 1000);  
+                    	}
+ 					}
                 });
             });
-      
-  }
+  		}
 
         //监听排序
         table.on('sort(onplan_table)', function (obj) {
             console.log(this, obj.field, obj.type)
-
             return;
             //服务端排序
             table.reload('onplan_table', {

@@ -1,0 +1,85 @@
+
+body{
+	font-family: 'Droid Sans', sans-serif;
+	background: url(../images/bg.jpg);
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: center;
+	background-size: cover;
+}
+.inset{
+	margin-top: 12%;
+	margin-left:40%;
+	width:350px;
+	border-radius:20px;
+
+}
+.login-head {
+	padding: 1.5em 0;
+	background: #009688;
+	/*width: 30%;*/
+
+}
+.login-head h1 {
+	color: #fff;
+	font-size: 2em;
+	font-family: 'Droid Sans', sans-serif;
+	text-align: center;
+	margin: 0 20px;
+}
+form {
+	padding: 3em 2em;
+	background: rgba(255,255,255,0.5);
+	height: 200px;
+}
+form li{
+	border-radius: 0.3em;
+	-webkit-border-radius:0.3em;
+	-moz-border-radius:0.3em;
+	-o-border-radius:0.3em;
+	list-style:none;
+	margin-bottom:12px;
+	background:#F0EEF0;
+
+}
+.username {
+	font-family: 'Droid Sans', sans-serif;
+	width:70%;
+	padding: 0.5em 2em 0.5em 1em;
+	font-size:20px;
+	outline: none;
+	border:none;
+	background: url(../images/username.png) no-repeat center right;
+}
+
+.password {
+	font-family: 'Droid Sans', sans-serif;
+	width:70%;
+	padding: 0.5em 2em 0.5em 1em;
+	font-size:20px;
+	outline: none;
+	border:0;
+	background: url(../images/password.png) no-repeat center right;
+}
+
+.submit  a{
+	font-size: 14px;
+	color: #00688B;
+	font-weight: 400;
+	font-family: 'Droid Sans', sans-serif;
+	/*margin-top: 15px;*/
+	margin-left: 40px;
+}
+
+.submit{
+	padding-top:1.5em;
+}
+
+input[type="submit"]:hover {
+	background: #337ba1;
+	color:#fff;
+}
+
+
+
+

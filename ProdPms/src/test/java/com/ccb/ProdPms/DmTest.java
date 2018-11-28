@@ -19,6 +19,7 @@ import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
+import com.ccb.ProdPms.entity.OnlinePlanEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.mapper.FuncMapper;
@@ -56,7 +57,8 @@ public class DmTest {
 		 * DmdItemFuncDto("3", "4", "4", "4", "4", "4", "2019-02-01 00:23:22", null, 0,
 		 * list); dmdManageController.addReqItem(dmdItemFuncDto);
 		 */
-		System.out.println(onlinePlanMapper.getAll());
+		
+		// System.out.println(onlinePlanMapper.getByParams("a", null));
 	}
 
 	// @Test

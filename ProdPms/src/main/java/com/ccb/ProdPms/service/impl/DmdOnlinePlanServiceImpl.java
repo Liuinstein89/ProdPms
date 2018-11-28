@@ -25,7 +25,7 @@ public class DmdOnlinePlanServiceImpl implements DmdOnlinePlanService {
 		String reqNo = olanEntity.getReqNo();
 		String opPerson = olanEntity.getOpPerson();
 		String onlinePlanStatus = olanEntity.getOnlinePlanStatus();
-		String changeDate = olanEntity.getChangeDate();
+		String modiDate = olanEntity.getModiDate();
 		String createDate = olanEntity.getCreateDate();
 		String devNo = olanEntity.getDevNo();
 		String funcItem = olanEntity.getFuncItem();
@@ -35,7 +35,7 @@ public class DmdOnlinePlanServiceImpl implements DmdOnlinePlanService {
 		String reqName = olanEntity.getReqName();
 		
 		OnlinePlanEntity olEntity = new OnlinePlanEntity(reqNo, onlinePlanDesc, opPerson, onlinePlanName, devNo,
-				onlinePlanStatus, funcItem, onlineDatetime, createDate, changeDate,reqName);
+				onlinePlanStatus, funcItem, onlineDatetime, createDate, modiDate,reqName);
 		try {
 			dmdOnlinePlanMapper.insertOnlinePlan(olEntity);
 		} catch (Exception e) {
@@ -46,15 +46,15 @@ public class DmdOnlinePlanServiceImpl implements DmdOnlinePlanService {
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void insertOnlinePlanFunc(OnlinePlanFuncDto opfDto) {
 		List<Long> list = opfDto.getFuncId();
-		Long online_plan_id = opfDto.getOnlinePlanId();
+		//Long online_plan_id = opfDto.getOnlinePlanId();
 
 		OnlinePlanFuncEntity olFEntity = new OnlinePlanFuncEntity();
 		for (Long func_id : list) {
 			olFEntity.setFuncId(func_id);
-			olFEntity.setOnlinePlanId(online_plan_id);
+			//olFEntity.setOnlinePlanId(online_plan_id);
 			olFEntity.setOpPerson(opfDto.getOpPerson());
-			olFEntity.setCreateTime(opfDto.getCreateTime());
-			olFEntity.setChangeTime(opfDto.getChangeTime());
+			//olFEntity.setCreateTime(opfDto.getCreateTime());
+			//olFEntity.setChangeTime(opfDto.getChangeTime());
 			olFEntity.setIsDeleted(0);
 			try {
 				dmdOnlinePlanMapper.insertOlFunc(olFEntity);

@@ -38,35 +38,40 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">需求来源：</label>
 					<div class="layui-input-block">
-						<input type="text" name="reqSource"   autocomplete="off" class="layui-input"/>
-					</div>
+						<select name="reqSource" id="reqSource" lay-verify="pass">
+						</select>				
+	</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">提出部门：</label>
 					<div class="layui-input-block">
-						<input type="text" name="dept"    autocomplete="off" class="layui-input"/>
+						<select name="dept" id="dept" lay-verify="pass">
+						</select>
 					</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">受理状态：</label>
 					<div class="layui-input-block">
-						<input type="text" name="reqStatus"    autocomplete="off" class="layui-input"/>
+					<select name="reqStatus" id="reqStatus" lay-verify="pass">
+						</select>
 					</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">实施方式：</label>
 					<div class="layui-input-block">
-						<input type="text" name="execType"   autocomplete="off" class="layui-input"/>
+							<select name="execType" id="execType" lay-verify="pass">
+						</select>
 					</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">受理人：</label>
 					<div class="layui-input-block">
-						<input type="text" name="nextUser"  autocomplete="off" class="layui-input"/>
+						<select name="nextUser" id="nextUser" lay-verify="pass">
+						</select>
 					</div>
 
 				</div>
@@ -74,14 +79,16 @@
 				<div class="layui-form-item">
 					<label class="layui-form-label">牵头组：</label>
 					<div class="layui-input-block">
-						<input type="text" name="leadTeam"   autocomplete="off" class="layui-input"/>
+							<select name="leadTeam" id="leadTeam" lay-verify="pass">
+						</select>
 					</div>
 
 				</div>
 				<div class="layui-form-item">
 					<label class="layui-form-label">配合组：</label>
 					<div class="layui-input-block">
-						<input type="text" name="cooTeam"   autocomplete="off" class="layui-input"/>
+						<select name="cooTeam" id="cooTeam">
+						</select>
 					</div>
 				</div>
 
@@ -129,7 +136,71 @@
 		</script>
 		<script>
 
+//加载下拉菜单
+                // id 下拉框id
+                // selval 下拉框每个选项的value
+                // selname 下拉框每个value对应的内容
+                // value 选中的值
+                function loadSelect(form,url,id,selval,selname,value){
+                    $.ajax({
+                        url : url,
+                        type : "GET",
+                        async : false,
+                        data:{page:1,limit:10000},
+                        dataType:"json",
+                        async: true,//异步执行
+                        success : function(res) {
+                            // layer.alert(JSON.stringify(res.data.list));
+                            $("#"+id).html("");
+                            $("#"+id).append('<option selected="" value="">请选择</option>');
+data1 = (res.data.list);
 
+                            // layer.alert(data1[0][selval]);
+
+                            // /*<![CDATA[*/
+                            // for(var i=0;i<res.data.total;i++){
+                            //     if(data1[i].id==value){
+                            //         $("#"+id).append('<option selected="" value='+data1[i].id+'>'+data1[i].funcName+'</option>');
+                            //     }else{
+                            //         $("#"+id).append('<option value='+data1[i].id+'>'+data1[i].funcName+'</option>');
+                            //     }
+                            // }
+                            // /*]]>*/
+
+                            /*<![CDATA[*/
+                            // alert(data1[0][selval]);
+
+                            for(var i=0;i<res.data.total;i++){
+                                if(data1[i][selval]==value){
+                                    // alert("value")
+                                    $("#"+id).append('<option selected="" value='+data1[i][selval]+'>'+data1[i][selname]+'</option>');
+                                }else{
+                                    // alert("sajdbfa")
+                                    $("#"+id).append('<option value='+data1[i][selval]+'>'+data1[i][selname]+'</option>');
+                                }
+                            }
+                            /*]]>*/
+                            form.render();//重新渲染
+                        }
+                    });
+                }
+  // 需求来源
+                loadSelect(form, '/listReqSource','reqSource','souceName','souceName',redata.reqSource);
+                // 提出部门
+                loadSelect(form, '/listDept','dept','dptName','dptName',redata.dept);
+                // 受理状态
+                loadSelect(form, '/getAllState','reqStatus','stateName','stateName',redata.reqStatus);
+                // 实施方式
+                loadSelect(form, '/getAllExecType','execType','typeName','typeName',redata.execType);
+                // 受理人
+                loadSelect(form, '/getAllUser','nextUser','userName','userName',redata.nextUser);
+                // 牵头项目组
+                loadSelect(form, '/listProTeam','leadTeam','teamName','teamName',redata.leadTeam);
+                // 配合项目组
+                loadSelect(form, '/listProTeam','cooTeam','teamName','teamName',redata.cooTeam);
+
+
+            });
 		</script>
 	</body>
 

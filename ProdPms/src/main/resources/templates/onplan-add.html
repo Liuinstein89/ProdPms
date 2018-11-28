@@ -112,19 +112,17 @@
         form.on('submit(add_form_btn)', function(data) {
            // layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : 'demand/add',
+                url : '/addOnlinePlan',
                 data : data.field,
                 type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
                 dataType : 'json',
                 success : function(obj) {
-                    // layer.close(index);//关闭
                     if (obj=='success') {
                         pubUtil.msg("新增成功", layer, 1, function() {
                             $("#close").click();
                         }, 1000);
                     } else {
                         pubUtil.msg("新增失败", layer, 2, function() {
-
                         }, 1000);
                     }
                 }

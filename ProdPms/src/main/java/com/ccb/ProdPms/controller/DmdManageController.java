@@ -501,18 +501,18 @@ public class DmdManageController {
 		}
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
-	@PostMapping("/addOnlinePlan")
+	/*@PostMapping("/addOnlinePlan")
 	public String addOnlinePlan(OnlinePlanEntity olEntity) {
 		dmdOnlinePlanService.insertOnlinePlan(olEntity);
 		return "详情列表";
-	}
+	}*/
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
-	@PostMapping("/addOnlinePlanFunc")
+	/*@PostMapping("/addOnlinePlanFunc")
 	public String addOnlinePlanFunc(OnlinePlanFuncDto opfDto) {
 		dmdOnlinePlanService.insertOnlinePlanFunc(opfDto);
 		return "详情列表";
-	}
+	}*/
 
 	// 删除需求
 	@GetMapping("/delReqById")

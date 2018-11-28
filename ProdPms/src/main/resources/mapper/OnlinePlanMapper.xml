@@ -38,91 +38,112 @@
 		from online_plan
 		where is_deleted = 0
 	</select>
-	<!-- 获取某需求全部需求项列表 -->
-	<select id="getReqItemFunc" resultMap="FuncMap"
-		parameterType="java.lang.Integer">
+
+	<!-- 获取全部需求列表 -->
+	<select id="getByParams" resultMap="OnlinePlanMap">
 		select
-		a.id,func_name,
-		func_reform_content,desi_person,dev_person,test_person,a.online_date,
-		a.create_user,func_status,a.create_date,a.modi_date
-		from
-		func a LEFT
-		JOIN reqitem_func b on a.id = b.func_id
-		where a.is_deleted = 0 and
-		b.reqitem_id = #{reqItemId,jdbcType=INTEGER}
+		<include refid="Basic_OnP_Columns" />
+		from online_plan
+		<where>
+			<if test="reqName != null and reqName !=''">
+				and req_name LIKE '%${reqName}%'
+			</if>
+			<if test="onlineDatetime != null and onlineDatetime !=''">
+				and left(online_datetime,10) between "1970-01-01" and
+				#{onlineDatetime,jdbcType=DATE}
+			</if>
+			and is_deleted = 0
+		</where>
 	</select>
+
 	<!-- 获取指定功能点数目 -->
-	<select id="findByName" parameterType="java.lang.String"
-		resultType="Integer">
+	<select id="findOne" parameterType="java.lang.Integer"
+		resultMap="OnlinePlanMap">
 		select
-		count(*)
-		from func
-		where is_deleted = 0 and func_name =
-		#{funcName,jdbcType=VARCHAR}
-	</select>
-
-	<!-- 添加需求信息，参数的初始值在代码中做处理 -->
-	<insert id="insertFunc"
-		parameterType="com.ccb.ProdPms.entity.FunctionEntity">
-		insert into
-		func
-		(func_name,func_reform_content,desi_person,dev_person,test_person,online_date,create_date,create_user,is_deleted,func_status,modi_date)
-		values (#{funcName,jdbcType=VARCHAR},
-		#{funcReformContent,jdbcType=VARCHAR},#{desiPerson,jdbcType=VARCHAR},
-		#{devPerson,jdbcType=VARCHAR},
-		#{testPerson,jdbcType=VARCHAR},#{onlineDate,jdbcType=VARCHAR},#{createDate,jdbcType=VARCHAR},
-		#{createUser,jdbcType=VARCHAR},0,null,null)
-	</insert>
-
-	<!-- 修改功能点信息，参数的初始值在代码中做处理 -->
-	<update id="updateFunc"
-		parameterType="com.ccb.ProdPms.entity.FunctionEntity">
-		update func set
-		func_name=#{funcName,jdbcType=VARCHAR},
-		func_reform_content=#{funcReformContent,jdbcType=VARCHAR},
-		desi_person=#{desiPerson,jdbcType=VARCHAR},
-		dev_person=#{devPerson,jdbcType=VARCHAR},
-		test_person=#{testPerson,jdbcType=VARCHAR},
-		online_date=#{onlineDate,jdbcType=VARCHAR},
-		modi_date=#{modiDate,jdbcType=VARCHAR}
-		where
-		is_deleted =0 and
-		id=#{id,jdbcType=INTEGER}
-	</update>
-
-	<!-- 修改功能点信息，参数的初始值在代码中做处理 -->
-	<update id="updateExcelFunc"
-		parameterType="com.ccb.ProdPms.entity.FunctionEntity">
-		update func set
-		func_name=#{funcName,jdbcType=VARCHAR},
-		func_reform_content=#{funcReformContent,jdbcType=VARCHAR},
-		desi_person=#{desiPerson,jdbcType=VARCHAR},
-		dev_person=#{devPerson,jdbcType=VARCHAR},
-		test_person=#{testPerson,jdbcType=VARCHAR},
-		online_date=#{onlineDate,jdbcType=VARCHAR},
-		modi_date=#{modiDate,jdbcType=VARCHAR}
-		where
-		is_deleted =0 and
-		func_name=#{funcName,jdbcType=VARCHAR}
-	</update>
-
-	<!-- 获取指定功能点 -->
-	<select id="findOne" resultMap="FuncMap"
-		parameterType="java.lang.Integer">
-		select
-		<include refid="Basic_Func_Columns" />
-		from func
+		<include refid="Basic_OnP_Columns" />
+		from online_plan
 		where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
 	</select>
 
 	<!-- 假删除功能点 -->
-	<update id="deleteById" parameterType="java.lang.Integer">
-		update func set
+	<update id="deleteOpById" parameterType="java.lang.Integer">
+		update online_plan set
 		is_deleted
 		=
 		1
 		where
 		id = #{id,jdbcType=INTEGER}
 	</update>
+
+	<!-- 获取某需求全部需求项列表 -->
+	<select id="hasOp" resultMap="OnlinePlanMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Basic_OnP_Columns" />
+		from online_plan
+		where is_deleted = 0 and req_no =
+		#{reqNo,jdbcType=VARCHAR} and online_plan_name =
+		#{onlinePlanName,jdbcType=VARCHAR}
+	</select>
+
+	<insert id="insertOnlinePlan" useGeneratedKeys="true"
+		keyProperty="id"
+		parameterType="com.ccb.ProdPms.entity.OnlinePlanEntity">
+		insert into
+		online_plan
+		(online_datetime,req_no,
+		func_item,op_person,dev_no,online_plan_desc,online_plan_name,
+		online_plan_status,req_name,create_date,modi_date,is_deleted)
+		values
+		(#{onlineDatetime,jdbcType=VARCHAR},
+		#{reqNo,jdbcType=VARCHAR},
+		#{funcItem,jdbcType=VARCHAR},
+		#{opPerson,jdbcType=VARCHAR},
+		#{devNo,jdbcType=VARCHAR},
+		#{onlinePlanDesc,jdbcType=VARCHAR},
+		#{onlinePlanName,jdbcType=VARCHAR},
+		#{onlinePlanStatus,jdbcType=VARCHAR},
+		#{reqName,jdbcType=VARCHAR},
+		#{createDate,jdbcType=VARCHAR},
+		null,
+		0)
+	</insert>
+
+	<!-- 循环插入上线计划与功能点对应关系表，这里是一个多对多的关系联结表 ,一定要注意数据库字段与bean对应 -->
+	<insert id="insertOpFunc"
+		parameterType="com.ccb.ProdPms.entity.OnlinePlanFuncEntity">
+		insert into
+		online_func
+		(olplan_id,func_id,create_date,modi_date,op_person,is_deleted)
+		values
+		(#{olplanId,jdbcType=INTEGER},
+		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
+	</insert>
+
+	<!-- 修改需求信息，参数的初始值在代码中做处理 -->
+	<update id="updateOnlinePlan"
+		parameterType="com.ccb.ProdPms.entity.OnlinePlanFuncEntity">
+		update online_plan set
+		func_item=#{funcItem,jdbcType=VARCHAR},
+		online_plan_name =
+		#{onlinePlanName,jdbcType=VARCHAR},
+		online_datetime=#{onlineDatetime,jdbcType=VARCHAR},
+		dev_no=#{devNo,jdbcType=VARCHAR},
+		online_plan_desc=#{onlinePlanDesc,jdbcType=VARCHAR},
+		op_person=#{opPerson,jdbcType=VARCHAR},
+		online_plan_status=#{onlinePlanStatus,jdbcType=VARCHAR},
+		req_name=#{reqName,jdbcType=VARCHAR},
+		modi_date=now()
+		where
+		is_deleted =0
+		and
+		req_no=#{reqNo,jdbcType=VARCHAR} and id = #{id,jdbcType=VARCHAR}
+	</update>
+
+	<!-- 获取某需求全部需求项列表 -->
+	<delete id="deleteOpFuncById" parameterType="java.lang.Integer">
+	delete from online_func
+	where olplan_id =#{id,jdbcType=INTEGER}
+	</delete>
 
 </mapper>
