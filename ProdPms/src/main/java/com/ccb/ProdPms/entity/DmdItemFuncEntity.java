@@ -9,14 +9,14 @@ public class DmdItemFuncEntity implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Long id, reqitemId, funcId;
-	private String opPerson, createTime, changeTime;
+	private String opPerson, createDate, modiDate;
 	private int isDeleted;
-	public DmdItemFuncEntity(Long reqitemId, Long funcId, String opPerson, String createTime, 
+	public DmdItemFuncEntity(Long reqitemId, Long funcId, String opPerson, String createDate, 
 			int isDeleted) {
 		this.reqitemId = reqitemId;
 		this.funcId = funcId;
 		this.opPerson = opPerson;
-		this.createTime = createTime;
+		this.createDate = createDate;
 		this.isDeleted = isDeleted;
 	}
 	public DmdItemFuncEntity() {

@@ -22,7 +22,7 @@ public class DmdOnlinePlanServiceImpl implements DmdOnlinePlanService {
 	// 因为初次录入上线计划是没有包括功能点的，功能点在该上线计划时间完结的时候，根据实际情况录入，所以初始化的has_func=0
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void insertOnlinePlan(OnlinePlanEntity olanEntity) {
-		String reqNo = olanEntity.getReqNo();
+		/*String reqNo = olanEntity.getReqNo();
 		String opPerson = olanEntity.getOpPerson();
 		String onlinePlanStatus = olanEntity.getOnlinePlanStatus();
 		String modiDate = olanEntity.getModiDate();
@@ -40,7 +40,7 @@ public class DmdOnlinePlanServiceImpl implements DmdOnlinePlanService {
 			dmdOnlinePlanMapper.insertOnlinePlan(olEntity);
 		} catch (Exception e) {
 			e.getMessage();
-		}
+		}*/
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)

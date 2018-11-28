@@ -81,7 +81,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 					dmdItemFuncEntity.setFuncId(func_id);
 					dmdItemFuncEntity.setReqitemId(req_item_id);
 					dmdItemFuncEntity.setOpPerson(opPerson);
-					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setCreateDate(createDate);
 					dmdItemFuncEntity.setIsDeleted(0);
 					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
 				}
@@ -98,7 +98,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 					dmdItemFuncEntity.setFuncId(func_id);
 					dmdItemFuncEntity.setReqitemId(id);
 					dmdItemFuncEntity.setOpPerson(opPerson);
-					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setCreateDate(createDate);
 					dmdItemFuncEntity.setIsDeleted(0);
 					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
 				}
@@ -303,7 +303,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 					dmdItemFuncEntity.setFuncId(func_id);
 					dmdItemFuncEntity.setReqitemId(req_item_id);
 					dmdItemFuncEntity.setOpPerson(opPerson);
-					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setCreateDate(createDate);
 					dmdItemFuncEntity.setIsDeleted(0);
 					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
 				}
@@ -320,7 +320,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 					dmdItemFuncEntity.setFuncId(func_id);
 					dmdItemFuncEntity.setReqitemId(id);
 					dmdItemFuncEntity.setOpPerson(opPerson);
-					dmdItemFuncEntity.setCreateTime(createDate);
+					dmdItemFuncEntity.setCreateDate(createDate);
 					dmdItemFuncEntity.setIsDeleted(0);
 					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
 				}
