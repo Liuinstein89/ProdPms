@@ -1,7 +1,6 @@
 package com.ccb.ProdPms.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class DmdItemEntity implements Serializable {
 	private static final long serialVersionUID = 1L;

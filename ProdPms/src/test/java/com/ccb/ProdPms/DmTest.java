@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.jboss.jandex.Main;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,7 @@ public class DmTest {
 		 * DmdItemFuncDto("3", "4", "4", "4", "4", "4", "2019-02-01 00:23:22", null, 0,
 		 * list); dmdManageController.addReqItem(dmdItemFuncDto);
 		 */
-		
+		System.out.println(onlinePlanMapper.countOp(6,"44", "plan3"));
 		// System.out.println(onlinePlanMapper.getByParams("a", null));
 	}
 

@@ -27,13 +27,11 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
-import com.ccb.ProdPms.dto.OnlinePlanFuncDto;
 import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
 import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.FunctionEntity;
-import com.ccb.ProdPms.entity.OnlinePlanEntity;
 import com.ccb.ProdPms.entity.RestRespEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
 import com.ccb.ProdPms.service.DmdManageService;
@@ -337,44 +335,51 @@ public class DmdManageController {
 
 		// 新增需求主表项
 		try {
-			dmdManageService.addReq(dmdManageEntity);
+			int count = dmdManageService.findSameReq(reqName, createUser);
+			if (count != 0) {
+				map.put("code", -1);
+				map.put("msg", "check list");
+			} else {
+				dmdManageService.addReq(dmdManageEntity);
+				// 循环插入上传文件到指定路径
+				for (MultipartFile file : fileList) {
+					if (file.isEmpty()) {
+						map.put("code", -1);
+						map.put("msg", "no upload file");
+					}
+					if (!file.isEmpty()) {
+						String fileName = file.getOriginalFilename();
+						log.info(fileName);
+						File dest = new File(UPLOADED_FILEPATH + fileName);
+						UploadFileEntity uploadFileEntity = new UploadFileEntity(fileName, UPLOADED_FILEPATH,
+								file.getContentType(), nowUser, reqNo, 0);
+						// System.out.println(dest.getName() + "-->" + dest.getPath() + "-->" +
+						// dest.getParentFile() + "-->" + dest);
+						// test.sql-->E:\temp\test.sql-->E:\temp-->E:\temp\test.sql
+						if (!dest.getParentFile().exists()) { // 判断文件父目录是否存在
+							dest.getParentFile().mkdir();
+						}
+						try {
+							file.transferTo(dest);
+							try {
+								dmdManageService.insertUpload(uploadFileEntity);
+							} catch (Exception e) {
+								e.getMessage();
+								return "insert upload failed!";
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							return "You failed to upload " + file.getName() + " => " + e.getMessage();
+						}
+					}
+					map.put("code", 0);
+					map.put("msg", "upload success");
+				}
+			}
 		} catch (Exception e) {
 			e.getMessage();
-			return "create req failed! ";
-		}
-		// 循环插入上传文件到指定路径
-		for (MultipartFile file : fileList) {
-			if (file.isEmpty()) {
-				map.put("code", -1);
-				map.put("msg", "no upload file");
-			}
-			if (!file.isEmpty()) {
-				String fileName = file.getOriginalFilename();
-				log.info(fileName);
-				File dest = new File(UPLOADED_FILEPATH + fileName);
-				UploadFileEntity uploadFileEntity = new UploadFileEntity(fileName, UPLOADED_FILEPATH,
-						file.getContentType(), nowUser, reqNo, 0);
-				// System.out.println(dest.getName() + "-->" + dest.getPath() + "-->" +
-				// dest.getParentFile() + "-->" + dest);
-				// test.sql-->E:\temp\test.sql-->E:\temp-->E:\temp\test.sql
-				if (!dest.getParentFile().exists()) { // 判断文件父目录是否存在
-					dest.getParentFile().mkdir();
-				}
-				try {
-					file.transferTo(dest);
-					try {
-						dmdManageService.insertUpload(uploadFileEntity);
-					} catch (Exception e) {
-						e.getMessage();
-						return "insert upload failed!";
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-					return "You failed to upload " + file.getName() + " => " + e.getMessage();
-				}
-			}
-			map.put("code", 0);
-			map.put("msg", "upload success");
+			map.put("code", -1);
+			map.put("msg", "create req failed!");
 		}
 		return JSONObject.toJSONString(map);
 	}
@@ -483,36 +488,35 @@ public class DmdManageController {
 		dmdManageService.insertDmdItem(dmdItemFuncDto);
 		return JSONObject.toJSONString(strSuc);
 	}
-	
+
 	// 编辑修改某个需求项
-		@PostMapping("/updateReqItem")
-		@ResponseBody
-		public String updateReqItem(DmdItemFuncDto dmdItemFuncDto) {
-			dmdManageService.updateDmdItem(dmdItemFuncDto);
-			return JSONObject.toJSONString(strSuc);
-		}
-	
+	@PostMapping("/updateReqItem")
+	@ResponseBody
+	public String updateReqItem(DmdItemFuncDto dmdItemFuncDto) {
+		dmdManageService.updateDmdItem(dmdItemFuncDto);
+		return JSONObject.toJSONString(strSuc);
+	}
+
 	// 删除某需求对应的一个需求项，同步删除该需求项和功能点对应关系
-		@GetMapping("/delReqRalateItemById")
-		@ResponseBody
-		public String delReqRalateItemById(@RequestParam(value = "id") Integer id) {
-			dmdManageService.delReqRalateItemById(id);
-			return JSONObject.toJSONString(strSuc);
-		}
+	@GetMapping("/delReqRalateItemById")
+	@ResponseBody
+	public String delReqRalateItemById(@RequestParam(value = "id") Integer id) {
+		dmdManageService.delReqRalateItemById(id);
+		return JSONObject.toJSONString(strSuc);
+	}
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
-	/*@PostMapping("/addOnlinePlan")
-	public String addOnlinePlan(OnlinePlanEntity olEntity) {
-		dmdOnlinePlanService.insertOnlinePlan(olEntity);
-		return "详情列表";
-	}*/
+	/*
+	 * @PostMapping("/addOnlinePlan") public String addOnlinePlan(OnlinePlanEntity
+	 * olEntity) { dmdOnlinePlanService.insertOnlinePlan(olEntity); return "详情列表"; }
+	 */
 
 	// 新增需求对应的上线计划，和需求项相互独立，一个需求对应多个上线计划，当上线计划完成时，再录入该计划完成的功能点，此时可以和需求项对应的功能点作对比，看看是否完全完成
-	/*@PostMapping("/addOnlinePlanFunc")
-	public String addOnlinePlanFunc(OnlinePlanFuncDto opfDto) {
-		dmdOnlinePlanService.insertOnlinePlanFunc(opfDto);
-		return "详情列表";
-	}*/
+	/*
+	 * @PostMapping("/addOnlinePlanFunc") public String
+	 * addOnlinePlanFunc(OnlinePlanFuncDto opfDto) {
+	 * dmdOnlinePlanService.insertOnlinePlanFunc(opfDto); return "详情列表"; }
+	 */
 
 	// 删除需求
 	@GetMapping("/delReqById")

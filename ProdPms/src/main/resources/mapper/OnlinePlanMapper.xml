@@ -86,6 +86,17 @@
 		#{onlinePlanName,jdbcType=VARCHAR}
 	</select>
 
+	<!-- 获取某需求全部需求项列表 -->
+	<select id="countOp" resultType="java.lang.Integer">
+		select
+		count(*)
+		from online_plan
+		where is_deleted = 0 and
+		req_no =
+		#{reqNo,jdbcType=VARCHAR} and online_plan_name =
+		#{onlinePlanName,jdbcType=VARCHAR} and id != #{id,jdbcType=INTEGER}
+	</select>
+
 	<insert id="insertOnlinePlan" useGeneratedKeys="true"
 		keyProperty="id"
 		parameterType="com.ccb.ProdPms.entity.OnlinePlanEntity">
@@ -122,7 +133,7 @@
 
 	<!-- 修改需求信息，参数的初始值在代码中做处理 -->
 	<update id="updateOnlinePlan"
-		parameterType="com.ccb.ProdPms.entity.OnlinePlanFuncEntity">
+		parameterType="com.ccb.ProdPms.entity.OnlinePlanEntity">
 		update online_plan set
 		func_item=#{funcItem,jdbcType=VARCHAR},
 		online_plan_name =
@@ -137,13 +148,22 @@
 		where
 		is_deleted =0
 		and
-		req_no=#{reqNo,jdbcType=VARCHAR} and id = #{id,jdbcType=VARCHAR}
+		req_no=#{reqNo,jdbcType=VARCHAR} and id = #{id,jdbcType=INTEGER}
 	</update>
+
+	<!-- 修改需求信息，参数的初始值在代码中做处理 -->
+	<!--<update id="updateOP" parameterType="com.ccb.ProdPms.entity.OnlinePlanEntity"> 
+		update online_plan set func_item=#{funcItem,jdbcType=VARCHAR}, online_plan_name 
+		= #{onlinePlanName,jdbcType=VARCHAR}, online_datetime=#{onlineDatetime,jdbcType=VARCHAR}, 
+		dev_no=#{devNo,jdbcType=VARCHAR}, online_plan_desc=#{onlinePlanDesc,jdbcType=VARCHAR}, 
+		op_person=#{opPerson,jdbcType=VARCHAR}, online_plan_status=#{onlinePlanStatus,jdbcType=VARCHAR}, 
+		req_name=#{reqName,jdbcType=VARCHAR}, modi_date=now() where is_deleted =0 
+		and req_no=#{reqNo,jdbcType=VARCHAR} and id = #{id,jdbcType=VARCHAR} </update> -->
 
 	<!-- 获取某需求全部需求项列表 -->
 	<delete id="deleteOpFuncById" parameterType="java.lang.Integer">
-	delete from online_func
-	where olplan_id =#{id,jdbcType=INTEGER}
+		delete from online_func
+		where olplan_id =#{id,jdbcType=INTEGER}
 	</delete>
 
 </mapper>

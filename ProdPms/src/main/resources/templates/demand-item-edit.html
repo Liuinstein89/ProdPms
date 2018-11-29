@@ -23,14 +23,14 @@ body {
 		<form class="layui-form layui-form-pane" style="width: 100%;"
 			method="post" action="" name="form">
 
-			<!-- <div class="layui-form-item ">
+			<div class="layui-form-item ">
 				<label class="layui-form-label">需求项编号</label>
 				<div class="layui-input-block">
 					<input type="text" name="ID" disabled="disabled" autocomplete="off"
 						class="layui-input" />
 				</div>
 
-			</div> -->
+			</div>
 
 			<div class="layui-form-item">
 				<label class="layui-form-label">需求项</label>
@@ -77,7 +77,7 @@ body {
 			<div class="layui-form-item" style="display: none">
 				<label class="layui-form-label">操作人</label>
 				<div class="layui-input-block">
-					<input type="text" name="opPerson" value="admin" autocomplete="off"
+					<input type="text" name="opPerson" autocomplete="off"
 						class="layui-input" />
 				</div>
 			</div>
@@ -86,15 +86,9 @@ body {
 			<div class="layui-form-item">
 				<label class="layui-form-label">功能点</label>
 				<div class="layui-input-block">
-					<select name="funcId" xm-select="select2" xm-select-direction="up"
+					<select name="funcId" xm-select="selectFunc" xm-select-direction="up"
 						xm-select-show-count="4" xm-select-height="36px">
-						<option value="">请选择功能点</option>
-						<option value="1">基金认购</option>
-						<option value="2">基金申购</option>
-						<option value="3">基金赎回</option>
-						<option value="4">基金认购</option>
-						<option value="5">基金申购</option>
-						<option value="6">基金赎回</option>
+						
 					</select>
 				</div>
 			</div>
@@ -111,12 +105,10 @@ body {
 		</form>
 	</div>
 
-	<script src="../static/src/layui.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="../static/src/public.js" type="text/javascript"
-		charset="utf-8"></script>
-	<script src="../static/js/formSelects-v4.js" type="text/javascript"
-		charset="utf-8"></script>
+		<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../static/js/formSelects-v4.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript">
 		//Demo
 		layui.use([ 'form', 'jquery', 'laydate', 'element', 'util' ],
@@ -126,6 +118,7 @@ body {
 					var laydate = layui.laydate;
 					form.render();
 
+var redata =JSON.parse(decodeURIComponent(getRequestParam().obj));
 					//监听提交
 					form.on('submit(edit_form_btn)', function(data) {
 						$.ajax({
@@ -150,8 +143,20 @@ body {
 					//多选下拉框
 
 					var formSelects = layui.formSelects;
-					formSelects.render('select2');
-					formSelects.value('select2');
+					formSelects.data('selectFunc','server',{
+					url:"/listFunc"
+					,data:{
+						page:1,
+						limit:10000,
+					}
+					,keyVal:'id'
+					,keyName:'funcName'
+					,beforeSuccess: function(id, url, searchVal, result){  //success之前的回调, 干嘛呢? 处理数据的, 如果后台不想修改数据, 你也不想修改源码, 那就用这种方式处理下数据结构吧
+						result = result.data.list;
+						return result;  //必须return一个结果, 这个结果要符合对应的数据结构
+					},
+				});
+					  formSelects.value('selectFunc',redata.funcId);
 
 					//上线时间选择
 					var onplanDate = laydate.render({

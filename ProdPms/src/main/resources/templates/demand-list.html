@@ -67,8 +67,9 @@ a {
     </script>
 
 
-	<script src="../static/src/layui.js" charset="utf-8"></script>
-	<script src="../static/src/public.js" charset="utf-8"></script>
+		<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../static/src/public.js"  type="text/javascript" charset="utf-8"></script>
+	<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script>
         layui.use(['jquery','table','form','layer'], function () {
             var table = layui.table;
@@ -258,11 +259,13 @@ location.reload();
             table.on('tool(demand_table)', function (obj) {
                 var data = obj.data;
                 if (obj.event === 'del') {
+var nowUserDel =getCookie('name');
                     	layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
                             $.ajax({
                                 url: '/delReqById',
                                 data: {
-                                    id: data.id //将需要删除的Id作为参数传入
+                                    id: data.id ,//将需要删除的Id作为参数传入
+	nowUser: nowUserDel,//当前操作人 空值？？？？
                                 },
                                 type: 'GET',
                                 dataType: 'json',
@@ -303,6 +306,11 @@ location.reload();
                             location.reload();//刷新
                         });
                         pubUtil.load(body, data);//填充表单
+  //获取cookie中的用户名
+                        if(getCookie("name")!=null){
+                            // document.getElementById("userInfo").innerText = getCookie("name");
+                            body.find("#nowUser").val(getCookie("name"));
+                        }
                     }
                 })
             }

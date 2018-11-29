@@ -20,8 +20,5 @@ public class DmdItemFuncEntity implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 	public DmdItemFuncEntity() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
-
 }

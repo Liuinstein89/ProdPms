@@ -18,7 +18,7 @@ public interface OnlinePlanMapper {
 
 	void deleteOpById(Integer id);
 
-	OnlinePlanEntity hasOp(@Param("reqNo")String reqNo, @Param("onlinePlanName")String onlinePlanName);
+	OnlinePlanEntity hasOp(@Param("reqNo") String reqNo, @Param("onlinePlanName") String onlinePlanName);
 
 	void insertOnlinePlan(OnlinePlanEntity opEntity);
 
@@ -27,5 +27,9 @@ public interface OnlinePlanMapper {
 	void updateOnlinePlan(OnlinePlanEntity opEntity);
 
 	void deleteOpFuncById(int intValue);
+
+	void updateOP(OnlinePlanEntity opEntity);
+
+	int countOp(@Param("id") int id, @Param("reqNo") String reqNo, @Param("onlinePlanName") String onlinePlanName);
 
 }

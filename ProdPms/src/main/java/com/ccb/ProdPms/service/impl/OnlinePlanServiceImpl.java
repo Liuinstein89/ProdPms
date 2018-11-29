@@ -19,7 +19,10 @@ import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.mapper.OnlinePlanMapper;
 import com.ccb.ProdPms.service.OnlinePlanService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class OnlinePlanServiceImpl implements OnlinePlanService {
 	@Autowired
 	OnlinePlanMapper onlinePlanMapper;
@@ -72,18 +75,18 @@ public class OnlinePlanServiceImpl implements OnlinePlanService {
 		String onlinePlanStatus = opFuncDto.getOnlinePlanStatus();
 		String funcItem = opFuncDto.getFuncItem();
 		String opPerson = opFuncDto.getOpPerson();
-		//String modiDate = opFuncDto.getModiDate();
 		String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 		List<Long> lis = opFuncDto.getFuncId();
 		OnlinePlanEntity op = onlinePlanMapper.hasOp(reqNo, onlinePlanName);
 		OnlinePlanEntity opEntity = new OnlinePlanEntity(reqNo, onlinePlanDesc, opPerson, onlinePlanName, devNo,
 				onlinePlanStatus, funcItem, onlineDatetime, createDate, reqName);
 		opEntity.setReqName(reqName);
+		log.info(lis + "---" + lis.size());
 		if (op == null) {
 			String tableName = "online_plan";
 			dmdManageMapper.alterTableAutoIncre(tableName);
 			onlinePlanMapper.insertOnlinePlan(opEntity);
-			if (lis!=null) {
+			if (lis.size() != 0) {
 				Long online_plan_id = opEntity.getId();
 				OnlinePlanFuncEntity opFuncEntity = new OnlinePlanFuncEntity();
 				tableName = "online_func";
@@ -101,8 +104,7 @@ public class OnlinePlanServiceImpl implements OnlinePlanService {
 			Long id = op.getId();
 			opEntity.setId(id);
 			onlinePlanMapper.updateOnlinePlan(opEntity);
-			if (lis!=null) {
-				//Long id = op.getId();
+			if (lis.size() != 0) {
 				onlinePlanMapper.deleteOpFuncById(id.intValue());
 				String tableName = "online_func";
 				dmdManageMapper.alterTableAutoIncre(tableName);
@@ -119,25 +121,47 @@ public class OnlinePlanServiceImpl implements OnlinePlanService {
 		}
 	}
 
-	
-	/*
-	 * @Transactional(propagation = Propagation.REQUIRED, isolation =
-	 * Isolation.DEFAULT, readOnly = false) public void insertFunc(FunctionEntity
-	 * functionEntity) { String tableName = "func";
-	 * dmdManageMapper.alterTableAutoIncre(tableName);
-	 * funcMapper.insertFunc(functionEntity); }
-	 * 
-	 * @Transactional public void updateExcelFunc(FunctionEntity functionEntity2) {
-	 * funcMapper.updateExcelFunc(functionEntity2); }
-	 * 
-	 * 
-	 * @Transactional public void updateFunc(FunctionEntity functionEntity) {
-	 * funcMapper.updateFunc(functionEntity); }
-	 * 
-	 * @Transactional public void deleteFuncById(Integer id) { FunctionEntity
-	 * functionEntity = funcMapper.findOne(id); if (functionEntity == null) { throw
-	 * new ResourceNotFoundException("找不到关键词，id：" + id); } try {
-	 * funcMapper.deleteById(id); } catch (Exception e) { e.getMessage(); } }
-	 */
+	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
+	public void updateOnlinePlan(OnlinePlanFuncDto onlinePlanFuncDto) {
+		Long id = onlinePlanFuncDto.getId();
+		String reqNo = onlinePlanFuncDto.getReqNo();
+		String reqName = onlinePlanFuncDto.getReqName();
+		String onlinePlanName = onlinePlanFuncDto.getOnlinePlanName();
+		String onlinePlanDesc = onlinePlanFuncDto.getOnlinePlanDesc();
+		String onlineDatetime = onlinePlanFuncDto.getOnlineDatetime();
+		String devNo = onlinePlanFuncDto.getDevNo();
+		String onlinePlanStatus = onlinePlanFuncDto.getOnlinePlanStatus();
+		String funcItem = onlinePlanFuncDto.getFuncItem();
+		String opPerson = onlinePlanFuncDto.getOpPerson();
+		List<Long> lis = onlinePlanFuncDto.getFuncId();
+		OnlinePlanEntity opEntity = new OnlinePlanEntity(id, reqNo, onlinePlanDesc, opPerson, onlinePlanName, devNo,
+				onlinePlanStatus, funcItem, onlineDatetime, reqName);
+		opEntity.setReqName(reqName);
+		
+		log.info(lis + "---" + lis.size());
+		onlinePlanMapper.updateOnlinePlan(opEntity);
+		if (lis.size() != 0) {
+			onlinePlanMapper.deleteOpFuncById(id.intValue());
+			String tableName = "online_func";
+			dmdManageMapper.alterTableAutoIncre(tableName);
+			OnlinePlanFuncEntity opFuncEntity = new OnlinePlanFuncEntity();
+			for (Long func_id : lis) {
+				opFuncEntity.setFuncId(func_id);
+				opFuncEntity.setOlplanId(id);
+				opFuncEntity.setOpPerson(opPerson);
+				opFuncEntity.setCreateDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+				opFuncEntity.setIsDeleted(0);
+				onlinePlanMapper.insertOpFunc(opFuncEntity);
+			}
+		}
+	}
 
+	@Override
+	public int findSame(OnlinePlanFuncDto onlinePlanFuncDto) {
+		Long id = onlinePlanFuncDto.getId();
+		String reqNo = onlinePlanFuncDto.getReqNo();
+		String onlinePlanName = onlinePlanFuncDto.getOnlinePlanName();
+		int count = onlinePlanMapper.countOp(id.intValue(),reqNo, onlinePlanName);
+		return count;
+	}
 }

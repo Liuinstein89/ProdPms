@@ -71,15 +71,30 @@
               	dataType : 'text',
                 success : function(obj) {
                     if (obj=="success") {
+ setCookie("name","hayden");
                          window.location.href = "admin";//跳转 ，目前不确定
                    } else if(obj=="login error"){
                         layer.msg("用户名或密码错误!");
+ setCookie("name",$("#login_uname").val());
                         window.location.href = "admin";//跳转 ，目前不确定
                      }
                 }
              }); 
             return false;
         });
+function setCookie(name,value) {
+            document.cookie = name + '=' + escape(value);
+        }
+
+        function getCookie(name) {
+            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"); //正则匹配
+            if(arr=document.cookie.match(reg)){
+                return unescape(arr[2]);
+            }
+            else{
+                return null;
+            }
+        }
     });
 </script>
 </html>

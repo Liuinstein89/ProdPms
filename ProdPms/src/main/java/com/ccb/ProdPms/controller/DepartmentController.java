@@ -46,18 +46,23 @@ public class DepartmentController {
 
     // 新增
     @PostMapping("/addDpt")
-    public String addDpt(HttpServletRequest request) {
+    public String addDpt(HttpServletRequest request) throws Exception{
         // Form接参
         String dptName = request.getParameter("dptName");
         String dptCode = request.getParameter("dptCode");
         String opPerson = request.getParameter("opPerson");
         String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         DepartmentEntity departmentEntity = new DepartmentEntity( dptName, dptCode , opPerson, createTime);
-        try {
+       
+//判断数据库中是否有该记录，如有，就更新，如无，再新增
+        int count = departmentService.findByName(dptName);
+        if (count > 0) {
+            String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            DepartmentEntity departmentEntity2 = new DepartmentEntity( dptName,dptCode, changeTime);
+            departmentService.updateExcelDept(departmentEntity2);
+        } else {
             departmentService.insertDept(departmentEntity);
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            return "update Dpt failed! ";
+      
         }
         return JSONObject.toJSONString(strSuc);
     }

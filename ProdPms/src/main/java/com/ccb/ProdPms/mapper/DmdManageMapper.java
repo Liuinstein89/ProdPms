@@ -113,4 +113,6 @@ public interface DmdManageMapper {
 
 	void delReqItemFuncById(Integer id);
 
+	int findSameReq(@Param("reqName") String reqName, @Param("createUser") String createUser);
+
 }

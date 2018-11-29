@@ -43,10 +43,10 @@ public class ProjectTeamController {
     }
 
 
-    // 新增
+ // 鏂板
     @PostMapping("/addProTeam")
     public String addProTeam(HttpServletRequest request) {
-        // Form接参
+    	 // Form鎺ュ弬
         Long teammateNum = Long.parseLong(request.getParameter("teammateNum"));
         String teamName = request.getParameter("teamName");
         String belongDptCode = request.getParameter("belongDptCode");
@@ -55,19 +55,23 @@ public class ProjectTeamController {
         String opPerson = request.getParameter("opPerson");
         String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         ProjectTeamEntity projectTeamEntity = new ProjectTeamEntity(teammateNum,teamName, belongDptCode,  teamLeader, teammate, opPerson, createTime);
-        try {
+       
+ int count = projectTeamService.findByName(teamName);
+        if (count > 0) {
+            String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            ProjectTeamEntity projectTeamEntity2 = new  ProjectTeamEntity(teammateNum,teamName, belongDptCode, teamLeader, teammate, changeTime);
+            projectTeamService.updateExcelProjectTeam( projectTeamEntity2);
+        } else {
             projectTeamService.insertProjectTeam(projectTeamEntity);
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            return "update ProTeam failed! ";
+       
         }
         return JSONObject.toJSONString(strSuc);
     }
 
-    // 编辑
+ // 缂栬緫
     @RequestMapping(value = "/updateProTeam", method = RequestMethod.POST)
     public String updateProTeam(HttpServletRequest request) throws IOException {
-        // Form接参
+    	 // Form鎺ュ弬
         Long id = Long.parseLong(request.getParameter("id"));
         Long teammateNum = Long.parseLong(request.getParameter("teammateNum"));
         String teamName = request.getParameter("teamName");
@@ -77,7 +81,7 @@ public class ProjectTeamController {
         String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         ProjectTeamEntity projectTeamEntity = new ProjectTeamEntity(id,teammateNum, teamName, belongDptCode, teamLeader, teammate,changeTime);
 
-        // 修改需求主表项
+     // 淇敼闇�姹備富琛ㄩ」
         try {
             projectTeamService.updateProjectTeam(projectTeamEntity);
         } catch (Exception e) {
@@ -87,7 +91,7 @@ public class ProjectTeamController {
         return JSONObject.toJSONString(strSuc);
     }
 
-    // 删除
+    // 鍒犻櫎
     @GetMapping("/delProTeamById")
     @ResponseBody
     public String deleteProTeamById(@RequestParam(value = "id") Integer id) {
@@ -97,11 +101,11 @@ public class ProjectTeamController {
 
 
 
-    // 数据导入主要涉及三个步骤 1.文件上传；2.Excel解析；3.数据插入。
+    // 锟斤拷锟捷碉拷锟斤拷锟斤拷要锟芥及锟斤拷锟斤拷锟斤拷锟斤拷 1.锟侥硷拷锟较达拷锟斤拷2.Excel锟斤拷锟斤拷锟斤拷3.锟斤拷锟捷诧拷锟诫。
     @RequestMapping(value = "/importProjectTeamExcel", method = RequestMethod.POST)
     public String importProjectTeamExcel(MultipartFile file, @RequestParam(value = "userName") String userName) {
         if (file == null)
-            return "file不能为空";
+            return "file涓嶈兘涓虹┖";
         String fileName = file.getOriginalFilename();
         try {
             List<Object[]> projectTeamList = ExcelUtil.importExcel(fileName, file);

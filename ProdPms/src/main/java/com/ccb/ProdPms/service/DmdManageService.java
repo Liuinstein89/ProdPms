@@ -47,6 +47,8 @@ public interface DmdManageService {
 
 	void updateDmdItem(DmdItemFuncDto dmdItemFuncDto);
 
+	int findSameReq(String reqName, String createUser);
+
 	
 
 }

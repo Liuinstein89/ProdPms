@@ -7,8 +7,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title>增加上线计划</title>
     <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
-    <script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="../static/css/formSelects-v4.css" />
+    <script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
     <script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../static/js/formSelects-v4.js" type="text/javascript" charset="utf-8"></script>
     <style type="text/css">
         body {
             padding: 20px;
@@ -19,30 +22,35 @@
 <body>
 <div class="wrap-container">
     
- <form class="layui-form"  method="post" action="" id="add_onplan_form">
+ <form name="form" class="layui-form"  method="post" action="" id="add_onplan_form">
 
         <div class="layui-form-item">
             <label class="layui-form-label">需求标题：</label>
             <div class="layui-input-block">
-                <input type="text" name="reqName" id="title" lay-verify="title"
-                       placeholder="请输入需求标题" autocomplete="off" class="layui-input" />
+                <select name="reqName" id="reqName" lay-verify="pass" lay-search="">
+                </select>
             </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">上线时间：</label>
             <div class="layui-input-block">
-                 <input type="text" id="onplan_date" name="onlineDateTime" autocomplete="off"  class="layui-input"/>
+                 <input type="text" id="onplan_date"  placeholder="选择完上线时间后才能选择功能点"  name="onlineDatetime" autocomplete="off"  class="layui-input"/>
             </div>
         </div>
 
          <div class="layui-form-item">
-            <label class="layui-form-label">功能点：</label>
+            <label class="layui-form-label">功能点:</label>
             <div class="layui-input-block">
-                <select name="funcItem" lay-verify="pass">
-                    <option value=""></option>
-                    <option value="1">基金认购</option>
-                    <option value="2">基金申购</option>
+                <select name="funcId" id="funcId" xm-select="selectFunc" disabled="" xm-select-show-count="4"
+                        xm-select-height="36px" >
                 </select>
+ </div>
+        </div>
+
+        <div class="layui-form-item" style="display:none">
+            <label class="layui-form-label">功能点名称:</label>
+            <div class="layui-input-block">
+                <input type="text" name="funcItem" id="funcItem" autocomplete="off" class="layui-input" />
             </div>
         </div>
 
@@ -71,7 +79,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">计划描述：</label>
             <div class="layui-input-block">
-                <input type="text" name="onlinePlanDesc" lay-verify="title"
+                <input type="text" id="onlinePlanDesc" name="onlinePlanDesc" lay-verify="title"
                        placeholder="请输入计划描述" autocomplete="off" class="layui-input" />
             </div>
         </div>
@@ -90,8 +98,12 @@
             </div>
         </div>
 
-
- 
+ <div class="layui-form-item" style="display:none">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-input-block">
+                <input type="text" name="createUser" id="createUser" readonly='' autocomplete="off" class="layui-input" />
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block" style="float: right">
@@ -107,7 +119,21 @@
         var form = layui.form;
         var $ = layui.jquery;
         var laydate = layui.laydate;
+ form.verify({
+             pass : function(value) {
+                 if (value.length == 0) {
+                     return '此项为必输项';
+                 }
+             }
+         });
         form.render();
+ //获取cookie中的用户名
+         showName('createUser','name');
+
+         // 需求名称
+         loadSelect(form, '/demand','reqName','reqName','reqName');
+         // 提出功能点
+         // loadSelect(form, '/listFunc','func','funcName','funcName');
         //监听提交
         form.on('submit(add_form_btn)', function(data) {
            // layer.alert(JSON.stringify(data.field));
@@ -135,8 +161,43 @@
             theme: 'molv',
             min:"1970-1-1",//设置min默认最小值
             max:"2099-12-31",
-        });
-    })
+done:function(value,date,endate){
+                 console.log(value);
+                 onplanDate = value;
+                 if(value.length!=0){
+
+                     $("#onplan_date").css('background', '#f2f2f2');
+                     document.getElementById("onplan_date").disabled=true;
+
+                     document.getElementById("funcId").disabled=false;
+                     // $("#onplan_date").css('background', '#fff')
+                     //直接下载点击监听判断语句里就不生效？？？
+                     layui.formSelects.data('selectFunc','server',{
+                         url:"/listFunc"
+                         ,data:{
+                             page:1,
+                             limit:10000,
+                             onplanDate : value
+                         }
+                         ,keyVal:'id'
+                         ,keyName:'funcName'
+                         ,beforeSuccess: function(id, url, searchVal, result){
+                             result = result.data.list;
+                             return result;
+                         }
+     });
+                 }
+             }
+         
+
+ });
+ //监听下拉框的关闭
+         layui.formSelects.closed('selectFunc', function(id){
+             console.log(layui.formSelects.value('selectFunc', 'nameStr'));
+             $('#funcItem').val(layui.formSelects.value('selectFunc', 'nameStr'));
+         });
+
+     });
 </script>
 
 

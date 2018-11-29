@@ -288,10 +288,7 @@
 		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
 	</update>
 
-	<!-- 修改用户信息 -->
-	<!-- <update id="update" parameterType="com.po.UserinfoPO"> update userinfo 
-		set loginname=#{loginname},loginpass=#{loginpass},username=#{username}, upower=#{upower},birthday=#{birthday},sex=#{sex} 
-		where userid=#{userid} </update> -->
+	
 	<!-- <update id="updateByPrimaryKeySelective" parameterType="com.winter.model.User"> 
 		update t_user <set> <if test="userName != null"> user_name = #{userName,jdbcType=VARCHAR}, 
 		</if> <if test="password != null"> password = #{password,jdbcType=VARCHAR}, 
@@ -354,4 +351,15 @@
 		req_no=#{reqNo,jdbcType=VARCHAR} and req_item_name =
 		#{reqItemName,jdbcType=VARCHAR}
 	</update>
+	
+	<!-- 获取某需求全部需求项列表 -->
+	<select id="findSameReq" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select
+		count(*)
+		from req
+		where is_deleted = 0 and req_name =
+		#{reqName,jdbcType=VARCHAR} and create_user =
+		#{createUser,jdbcType=VARCHAR}
+	</select>
 </mapper>

@@ -46,33 +46,37 @@ public class ReqSourceController {
     }
 
 
-    // 新增
+    
     @PostMapping("/addReqSource")
-    public String addReqSource(HttpServletRequest request) {
-        // Form接参
+    public String addReqSource(HttpServletRequest request) throws Exception{
+        
         String souceName = request.getParameter("souceName");
         String opPerson = request.getParameter("opPerson");
         String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         ReqSourceEntity reqSourceEntity = new ReqSourceEntity( souceName , opPerson, createTime);
-        try {
+       
+ int count =  reqSourceService.findByName(souceName);
+        if (count > 0) {
+            String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+            ReqSourceEntity reqSourceEntity2 = new  ReqSourceEntity( souceName, changeTime);
+            reqSourceService.updateExcelReqSource(reqSourceEntity2);
+        } else {
             reqSourceService.insertReqSource(reqSourceEntity);
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            return "update ReqSource failed! ";
+       
         }
         return JSONObject.toJSONString(strSuc);
     }
 
-    // 编辑
+  
     @RequestMapping(value = "/updateReqSource", method = RequestMethod.POST)
     public String updateReqSource(HttpServletRequest request) throws IOException {
-        // Form接参
+        
         Long id = Long.parseLong(request.getParameter("id"));
         String souceName = request.getParameter("souceName");
         String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         ReqSourceEntity reqSourceEntity = new ReqSourceEntity(id,souceName, changeTime);
 
-        // 修改
+       
         try {
             reqSourceService.updateReqSource(reqSourceEntity);
         } catch (Exception e) {
@@ -82,7 +86,7 @@ public class ReqSourceController {
         return JSONObject.toJSONString(strSuc);
     }
 
-    // 删除
+    
     @GetMapping("/delReqSourceById")
     @ResponseBody
     public String deleteReqSourceById(@RequestParam(value = "id") Integer id) {
@@ -91,11 +95,11 @@ public class ReqSourceController {
     }
 
 
-    // 数据导入主要涉及三个步骤 1.文件上传；2.Excel解析；3.数据插入。
+    
     @RequestMapping(value = "/importReqSourceExcel", method = RequestMethod.POST)
     public String importReqSourceExcel(MultipartFile file, @RequestParam(value = "userName") String userName) {
         if (file == null)
-            return "file不能为空";
+            return "file涓嶈兘涓虹┖";
         String fileName = file.getOriginalFilename();
         try {
             List<Object[]> reqSourceList = ExcelUtil.importExcel(fileName, file);

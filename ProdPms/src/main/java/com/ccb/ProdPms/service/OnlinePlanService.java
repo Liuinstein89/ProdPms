@@ -18,5 +18,9 @@ public interface OnlinePlanService {
 
 	void insertOp(OnlinePlanFuncDto onlinePlanFuncDto);
 
+	void updateOnlinePlan(OnlinePlanFuncDto onlinePlanFuncDto);
+
+	int findSame(OnlinePlanFuncDto onlinePlanFuncDto);
+
 
 }

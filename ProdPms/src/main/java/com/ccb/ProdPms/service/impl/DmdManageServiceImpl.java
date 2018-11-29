@@ -328,4 +328,9 @@ public class DmdManageServiceImpl implements DmdManageService {
 		}
 	}
 
+	@Override
+	public int findSameReq(String reqName, String createUser) {
+		int count = dmdManageMapper.findSameReq(reqName,createUser);
+		return count;
+	}
 }

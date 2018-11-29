@@ -70,39 +70,25 @@ public class OnlinePlanController {
 			onlinePlanService.insertOp(onlinePlanFuncDto);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
-			return strSuc = "add onlinePlan failed! ";
+			strSuc = "add onlinePlan failed! ";
 		}
 		return JSONObject.toJSONString(strSuc);
 	}
 
-	/*
-	 * @GetMapping("/listReqFunc") public String getReqFunc(@RequestParam(value =
-	 * "page") Integer pageNum,
-	 * 
-	 * @RequestParam(value = "limit") Integer pageSize) {
-	 * PageHelper.startPage(pageNum, pageSize); PageInfo<FunctionEntity>
-	 * funcPageInfo = new PageInfo<>(funcService.getAll()); RestRespEntity restResp
-	 * = new RestRespEntity(RespCode.SUCCESS, funcPageInfo); log.debug(""); return
-	 * JSONObject.toJSONString(restResp); }
-	 * 
-	 * // 编辑功能点
-	 * 
-	 * @RequestMapping(value = "/updateFunc", method = RequestMethod.POST) public
-	 * String updateFunc(HttpServletRequest request) throws IOException { // Form接参
-	 * Long id = Long.parseLong(request.getParameter("id")); String funcName =
-	 * request.getParameter("funcName"); String funcReformContent =
-	 * request.getParameter("funcReformContent"); String desiPerson =
-	 * request.getParameter("desiPerson"); String devPerson =
-	 * request.getParameter("devPerson"); String testPerson =
-	 * request.getParameter("testPerson"); String onlineDate =
-	 * request.getParameter("onlineDate"); String modiDate = new
-	 * SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()); FunctionEntity
-	 * functionEntity = new FunctionEntity(id, funcName, funcReformContent,
-	 * desiPerson, devPerson, testPerson, onlineDate, modiDate);
-	 * 
-	 * // 修改需求主表项 try { funcService.updateFunc(functionEntity); } catch (Exception
-	 * e) { e.getMessage(); return "update Func failed! "; } return
-	 * JSONObject.toJSONString(strSuc); }
-	 * 
-	 */
+	// 编辑功能点
+	@PostMapping(value = "/updateOnlinePlan")
+	public String updateOnlinePlan(OnlinePlanFuncDto onlinePlanFuncDto) {
+		try {
+			int count = onlinePlanService.findSame(onlinePlanFuncDto);
+			if (count != 0) {
+				strSuc = "already have same";
+			} else {
+				onlinePlanService.updateOnlinePlan(onlinePlanFuncDto);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			strSuc = "update onlinePlan failed! ";
+		}
+		return JSONObject.toJSONString(strSuc);
+	}
 }
