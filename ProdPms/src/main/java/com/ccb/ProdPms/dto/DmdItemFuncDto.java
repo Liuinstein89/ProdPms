@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class DmdItemFuncDto {
-
+	private Long id;
 	private String reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev, reqItemStatus;
 	private String onlineDatetime, createDate, modiDate;
 	private int isDeleted;

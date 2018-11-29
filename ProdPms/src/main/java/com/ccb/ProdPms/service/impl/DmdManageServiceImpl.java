@@ -87,9 +87,10 @@ public class DmdManageServiceImpl implements DmdManageService {
 				}
 			}
 		} else {
+			Long id = ie.getId();
+			itemEntity.setId(id);
 			dmdManageMapper.updateDmdItem(itemEntity);
 			if (list.size() != 0) {
-				Long id = ie.getId();
 				dmdManageMapper.deleteItemFuncById(id.intValue());
 				String tableName = "reqitem_func";
 				dmdManageMapper.alterTableAutoIncre(tableName);
@@ -248,7 +249,6 @@ public class DmdManageServiceImpl implements DmdManageService {
 		}
 	}
 
-
 	@Override
 	public List<FunctionEntity> getReqItemFunc(Integer reqItemId) {
 		List<FunctionEntity> reqFuncList = new ArrayList<FunctionEntity>();
@@ -277,6 +277,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
 	public void updateDmdItem(DmdItemFuncDto dmdItemFuncDto) {
+		Long id = dmdItemFuncDto.getId();
 		String reqNo = dmdItemFuncDto.getReqNo();
 		String reqItemDesc = dmdItemFuncDto.getReqItemDesc();
 		String opPerson = dmdItemFuncDto.getOpPerson();
@@ -287,50 +288,37 @@ public class DmdManageServiceImpl implements DmdManageService {
 		String reqItemStatus = dmdItemFuncDto.getReqItemStatus();
 		String createDate = dmdItemFuncDto.getCreateDate();
 		List<Long> list = dmdItemFuncDto.getFuncId();
-		DmdItemEntity ie = dmdManageMapper.hasItem(reqNo, reqItemName);
-		DmdItemEntity itemEntity = new DmdItemEntity(reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,
+		DmdItemEntity itemEntity = new DmdItemEntity(id, reqNo, reqItemDesc, opPerson, reqItemName, reqItemDev,
 				reqItemStatus, onlineDatetime, createDate, modiDate, 0);
-		if (ie == null) {
-			String tableName = "req_item";
+		dmdManageMapper.updateDmdItem(itemEntity);
+		if (list.size() != 0) {
+			dmdManageMapper.deleteItemFuncById(id.intValue());
+			DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
+			String tableName = "reqitem_func";
 			dmdManageMapper.alterTableAutoIncre(tableName);
-			dmdManageMapper.insertDmdItem(itemEntity);
-			if (list.size() != 0) {
-				Long req_item_id = itemEntity.getId();
-				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
-				tableName = "reqitem_func";
-				dmdManageMapper.alterTableAutoIncre(tableName);
-				for (Long func_id : list) {
-					dmdItemFuncEntity.setFuncId(func_id);
-					dmdItemFuncEntity.setReqitemId(req_item_id);
-					dmdItemFuncEntity.setOpPerson(opPerson);
-					dmdItemFuncEntity.setCreateDate(createDate);
-					dmdItemFuncEntity.setIsDeleted(0);
-					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
-				}
-			}
-		} else {
-			dmdManageMapper.updateDmdItem(itemEntity);
-			if (list.size() != 0) {
-				Long id = ie.getId();
-				dmdManageMapper.deleteItemFuncById(id.intValue());
-				String tableName = "reqitem_func";
-				dmdManageMapper.alterTableAutoIncre(tableName);
-				DmdItemFuncEntity dmdItemFuncEntity = new DmdItemFuncEntity();
-				for (Long func_id : list) {
-					dmdItemFuncEntity.setFuncId(func_id);
-					dmdItemFuncEntity.setReqitemId(id);
-					dmdItemFuncEntity.setOpPerson(opPerson);
-					dmdItemFuncEntity.setCreateDate(createDate);
-					dmdItemFuncEntity.setIsDeleted(0);
-					dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
-				}
+			for (Long func_id : list) {
+				dmdItemFuncEntity.setFuncId(func_id);
+				dmdItemFuncEntity.setReqitemId(id);
+				dmdItemFuncEntity.setOpPerson(opPerson);
+				dmdItemFuncEntity.setCreateDate(createDate);
+				dmdItemFuncEntity.setIsDeleted(0);
+				dmdManageMapper.insertDmdItemFunc(dmdItemFuncEntity);
 			}
 		}
 	}
 
 	@Override
 	public int findSameReq(String reqName, String createUser) {
-		int count = dmdManageMapper.findSameReq(reqName,createUser);
+		int count = dmdManageMapper.findSameReq(reqName, createUser);
+		return count;
+	}
+
+	@Override
+	public int findSame(DmdItemFuncDto dmdItemFuncDto) {
+		Long id = dmdItemFuncDto.getId();
+		String reqNo = dmdItemFuncDto.getReqNo();
+		String reqItemName = dmdItemFuncDto.getReqItemName();
+		int count = dmdManageMapper.countRI(id.intValue(),reqNo, reqItemName);
 		return count;
 	}
 }

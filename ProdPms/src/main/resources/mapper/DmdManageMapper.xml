@@ -66,7 +66,7 @@
 		<result column="datetime" property="datetime" jdbcType="DATE" />
 		<result column="req_no" property="reqNo" jdbcType="VARCHAR" />
 	</resultMap>
-	
+
 	<!-- ==================定义sql片段============== sql:是sql片段标签属性,可被其他语句引用的可重用语句块 
 		id是该片段的唯一标识 -->
 	<sql id="Basic_Req_Columns">
@@ -142,19 +142,22 @@
 		select
 		*
 		from req_item
-		where is_deleted = 0 and id =#{id,jdbcType=INTEGER} 
+		where is_deleted = 0 and id
+		=#{id,jdbcType=INTEGER}
 	</select>
 	<!-- 获取某需求全部需求项列表 -->
-	<update id="deleteReqRalateItemById" 
+	<update id="deleteReqRalateItemById"
 		parameterType="java.lang.Integer">
 		update req_item set is_deleted = 1
-		where id =#{id,jdbcType=INTEGER} 
+		where id
+		=#{id,jdbcType=INTEGER}
 	</update>
 	<!-- 获取某需求全部需求项列表 -->
-	<update id="delReqItemFuncById" 
+	<update id="delReqItemFuncById"
 		parameterType="java.lang.Integer">
 		update reqitem_func set is_deleted = 1
-		where reqitem_id =#{id,jdbcType=INTEGER} 
+		where reqitem_id
+		=#{id,jdbcType=INTEGER}
 	</update>
 	<!-- 获取某需求全部需求项列表 -->
 	<select id="getUploadFileOfReq" resultMap="UploadFileMap"
@@ -277,18 +280,19 @@
 	<!-- 循环插入需求项与功能点对应关系表，这里是一个多对多的关系联结表 ,一定要注意数据库字段与bean对应 -->
 	<update id="updateDmdItemFunc"
 		parameterType="com.ccb.ProdPms.entity.DmdItemFuncEntity">
-		update 
-		reqitem_func set 
+		update
+		reqitem_func set
 		func_id = #{funcId,jdbcType=INTEGER},
 		modi_date,
 		op_person,
 		is_deleted
-		where reqitem_id = #{id,jdbcType=INTEGER}
+		where
+		reqitem_id = #{id,jdbcType=INTEGER}
 		(#{reqitemId,jdbcType=INTEGER},
 		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
 	</update>
 
-	
+
 	<!-- <update id="updateByPrimaryKeySelective" parameterType="com.winter.model.User"> 
 		update t_user <set> <if test="userName != null"> user_name = #{userName,jdbcType=VARCHAR}, 
 		</if> <if test="password != null"> password = #{password,jdbcType=VARCHAR}, 
@@ -308,8 +312,9 @@
 		id = #{Id,jdbcType=INTEGER}
 	</update>
 	<!-- 假删除需求 -->
-	<delete id="deleteItemFuncById" parameterType="java.lang.Integer">
-		delete from reqitem_func 
+	<delete id="deleteItemFuncById"
+		parameterType="java.lang.Integer">
+		delete from reqitem_func
 		where
 		reqitem_id = #{Id,jdbcType=INTEGER}
 	</delete>
@@ -341,6 +346,7 @@
 	<update id="updateDmdItem"
 		parameterType="com.ccb.ProdPms.entity.DmdItemEntity">
 		update req_item set
+		req_item_name=#{reqItemName,jdbcType=VARCHAR},
 		req_item_desc=#{reqItemDesc,jdbcType=VARCHAR},
 		online_datetime=#{onlineDatetime,jdbcType=VARCHAR},
 		req_item_dev=#{reqItemDev,jdbcType=VARCHAR},
@@ -348,18 +354,30 @@
 		modi_date=now()
 		where
 		is_deleted =0 and
-		req_no=#{reqNo,jdbcType=VARCHAR} and req_item_name =
-		#{reqItemName,jdbcType=VARCHAR}
+		req_no=#{reqNo,jdbcType=VARCHAR} and id =
+		#{id,jdbcType=INTEGER}
 	</update>
-	
+
 	<!-- 获取某需求全部需求项列表 -->
 	<select id="findSameReq" resultType="java.lang.Integer"
 		parameterType="java.lang.String">
 		select
 		count(*)
 		from req
-		where is_deleted = 0 and req_name =
+		where is_deleted = 0 and req_name
+		=
 		#{reqName,jdbcType=VARCHAR} and create_user =
 		#{createUser,jdbcType=VARCHAR}
+	</select>
+	
+	<!-- 获取某需求全部需求项列表 -->
+	<select id="countRI" resultType="java.lang.Integer">
+		select
+		count(*)
+		from req_item
+		where is_deleted = 0 and
+		req_no =
+		#{reqNo,jdbcType=VARCHAR} and req_item_name =
+		#{reqItemName,jdbcType=VARCHAR} and id != #{id,jdbcType=INTEGER}
 	</select>
 </mapper>

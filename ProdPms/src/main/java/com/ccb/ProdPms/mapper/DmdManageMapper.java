@@ -115,4 +115,6 @@ public interface DmdManageMapper {
 
 	int findSameReq(@Param("reqName") String reqName, @Param("createUser") String createUser);
 
+	int countRI(@Param("id")int intValue, @Param("reqNo")String reqNo, @Param("reqItemName")String reqItemName);
+
 }

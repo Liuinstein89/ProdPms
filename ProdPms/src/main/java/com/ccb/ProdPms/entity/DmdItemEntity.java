@@ -100,8 +100,9 @@ public class DmdItemEntity implements Serializable {
 		this.isDeleted = isDeleted;
 	}
 
-	public DmdItemEntity(String reqNo, String reqItemDesc, String opPerson, String reqItemName, String reqItemDev,
+	public DmdItemEntity(Long id, String reqNo, String reqItemDesc, String opPerson, String reqItemName, String reqItemDev,
 			String reqItemStatus, String onlineDatetime, String createDate, String modiDate, int isDeleted) {
+		this.id = id;
 		this.reqNo = reqNo;
 		this.reqItemDesc = reqItemDesc;
 		this.opPerson = opPerson;
@@ -136,5 +137,21 @@ public class DmdItemEntity implements Serializable {
 
 	public DmdItemEntity() {
 	}
+
+	public DmdItemEntity(String reqNo, String reqItemDesc, String opPerson, String reqItemName, String reqItemDev,
+			String reqItemStatus, String onlineDatetime, String createDate, String modiDate, int isDeleted) {
+		this.reqNo = reqNo;
+		this.reqItemDesc = reqItemDesc;
+		this.opPerson = opPerson;
+		this.reqItemName = reqItemName;
+		this.reqItemDev = reqItemDev;
+		this.reqItemStatus = reqItemStatus;
+		this.onlineDatetime = onlineDatetime;
+		this.createDate = createDate;
+		this.modiDate = modiDate;
+		this.isDeleted = isDeleted;
+	}
+
+
 
 }

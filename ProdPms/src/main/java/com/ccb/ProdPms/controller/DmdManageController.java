@@ -493,7 +493,17 @@ public class DmdManageController {
 	@PostMapping("/updateReqItem")
 	@ResponseBody
 	public String updateReqItem(DmdItemFuncDto dmdItemFuncDto) {
-		dmdManageService.updateDmdItem(dmdItemFuncDto);
+		try {
+			int count = dmdManageService.findSame(dmdItemFuncDto);
+			if (count != 0) {
+				strSuc = "already have same";
+			} else {
+				dmdManageService.updateDmdItem(dmdItemFuncDto);
+			}
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			strSuc = "update onlinePlan failed! ";
+		}
 		return JSONObject.toJSONString(strSuc);
 	}
 
