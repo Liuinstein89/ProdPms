@@ -110,7 +110,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 	public String getReqNo() {
 		String reqNo = null;
 		try {
-			reqNo = String.valueOf(dmdManageMapper.getLastId());
+			reqNo = String.valueOf(dmdManageMapper.getLastId()+1);
 			if (StringUtils.isEmpty(reqNo))
 				return "0";
 		} catch (Exception e) {
@@ -308,8 +308,8 @@ public class DmdManageServiceImpl implements DmdManageService {
 	}
 
 	@Override
-	public int findSameReq(String reqName, String createUser) {
-		int count = dmdManageMapper.findSameReq(reqName, createUser);
+	public int findSameReq(String reqName) {
+		int count = dmdManageMapper.findSameReq(reqName);
 		return count;
 	}
 
@@ -320,5 +320,11 @@ public class DmdManageServiceImpl implements DmdManageService {
 		String reqItemName = dmdItemFuncDto.getReqItemName();
 		int count = dmdManageMapper.countRI(id.intValue(),reqNo, reqItemName);
 		return count;
+	}
+
+	@Override
+	public int findDupReq(String reqNo, String reqName) {
+		int count = dmdManageMapper.findDupReq(reqNo,reqName);
+ 		return count;
 	}
 }

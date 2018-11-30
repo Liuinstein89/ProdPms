@@ -306,7 +306,7 @@ public class DmdManageController {
 		String execType = request.getParameter("execType");
 		String leadTeam = request.getParameter("leadTeam");
 		String cooTeam = request.getParameter("cooTeam");
-		String nowUser = request.getParameter("nowUser");
+		String nowUser = request.getParameter("createUser");
 		String nextUser = request.getParameter("nextUser");
 		String createUser = request.getParameter("createUser");
 		String createDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
@@ -332,10 +332,10 @@ public class DmdManageController {
 		 * multipartRequest.getFiles("file");
 		 */
 		List<MultipartFile> fileList = ((MultipartHttpServletRequest) request).getFiles("file");
-
+		System.out.println(fileList);
 		// 新增需求主表项
 		try {
-			int count = dmdManageService.findSameReq(reqName, createUser);
+			int count = dmdManageService.findSameReq(reqName);
 			if (count != 0) {
 				map.put("code", -1);
 				map.put("msg", "check list");
@@ -447,10 +447,15 @@ public class DmdManageController {
 				cooTeam, nowUser, nextUser, modiDate);
 		// 修改需求主表项
 		try {
-			dmdManageService.updateReq(dmdManageEntity);
+			int count = dmdManageService.findDupReq(reqNo,reqName);
+			if (count != 0) {
+ 				strSuc = "check list";
+ 			} else {
+ 				dmdManageService.updateReq(dmdManageEntity);
+ 			}
 		} catch (Exception e) {
 			e.getMessage();
-			return "update req failed! ";
+			strSuc= "update req failed! ";
 		}
 		return JSONObject.toJSONString(strSuc);
 	}

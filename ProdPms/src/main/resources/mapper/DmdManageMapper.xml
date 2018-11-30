@@ -99,8 +99,8 @@
 	<select id="findUpload" resultMap="UploadFileMap"
 		parameterType="java.lang.Integer">
 		select
-		<include refid="Basic_Req_Columns" />
-		from req
+		*
+		from upload_file
 		where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
 	</select>
 	<!-- 获取需求总数 -->
@@ -366,10 +366,18 @@
 		from req
 		where is_deleted = 0 and req_name
 		=
-		#{reqName,jdbcType=VARCHAR} and create_user =
-		#{createUser,jdbcType=VARCHAR}
+		#{reqName,jdbcType=VARCHAR} 
 	</select>
-	
+	<!-- 获取某需求全部需求项列表 -->
+ 	<select id="findDupReq" resultType="java.lang.Integer"
+ 		parameterType="java.lang.String">
+ 		select
+ 		count(*)
+ 		from req
+ 		where is_deleted = 0 and req_name
+ 		!=
+ 		#{reqName,jdbcType=VARCHAR} and req_no=#{reqNo,jdbcType=VARCHAR}
+ 	</select>
 	<!-- 获取某需求全部需求项列表 -->
 	<select id="countRI" resultType="java.lang.Integer">
 		select

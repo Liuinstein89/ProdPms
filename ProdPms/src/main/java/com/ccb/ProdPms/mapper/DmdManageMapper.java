@@ -113,8 +113,8 @@ public interface DmdManageMapper {
 
 	void delReqItemFuncById(Integer id);
 
-	int findSameReq(@Param("reqName") String reqName, @Param("createUser") String createUser);
+	int findSameReq(@Param("reqName") String reqName);
 
 	int countRI(@Param("id")int intValue, @Param("reqNo")String reqNo, @Param("reqItemName")String reqItemName);
-
+	int findDupReq(@Param("reqNo") String reqNo, @Param("reqName") String reqName);
 }
