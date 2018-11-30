@@ -500,10 +500,12 @@ public class DmdManageController {
 	public String updateReqItem(DmdItemFuncDto dmdItemFuncDto) {
 		try {
 			int count = dmdManageService.findSame(dmdItemFuncDto);
+			System.out.println("!!!!!!!!!"+count);
 			if (count != 0) {
 				strSuc = "already have same";
 			} else {
 				dmdManageService.updateDmdItem(dmdItemFuncDto);
+				strSuc = "success";
 			}
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
