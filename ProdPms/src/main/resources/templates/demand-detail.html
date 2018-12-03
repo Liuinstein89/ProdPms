@@ -1,582 +1,615 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="renderer" content="webkit" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>需求详情</title>
-		<link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
-		<style type="text/css">
-		body {
-			padding: 10px 20px 170px 20px;
-		}
-		.sta-table th {
-			border: 0;
-		}
-		.sta-table td {
-			border: 0;
-		}
-		.sta-table th {
-			font-weight: bold;
-		}
-		.grid-demo {
-			line-height: 50px;
-			background-color: #79C48C;
-			color: #fff;
-			font-size: 16px;
-		}
-		.layui-card {
-			box-shadow: 2px 2px 8px 2px rgba(50, 50, 50, 0.25);
-		}
-		.layui-collapse {
-			box-shadow: 2px 2px 8px 2px rgba(50, 50, 50, 0.25);
-		}
-		.layui-table {
-			margin-top: -15px;
-		}
-		.layui-table-body {
-			overflow-x: hidden;
-		}
-		</style>
-	</head>
-	<body>
-		<div class="wrap-container">
-			<div class="layui-row layui-col-space10">
-				<div class="layui-col-md9">
-					<div class="layui-card">
-						<div class="layui-card-header grid-demo">需求详情</div>
-						<div class="layui-card-body">
-							<div id="view"></div>
-						</div>
-					</div>
-				</div>
-	
-				<div class="layui-col-md3">
-					<div class="layui-collapse" lay-filter="test1">
-						<div class="layui-colla-item">
-							<h2 class="layui-colla-title grid-demo">需求审查</h2>
-							<div class="layui-colla-content">
-								<a class="layui-btn layui-btn-fluid" id="dem_audit_btn" style="border-radius: 5px;"><i class="layui-icon">进入需求审查</i></a>
-								<a class="layui-btn layui-btn-fluid" id="dem_audit_text" style="border-radius: 5px;margin-left: 0;margin-top: 10px"><i class="layui-icon">进入审查记录</i></a>
-							</div>
-						</div>
-					</div>
-				</div>
-					
-		<div class="layui-col-md9">
-			<div class="layui-collapse" lay-filter="">
-				<div class="layui-colla-item">
-					<h2 class="layui-colla-title grid-demo">附件相关</h2>
-					<div class="layui-colla-content">
-						<button type="button" class="layui-btn" id="demUploadFiles"><i class="layui-icon"></i>上传文件</button>
-						<table id="demandFiles" lay-filter="demandFiles" ></table>
-					
-				</div>
-				</div>
-			</div>
-		</div>			
-	
-				<div class="layui-col-md9 ">
-					<div class="layui-card">
-						<div class="layui-card-header grid-demo">需求项管理</div>
-						<div class="layui-card-body">
-<button class="layui-btn" id="addDemItem"><i class="layui-icon">&#xe654;</i>新增</button>
-						<table id="demand_items" lay-filter="demand_items"></table>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>需求详情</title>
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css"/>
+    <style type="text/css">
+        body {
+            padding: 10px 20px 170px 20px;
+        }
 
-						</div>
-					</div>
-				</div>
-	
-				<div class="layui-col-md9 " style="display: none" id="shfunc">
-					<div class="layui-card">
-						<div class="layui-card-header grid-demo">
-							关联功能点<span id=""></span>
-						</div>
-						<div class="layui-card-body">
-							<table id="dfunction" lay-filter="dfunction"></table>
-						</div>
-					</div>
-				</div>
-		<div class="layui-col-md9">
-			<div class="layui-card">
-				<div class="layui-card-header grid-demo">
-					审查记录
-				</div>
-				<div class="layui-card-body">
-					<table id="aduitRecord" lay-filter="aduitRecord"></table>
-				</div>
-			</div>
-		</div>
-				
-				<script type="text/html" id="detail_tpl">
-			<!-- 部门管理 -->
-				    		<table class="layui-table sta-table" id="dem_det_table">
-								<tbody>
-									<tr>
-										<th width="120">需求标题</th>
-										<td>{{ d.data.list[0].reqName }}</td>
-									</tr>
-									<tr>
-										<th>当前受理状态</th>
-									<td>{{ d.data.list[0].reqStatus }}</td>
-									</tr>
-									<tr>
-										<th>后续受理人</th>
-									<td>{{ d.data.list[0].nextUser }}</td>
-									</tr>
-									<tr>
-										<th>需求来源</th>
-										<td>{{ d.data.list[0].reqSource }}</td>
-									</tr>
-									<tr>
-										<th>提出部门</th>
-										<td>{{ d.data.list[0].dept }}</td>
-									</tr>
-									<tr>
-										<th>实施方式</th>
-										<td>{{ d.data.list[0].reqName }}</td>
-									</tr>
-									<tr>
-										<th>实施项目组</th>
-										<td>{{ d.data.list[0].execType }}</td>
-									</tr>
-									<tr>
-										<th>配合项目组</th>
-										<td>{{ d.data.list[0].cooTeam }}</td>
-									</tr>
-								</tbody>
-							</table>
-			</script>
-			</div>
-		</div>
-		
-		<script type="text/html" id="barDemo">
-				<a class="layui-btn layui-btn-xs" lay-event="show" id="showFunc"><i class="layui-icon">&#xe615;</i></a>
-			
-				<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" id="editDemItem"><i class="layui-icon">&#xe642;</i></a>
-				<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
-		</script>
-		<script type="text/html" id="barDemo2">
-			
-			<a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="download" id="download"><i class="layui-icon">&#xe601;</i></a>
-			<a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
-		</script>
-		<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
-		<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
-		
+        .sta-table th {
+            border: 0;
+        }
+
+        .sta-table td {
+            border: 0;
+        }
+
+        .sta-table th {
+            font-weight: bold;
+        }
+
+        .grid-demo {
+            line-height: 50px;
+            background-color: #79C48C;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .layui-card {
+            box-shadow: 2px 2px 8px 2px rgba(50, 50, 50, 0.25);
+        }
+
+        .layui-collapse {
+            box-shadow: 2px 2px 8px 2px rgba(50, 50, 50, 0.25);
+        }
+
+        .layui-table {
+            margin-top: -15px;
+        }
+
+        .layui-table-body {
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap-container">
+    <div class="layui-row layui-col-space10">
+        <div class="layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-header grid-demo">需求详情</div>
+                <div class="layui-card-body">
+                    <div id="view"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md3">
+            <div class="layui-collapse" lay-filter="test1">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title grid-demo">需求审查</h2>
+                    <div class="layui-colla-content">
+                        <a class="layui-btn layui-btn-fluid" id="dem_audit_btn" style="border-radius: 5px;"><i
+                                class="layui-icon">进入需求审查</i></a>
+                        <a class="layui-btn layui-btn-fluid" id="dem_audit_text"
+                           style="border-radius: 5px;margin-left: 0;margin-top: 10px"><i
+                                class="layui-icon">进入审查记录</i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md9">
+            <div class="layui-collapse" lay-filter="">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title grid-demo">附件相关</h2>
+                    <div class="layui-colla-content">
+                        <button type="button" class="layui-btn" id="demUploadFiles"><i class="layui-icon"></i>上传文件
+                        </button>
+                        <table id="demandFiles" lay-filter="demandFiles"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md9 ">
+            <div class="layui-card">
+                <div class="layui-card-header grid-demo">需求项管理</div>
+                <div class="layui-card-body">
+                    <button class="layui-btn" id="addDemItem"><i class="layui-icon">&#xe654;</i>新增</button>
+                    <table id="demand_items" lay-filter="demand_items"></table>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md9 " style="display: none" id="shfunc">
+            <div class="layui-card">
+                <div class="layui-card-header grid-demo">
+                    关联功能点<span id=""></span>
+                </div>
+                <div class="layui-card-body">
+                    <table id="dfunction" lay-filter="dfunction"></table>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-col-md9">
+            <div class="layui-card">
+                <div class="layui-card-header grid-demo">
+                    审查记录
+                </div>
+                <div class="layui-card-body">
+                    <table id="aduitRecord" lay-filter="aduitRecord"></table>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/html" id="detail_tpl">
+
+            <table class="layui-table sta-table" id="dem_det_table">
+                <tbody>
+                <tr>
+                    <th width="160">需求编号</th>
+                    <td>{{ d.data.list[0].reqNo }}</td>
+                </tr>
+                <tr>
+                    <th>需求标题</th>
+                    <td>{{ d.data.list[0].reqName }}</td>
+                </tr>
+                <tr>
+                    <th>当前受理状态</th>
+                    <td>{{ d.data.list[0].reqStatus }}</td>
+                </tr>
+                <tr>
+                    <th>后续受理人</th>
+                    <td>{{ d.data.list[0].nextUser }}</td>
+                </tr>
+                <tr>
+                    <th>需求来源</th>
+                    <td>{{ d.data.list[0].reqSource }}</td>
+                </tr>
+                <tr>
+                    <th>提出部门</th>
+                    <td>{{ d.data.list[0].dept }}</td>
+                </tr>
+                <tr>
+                    <th>实施方式</th>
+                    <td>{{ d.data.list[0].execType }}</td>
+                </tr>
+                <tr>
+                    <th>实施项目组</th>
+                    <td>{{ d.data.list[0].leadTeam }}</td>
+                </tr>
+                <tr>
+                    <th>配合项目组</th>
+                    <td>{{ d.data.list[0].cooTeam }}</td>
+                </tr>
+                </tbody>
+            </table>
+        </script>
+    </div>
+</div>
+<!--需求项的表格操作按钮-->
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="show" id="showFunc"><i class="layui-icon">&#xe615;</i></a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="edit" id="editDemItem"><i
+            class="layui-icon">&#xe642;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+</script>
+<!--附件表格的操作按钮-->
+<script type="text/html" id="barDemo2">
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="download" id="download"><i
+            class="layui-icon">&#xe601;</i></a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del"><i class="layui-icon">&#xe640;</i></a>
+</script>
+
+<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
 <script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
-		
-		<script type="text/javascript">
-	    	layui.use(['laytpl','jquery'], function(){
-	        	var laytpl = layui.laytpl;
-	        	var $ = layui.jquery;
-				 reqNoid =urlParse();
-				//解析url获取参数
-		        /*<![CDATA[*/
-		        function urlParse() {
-		            var name,value;
-		            var str=location.href; //取得整个地址栏
-		            var num=str.indexOf("?")
-		            str=str.substr(num+1); //取得所有参数   stringvar.substr(start [, length ]
-		            var arr=str.split("&"); //各个参数放到数组里
-		            console.log(arr)
-		            for(var i=0;i < arr.length;i++){
-		                num=arr[i].indexOf("=");
-		                if(num>0){
-		                    name=arr[i].substring(0,num);
-		                    value=arr[i].substr(num+1);
-		                    this[name]=value;
-		                }
-		            }
-		            return value;
-		        }
-		        /*]]>*/
-		        var getTpl = detail_tpl.innerHTML
-				var view = document.getElementById('view');
-			      /*   laytpl(getTpl).render(data, function(html){
-			            view.innerHTML = html;
-			        }); */
-		         $.ajax({
-		             url: "/search",
-		             data: {
-		                 "reqNo":reqNoid,
-		                 "page" :"1",
-		                 "limit" :"1"
-		             },
-		             type: "GET",
-		             dataType:"json",
-		             success: function (data) {
-		                 if (!data=="success") {
-		                     alert(data.data);
-		                     return false;
-		                 }
-		                 laytpl(getTpl).render(data, function(html){
-		                     view.innerHTML = html;
-		                 });
-		             }
-		         });
-	    	});
-		</script>
+<script src="../static/js/formSelects-v4.js" type="text/javascript" charset="utf-8"></script>
+
 <script type="text/javascript">
-				layui.use(['table','jquery','layer','upload'], function() {
-					var table = layui.table;
-	                layer = parent.layer === undefined ? layui.layer : top.layer;
-					//var layer = layui.layer;
-	                var $ = layui.jquery;
-					var upload = layui.upload;
-	
-	var username = getCookie('name');
-			// alert(username);
-	 		//附件相关表格渲染
-	        table.render({
-	            elem: '#demandFiles'
-	            , title: '附件表'
-	            , url: '/listRelateUploadFile'
-	            ,where : {
-	            	"reqNo":reqNoid
-	            }
-, id: 'demandFilesReload'
-	            , page: {}
-	            , totalRow: false
-	            , limit: 5
-	            , cols: [[
-	                {field: 'id', title: '编号', fixed: 'left', unresize: true,align:'center', width:80,hide:true}
-	                , {field: 'fileName', title: '文件名', sort: true}
-	                , {field: 'user', title: '上传人' ,sort: true,align:'center'}
-	                , {field: 'datetime', title: '上传时间', sort: true,align:'center'}
-	                , {title: '操作', toolbar: '#barDemo2',  width:140}
-	            ]]
-	            ,parseData: function(res){
-                	return {
-                     "code": res.code
-                     ,"msg": res.msg
-                     ,"count": res.data.total
-                     ,"data": res.data.list
-                   };
-                 }
-	        });
-	 		
-			upload.render({
-	            elem: '#demUploadFiles'
-	            ,url: '/upload'
-	            ,accept: 'file' //普通文件
-,data:{
-					User: username,
-					reqNo: reqNoid,
-				}
-	            ,done: function(res){
-	                if (res.code == 0) {
-	                    pubUtil.msg("导入成功", layer, 1, function () {
-	                        //location.reload();//刷新
- table.reload("demandFilesReload",{
-                                where: {
-                                    reqNo: reqNoid, //搜索的关键字
-                                },
-
-                            });
-	                    }, 1000);
-	                } else  {
-	                    pubUtil.msg("导入失败", layer, 2, function () {
-	                    },  2000);
-	                }
-	            }
-	        });
-			
-	        //附件相关工具条监听
-	        table.on('tool(demandFiles)', function (obj) {
-	            var data = obj.data;
-	            var layEvent = obj.event;
-	            var tr = obj.tr;
-	
-	            if (layEvent == 'download'){
-	                download('/download', data.fileName);
-	
-	            }else if(layEvent == 'del'){
-	                delDemandFile(data);
-	            }
-	        });
-	        
-	        //下载文件
-	        function download(href, filename) {
-	            var a = document.createElement('a');
-	            a.setAttribute('href', href);
-	            a.setAttribute('download', filename);
-	            a.click();
-	        }
-	        
-	        //删除文件
-	        function delDemandFile(data){
-	            layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'},function (index) {
-	                $.ajax({
-	                    url: '/delUploadById',
-	                    data: {
- user:username,
-	                        id: data.id //将需要删除的Id作为参数传入
-	                    },
-	                    type: 'GET',
-	                    dataType: 'json',
-	                    success: function (data) {
-	                        // layer.close(loadindex);//关闭进程对话框
-	                        if (data == "success") {
-	                            	pubUtil.msg("文件删除成功", layer, 1, function () {
-									// location.reload();//刷新
-                                    table.reload("demandFilesReload",{
-                                        where: {
-                                            reqNo: reqNoid, //搜索的关键字
-                                        },
-
-                                    });
-								}, 1000);
-							} else {
-								pubUtil.msg("文件删除失败", layer, 2, function () {
-								}, 1000);
-	                        }
-	                    }
-	                });
-	            });
-	        }
-	        
-			//需求项表格渲染
-			var tableItems = table.render({
-	            elem: '#demand_items'
-	            , title: '需求项表'
-	            , url:  '/listReqRelatedItem'
-	            , where: {
-	            	"reqNo" : reqNoid
-	            }
-	            , page: {}
-	            ,id : 'demItemReload'
-	            , totalRow: false
-	            , limit: 5
-	            // , toolbar: '#toolbarDemo'
-	            , cols: [[
-	                  {field: 'reqItemName', title: '需求项', fixed: 'left', unresize: true,align:'center'}
-	                , {field: 'reqItemDesc', title: '需求项描述'}
-	                , {field: 'id', title: 'id',hide:true}
-	                , {field: 'onlineDatetime', title: '上线日期', width:110,sort: true}
-	                , {field: 'reqItemDev', title: '对应开发任务'}
-	                , {field: 'reqItemStatus', title: '需求项状态'}
-	                , {field: 'createDate', title: '创建日期',width:110, sort: true}
-	                , {field: 'modiDate', title: '变动日期', hide:true,sort: true}
-	                , {title: '操作', toolbar: '#barDemo', fixed: 'right',align:'center' ,width:180}
-	            ]]
-	            ,parseData: function(res){
-					return {
-		                     "code": res.code
-		                     ,"msg": res.msg
-		                     ,"count": res.data.total
-		                     ,"data": res.data.list
-		                   };
-	                }
-	              });
-			                	
-			//悬停提示
-			function showMsg(msg, id){
-	            var tip_index = 0;
-				var layer1 = layui.layer
-	            $(document).on('mouseenter', id, function(){
-	                tip_index = layer1.tips(msg, this, {tips:[1,'#000'],time: 0});
-	            }).on('mouseleave', id, function(){
-	                layer1.close(tip_index);
-	            });
-			}
-	        showMsg("查看功能点",'#showFunc');
-	        showMsg("编辑需求项",'#editDemItem');
-			showMsg("增加需求项",'#addDemItem');
-						
-	        //工具条监听
-	        table.on('tool(demand_items)', function (obj) {
-		        var data = obj.data; 
-		        var layEvent = obj.event; 
-		        var tr = obj.tr; 
-	            $('#edit_id').val(data.id);
-	            $('#edit_name').val(data.username);
-	               if (layEvent == 'edit'){
-						editDemandItem(data);
-	       			}else if (layEvent == 'del'){
-	           			delDemandItem(data);
-				
-	       			}else {
-	           			$('#shfunc').toggle();
-					
-	            //功能点表格渲染
-	               table.render({
-	                   elem: '#dfunction'
-	                   ,page: {}
-	                   , title: '关联功能点表'
-	                   , url: '/listReqRalateFunc'
-	                   ,limit : 5
-	                   , totalRow: false
-	                   ,where: {id:data.id}
-	                   ,cellMinWidth: 80
-	                   ,cols: [[
-	                        {field: 'funcName', title: '功能点名称' }
-						   ,{field: 'funcReformContent', title: '功能点改造内容'}
-						   ,{field: 'desiPerson', title: '设计人员'}
-						   ,{field: 'devPerson', title: '开发人员'}
-						   ,{field: 'testPerson', title: '测试人员'}
-	                   ]]
- 					   ,parseData: function(res){
-						   return {
-							   "code": res.code
-							   ,"msg": res.msg
-							   ,"count": res.data.total
-							   ,"data": res.data.list
-						   };
-					   }
-	               });
-		            }	
-		        });
-		        
-
-            $("#addDemItem").on('click',function () {
-                addDemandItem();
-            })
-            //新增需求项
-            function addDemandItem(){
-                layer.open({
-                    title : "增加页面",
-                    type : 2,
-                    maxmin: true,
-                    skin: 'layui-layer-molv',
-                    shadeClose: false,
-                    shade: 0.3,
-                    area:['640px', '520px'],
-                    boolean: true,
-                    content: ['/detail/item-add','yes'],//跳转的页面
-                    success : function(layero, index){
-
-                        var body = layer.getChildFrame('body', index);
-
-                        body.find('button#close').on('click', function() {
-                            layer.close(index);
-                            table.reload("demItemReload",{
-                                where: {
-                                    reqNo: reqNoid, //搜索的关键字
-                                },
-                            });
-                        });
-                        body.contents().find("#demandItemReqNo").val(reqNoid);
-                    }
-                })
-
-            }
-				//编辑需求项
-		        function editDemandItem(data){
-		         layer.open({
-		                title : "编辑页面",
-		                type: 2,
-		 				maxmin: true, 
-		                skin: 'layui-layer-molv',
-		                shadeClose: false,
-		                shade: 0.3,
-		                area:['640px', '520px'],
-		                boolean: true,
-		                content: ['/detail/item-edit','yes'],//跳转的页面
-		                success:function(layero,index){
-		                	var body = layer.getChildFrame('body', index);
-		                                    
-							body.find('button#close').on('click', function() {
-		                        layer.close(index);
-		                        table.reload("demItemReload",{
-	                                where: {
-	                                    reqNo: reqNoid, //搜索的关键字
-	                                },
-	                            });
-		            		});
-		                    pubUtil.load(body, data);//填充表单
-		                }
-					})
-		        }
-						
-		        //删除需求项
-		        function delDemandItem(data){
-		        	layer.confirm('是否确定删除该条需求项记录',function (index) {
-		 				$.ajax({
-		                    url: '/delReqRalateItemById',
-		                    data: {
-		                        id: data.id //将需要删除的Id作为参数传入
-		                    },
-		                    type: 'GET',
-		                    dataType: 'json',
-		                    success: function (data) {
-		 						if (data == "success") {
-		                            pubUtil.msg("需求项删除成功", layer, 1, function () {
-		                            	 table.reload("demItemReload",{
-		                                     where: {
-		                                         reqNo: reqNoid, //搜索的关键字
-		                                     },
-		                                 });
-								}, 1000);
-							}else {
-								pubUtil.msg("需求项删除失败", layer, 2, function () {
-								}, 1000);
-		                    	}
-		 					}
-		                });
-		     		});
-				}
-				        
-				//审查
-				$("#dem_audit_btn").on('click',function(){
-	            	top.layer.open({
-				    	type:2,
-				        maxmin: true,
-		                skin: 'layui-layer-molv',
-		                title:'需求审查',
-		                area:['700px', '520px'],
-		                content: '/demand/audit',
-						success : function(layero, index){
-	                  			var body = layer.getChildFrame('body', index);
-	                  			body.find('button#close').on('click', function() {
-	                      			layer.close(index);
-		            		});
-	
-	              			}
-		        	});
-	 			});
-				
-				//审核记录表格渲染
-		        var tableAuditRecord = table.render({
-		            elem: '#aduitRecord'
-		            , title: '审核记录表'
-		            // , url: '/item/list'
-		            , page: {}
-, where: {
-                    "reqNo" : reqNoid
+    layui.use(['laytpl', 'jquery'], function () {
+        var laytpl = layui.laytpl;
+        var $ = layui.jquery;
+        reqNoid = urlParse();
+        //解析url获取参数
+        /*<![CDATA[*/
+        function urlParse() {
+            var name, value;
+            var str = location.href; //取得整个地址栏
+            var num = str.indexOf("?")
+            str = str.substr(num + 1); //取得所有参数   stringvar.substr(start [, length ]
+            var arr = str.split("&"); //各个参数放到数组里
+            // console.log(arr)
+            for (var i = 0; i < arr.length; i++) {
+                num = arr[i].indexOf("=");
+                if (num > 0) {
+                    name = arr[i].substring(0, num);
+                    value = arr[i].substr(num + 1);
+                    this[name] = value;
                 }
-		            , totalRow: false
-		            , limit: 10
-		            , cols: [[
-		                {field: 'auditTeam', title: '审核团队', fixed: 'left', unresize: true,align:'center', width:120}
-		                , {field: 'result', title: '审核结果', width:130,sort: true}
-		                , {field: 'id', title: 'id',hide:true}
-		                , {field: 'comment', title: '审核意见'}
-		                , {field: 'auditPerson', title: '审核人' , width:110,sort: true,align:'center'}
-		                , {field: 'auditTime', title: '审核时间', sort: true, fixed: 'right',width:200,align:'center'}
-		            ]]
-				 ,parseData: function(res){
-					return {
-						"code": res.code
-						,"msg": res.msg
-						,"count": res.data.total
-						,"data": res.data.list
-					};
-				} 
-			     });
-		 	});
-		</script>
-	
-		<script type="text/javascript">
-		    layui.use(['element', 'layer','jquery'], function(){
-		        var element = layui.element;
-		        var layer = layui.layer;
-		        var $ = layui.jquery;
-		        //监听折叠
-		        element.on('collapse(test1)', function(data){
-		        });
-		    });
-		</script>
-	</body>
+            }
+            return value;
+        }
+
+        /*]]>*/
+        var getTpl = detail_tpl.innerHTML
+        var view = document.getElementById('view');
+        /*   laytpl(getTpl).render(data, function(html){
+              view.innerHTML = html;
+          }); */
+        $.ajax({
+            url: "/search",
+            data: {
+                "reqNo": reqNoid,
+                "page": "1",
+                "limit": "1"
+            },
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                if (!data == "success") {
+                    alert(data.data);
+                    return false;
+                }
+                laytpl(getTpl).render(data, function (html) {
+                    view.innerHTML = html;
+                });
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    layui.use(['table', 'jquery', 'layer', 'upload'], function () {
+        var table = layui.table;
+        layer = parent.layer === undefined ? layui.layer : top.layer;
+        //var layer = layui.layer;
+        var $ = layui.jquery;
+        var upload = layui.upload;
+
+        var username = getCookie('name');
+        // alert(username);
+        //附件相关表格渲染
+        table.render({
+            elem: '#demandFiles'
+            , title: '附件表'
+            , url: '/listRelateUploadFile'
+            , where: {
+                "reqNo": reqNoid
+            }
+            , id: 'demandFilesReload'
+            , page: {}
+            , totalRow: false
+            , limit: 5
+            , cols: [[
+                {field: 'id', title: '编号', fixed: 'left', unresize: true, align: 'center', width: 80}
+                , {field: 'fileName', title: '文件名', sort: true}
+                , {field: 'user', title: '上传人', sort: true, align: 'center'}
+                , {field: 'datetime', title: '上传时间', sort: true, align: 'center'}
+                , {title: '操作', toolbar: '#barDemo2', width: 140}
+            ]]
+            , parseData: function (res) {
+                return {
+                    "code": res.code
+                    , "msg": res.msg
+                    , "count": res.data.total
+                    , "data": res.data.list
+                };
+            }
+        });
+
+        upload.render({
+            elem: '#demUploadFiles'
+            , url: '/upload'
+            , accept: 'file' //普通文件
+            , data: {
+                User: username,
+                reqNo: reqNoid,
+            }
+            , done: function (res) {
+                if (res.code == 0) {
+                    pubUtil.msg("导入成功", layer, 1, function () {
+                        //location.reload();//刷新
+                        table.reload("demandFilesReload", {
+                            where: {
+                                reqNo: reqNoid, //搜索的关键字
+                            },
+
+                        });
+                    }, 1000);
+                } else {
+                    pubUtil.msg("导入失败", layer, 2, function () {
+                    }, 2000);
+                }
+            }
+        });
+
+        //附件相关工具条监听
+        table.on('tool(demandFiles)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+
+            if (layEvent == 'download') {
+                download('/download', data.fileName);
+
+            } else if (layEvent == 'del') {
+                delDemandFile(data);
+            }
+        });
+
+        //下载文件
+        function download(href, filename) {
+            var a = document.createElement('a');
+            a.setAttribute('href', href);
+            a.setAttribute('download', filename);
+            a.click();
+        }
+
+        //删除文件
+        function delDemandFile(data) {
+            layer.confirm('是否确定删除该文件', {icon: 3, title: '提示信息'}, function (index) {
+                $.ajax({
+                    url: '/delUploadById',
+                    data: {
+                        // user: username,
+                        id: data.id //将需要删除的Id作为参数传入
+                    },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // layer.close(loadindex);//关闭进程对话框
+                        if (data == "success") {
+                            pubUtil.msg("文件删除成功", layer, 1, function () {
+                                // location.reload();//刷新
+                                table.reload("demandFilesReload", {
+                                    where: {
+                                        reqNo: reqNoid, //搜索的关键字
+                                    },
+                                });
+                            }, 1000);
+                        } else {
+                            pubUtil.msg("文件删除失败", layer, 2, function () {
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+        }
+
+        //需求项表格渲染
+        var tableItems = table.render({
+            elem: '#demand_items'
+            , title: '需求项表'
+            , url: '/listReqRelatedItem'
+            , where: {
+                "reqNo": reqNoid
+            }
+            , page: {}
+            , id: 'demItemReload'
+            , totalRow: false
+            , limit: 10
+            // , toolbar: '#toolbarDemo'
+            , cols: [[
+                {field: 'reqItemName', title: '需求项', fixed: 'left', unresize: true, align: 'center'}
+                , {field: 'reqItemDesc', title: '需求项描述'}
+                , {field: 'ID', title: 'id', hide: true}
+                , {field: 'onlineDatetime', title: '上线日期', width: 110, sort: true}
+                , {field: 'reqItemDev', title: '对应开发任务'}
+                , {field: 'reqItemStatus', title: '需求项状态', width: 110}
+                , {field: 'createDate', title: '创建日期', width: 110, sort: true}
+                , {field: 'modiDate', title: '变动日期', hide: true, sort: true}
+                , {title: '操作', toolbar: '#barDemo', fixed: 'right', align: 'center', width: 180}
+            ]]
+            , parseData: function (res) {
+                return {
+                    "code": res.code
+                    , "msg": res.msg
+                    , "count": res.data.total
+                    , "data": res.data.list
+                };
+            }
+        });
+
+        //悬停提示
+        function showMsg(msg, id) {
+            var tip_index = 0;
+            var layer1 = layui.layer
+            $(document).on('mouseenter', id, function () {
+                tip_index = layer1.tips(msg, this, {tips: [1, '#000'], time: 0});
+            }).on('mouseleave', id, function () {
+                layer1.close(tip_index);
+            });
+        }
+
+        showMsg("查看功能点", '#showFunc');
+        showMsg("编辑需求项", '#editDemItem');
+        showMsg("增加需求项", '#addDemItem');
+
+        //工具条监听
+        table.on('tool(demand_items)', function (obj) {
+            var data = obj.data;
+            var layEvent = obj.event;
+            var tr = obj.tr;
+            $('#edit_id').val(data.id);
+            $('#edit_name').val(data.username);
+            if (layEvent == 'edit') {
+                editDemandItem(data);
+            } else if (layEvent == 'del') {
+                delDemandItem(data);
+
+            } else {
+                $('#shfunc').toggle();
+
+                //功能点表格渲染
+                table.render({
+                    elem: '#dfunction'
+                    , page: {}
+                    , title: '关联功能点表'
+                    , url: '/listReqRalateFunc'
+                    , limit: 5
+                    , totalRow: false
+                    , where: {id: data.id}
+                    , cellMinWidth: 80
+                    , cols: [[
+                        {field: 'funcName', title: '功能点名称'}
+                        , {field: 'funcReformContent', title: '功能点改造内容'}
+                        , {field: 'desiPerson', title: '设计人员'}
+                        , {field: 'devPerson', title: '开发人员'}
+                        , {field: 'testPerson', title: '测试人员'}
+                    ]]
+                    , parseData: function (res) {
+                        return {
+                            "code": res.code
+                            , "msg": res.msg
+                            , "count": res.data.total
+                            , "data": res.data.list
+                        };
+                    }
+                });
+            }
+        });
+
+
+        $("#addDemItem").on('click', function () {
+            addDemandItem();
+        })
+
+        //新增需求项
+        function addDemandItem() {
+            layer.open({
+                title: "新增需求项",
+                type: 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area: ['640px', '520px'],
+                boolean: true,
+                content: ['/detail/item-add', 'yes'],//跳转的页面
+                success: function (layero, index) {
+
+                    var body = layer.getChildFrame('body', index);
+
+                    body.find('button#close').on('click', function () {
+                        layer.close(index);
+                        table.reload("demItemReload", {
+                            where: {
+                                reqNo: reqNoid, //搜索的关键字
+                            },
+                        });
+
+                    });
+                    body.contents().find("#demandItemReqNo").val(reqNoid);
+                }
+            })
+
+        }
+
+        //编辑需求项
+        function editDemandItem(data) {
+            layer.open({
+                title: "编辑需求项",
+                type: 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area: ['640px', '520px'],
+                boolean: true,
+                content: ['/detail/item-edit?obj=' + encodeURIComponent(JSON.stringify(data)), 'yes'],//跳转的页面
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
+
+                    body.find('button#close').on('click', function () {
+                        layer.close(index);
+                        table.reload("demItemReload", {
+                            where: {
+                                reqNo: reqNoid, //搜索的关键字
+                            },
+                        });
+                    });
+                    pubUtil.load(body, data);//填充表单
+                    //添加操作人
+
+                    if (getCookie("name") != null) {
+                        body.find("#opPerson").val(getCookie("name"));
+                    }
+
+                }
+            })
+        }
+
+        //删除需求项
+        function delDemandItem(data) {
+            layer.confirm('是否确定删除该条需求项记录', {icon: 3, title: '提示信息'}, function (index) {
+                $.ajax({
+                    url: '/delReqRalateItemById',
+                    data: {
+                        id: data.id,//将需要删除的Id作为参数传入
+                        // user:username
+                    },
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (data) {
+                        // layer.close(loadindex);//关闭进程对话框
+                        if (data == "success") {
+                            pubUtil.msg("需求项删除成功", layer, 1, function () {
+                                table.reload("demItemReload", {
+                                    where: {
+                                        reqNo: reqNoid, //搜索的关键字
+                                    },
+                                });
+                            }, 1000);
+                        } else {
+                            pubUtil.msg("需求项删除失败", layer, 2, function () {
+                            }, 1000);
+                        }
+                    }
+                });
+            });
+        }
+
+        //审查
+        $("#dem_audit_btn").on('click', function () {
+            top.layer.open({
+                type: 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                title: '需求审查',
+                area: ['700px', '520px'],
+                content: '/demand/audit',
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
+                    body.find('button#close').on('click', function () {
+                        layer.close(index);
+                    });
+                }
+            });
+        });
+
+        //审核记录表格渲染
+        var tableAuditRecord = table.render({
+            elem: '#aduitRecord'
+            , title: '审核记录表'
+            // , url: '/item/list'
+            , page: {}
+            , where: {
+                "reqNo": reqNoid
+            }
+            , totalRow: false
+            , limit: 10
+            , cols: [[
+                {field: 'auditTeam', title: '审核团队', fixed: 'left', unresize: true, align: 'center', width: 120}
+                , {field: 'result', title: '审核结果', width: 130, sort: true}
+                , {field: 'ID', title: 'id', hide: true}
+                , {field: 'comment', title: '审核意见'}
+                , {field: 'auditPerson', title: '审核人', width: 110, sort: true, align: 'center'}
+                , {field: 'auditTime', title: '审核时间', sort: true, fixed: 'right', width: 200, align: 'center'}
+            ]]
+            , parseData: function (res) {
+                return {
+                    "code": res.code
+                    , "msg": res.msg
+                    , "count": res.data.total
+                    , "data": res.data.list
+                };
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    layui.use(['element', 'layer', 'jquery'], function () {
+        var element = layui.element;
+        var layer = layui.layer;
+        var $ = layui.jquery;
+        //监听折叠
+        element.on('collapse(test1)', function (data) {
+        });
+    });
+</script>
+
+
+</body>
 </html>

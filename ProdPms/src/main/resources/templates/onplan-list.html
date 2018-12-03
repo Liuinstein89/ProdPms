@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></meta>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></meta>
     <title>需求列表</title>
     <link rel="stylesheet" href="../static/src/css/layui.css"/>
 
@@ -10,19 +11,23 @@
         body {
             padding: 5px 20px 20px 20px;
         }
-        a{
+
+        a {
             color: #1874CD;
         }
-        .layui-card{
-            box-shadow: 3px 3px 8px 3px rgba(50,50,50,0.25);
+
+        .layui-card {
+            box-shadow: 3px 3px 8px 3px rgba(50, 50, 50, 0.25);
         }
     </style>
 </head>
 <body>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container layui-inline ">
-        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add"><i class="layui-icon">&#xe654;</i></button>
-        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i></button>
+        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add"><i class="layui-icon">&#xe654;</i>
+        </button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>
+        </button>
     </div>
 </script>
 
@@ -30,20 +35,20 @@
     <div class="layui-card-header" style="height: 55px">
         <div class="demoTable layui-inline" style="margin-top: 6px">
             <div class="layui-inline">
-  <input type="text" class="layui-input" id="reqName"
-              style="width: 200px" autocomplete="off" placeholder="请输入需求标题" />
+                <input type="text" class="layui-input" id="reqName"
+                       style="width: 200px" autocomplete="off" placeholder="请输入需求标题"/>
             </div>
- <div class="layui-inline">
+            <div class="layui-inline">
                 <input type="text" class="layui-input" id="onplanDate"
-                       style="width: 200px" autocomplete="off" placeholder="请选择上线时间" />
+                       style="width: 200px" autocomplete="off" placeholder="请选择上线时间"/>
             </div>
-           <button class="layui-btn search_btn" id="onplan_search" data-type="reload">
+            <button class="layui-btn search_btn" id="onplan_search" data-type="reload">
                 <i class="layui-icon">查询</i>
             </button>
         </div>
- <a style="float: right; margin-top: 8px;" 
-              href="javascript:location.replace(location.href);" title="刷新">  <i 
-			  class="layui-icon" style="font-size: 30px">&#xe9aa;</i>
+        <a style="float: right; margin-top: 8px;"
+           href="javascript:location.replace(location.href);" title="刷新"> <i
+                class="layui-icon" style="font-size: 30px">&#xe9aa;</i>
         </a>
     </div>
     <div class="layui-card-body" style="margin-top: -15px">
@@ -56,10 +61,13 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<script src="../static/src/layui.js" charset="utf-8"></script>
-<script src="../static/src/public.js" charset="utf-8"></script>
+<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/js/formSelects-v4.js" type="text/javascript" charset="utf-8"></script>
+
 <script>
-     layui.use(['jquery','table','form','layer','laydate'], function () {
+    layui.use(['jquery', 'table', 'form', 'layer', 'laydate'], function () {
         var table = layui.table;
         var $ = layui.jquery;
         var form = layui.form;
@@ -69,41 +77,41 @@
         //渲染
         var tableIns = table.render({
             elem: '#onplan_table'
-            ,url :'/lsitOnlinePlan'
+            , url: '/lsitOnlinePlan'
             , title: '上线计划主表'
             , page: true
             , totalRow: false
             , limit: 10
             , toolbar: '#toolbarDemo'
-            , id:'onplanReload'
+            , id: 'onplanReload'
             , done: function (res, curr, count) {
                 //加载后回调
                 layer.close(index);//关闭
             }
             , cols: [[
                 {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
-                , {field: 'onlineDatetime', title: '上线时间', width: 100, fixed: 'left', unresize: true, sort: true,align:'left'}
+                , {field: 'onlineDatetime', title: '上线时间', width: 120, fixed: 'left', unresize: true, sort: true, align: 'left'}
                 , {field: 'onlinePlanDesc', title: '上线描述'}
+                , {field: 'onlinePlanStatus', title: '上线计划状态', width: 120}
                 , {field: 'reqNo', title: '需求编号', width: 120}
-                , {field: 'funcItem', title: '功能点',  width: 150}
+                , {field: 'reqName', title: '需求名称', width: 150}
+                , {field: 'funcItem', title: '功能点', width: 150}
                 , {field: 'devNo', title: '开发任务编号', width: 150}
-                , {field: 'id', title: 'id', width: 80,hide : true}
+                , {field: 'id', title: 'id', width: 80, hide: true}
                 , {field: 'onlinePlanName', title: '上线计划名称', width: 120}
-                , {field: 'onlinePlanStatus', title: '上线计划状态',  width: 120}
-                , {field: 'reqName', title: '需求名称',  width: 150}
-                , {field: 'createDate', title: '创建日期',sort: true,width: 150}
-                , {field: 'changeDate', title: '修改日期',sort: true,width: 150,hide : true}
-                , {field: 'opPerson', title: '用户', width: 120,hide : true}
-                , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 140}
+                , {field: 'createDate', title: '创建日期', sort: true, width: 120}
+                , {field: 'modiDate', title: '修改日期', sort: true, width: 150, hide: true}
+                , {field: 'opPerson', title: '用户', width: 120, hide: true}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center', width: 140}
             ]]
-              ,parseData: function(res){
+            , parseData: function (res) {
                 return {
-                     "code": res.code
-                    ,"msg": res.msg
-                    ,"count": res.data.total
-                    ,"data": res.data.list
-               };
-           }
+                    "code": res.code
+                    , "msg": res.msg
+                    , "count": res.data.total
+                    , "data": res.data.list
+                };
+            }
         });
 
         //工具栏事件
@@ -114,15 +122,15 @@
                 case 'add':
                     layer.msg('添加');
                     layer.open({
-                        type:2,
+                        type: 2,
                         maxmin: true,
                         skin: 'layui-layer-molv',
-                        title:'创建上线计划',
-                        area:['580px', '520px'],
+                        title: '创建上线计划',
+                        area: ['580px', '520px'],
                         content: '/onplan/add',
                         success: function (layero, lockIndex) {
                             var body = layer.getChildFrame('body', lockIndex);
-                          
+
                             body.find('button#close').on('click', function () {
                                 layer.close(lockIndex);
                                 location.reload();
@@ -144,25 +152,24 @@
 
         });
 
- //普通搜索
-        $("#onplan_search").on("click",function(){
+        //普通搜索
+        $("#onplan_search").on("click", function () {
             var reqName = $('#reqName').val();
             var onplanDate = $('#onplanDate').val();
-            if(reqName != ''||onplanDate != ''){
-                table.reload("onplanReload",{
+            if (reqName != '' || onplanDate != '') {
+                table.reload("onplanReload", {
                     where: {
                         reqName: reqName,  //搜索的关键字
-                        onlineDatetime:onplanDate,
+                        onlineDatetime: onplanDate,
                     },
-                    url:'/opSearch',
-                    method:'GET',
+                    url: '/opSearch',
+                    method: 'GET',
                 })
-            }else{
+            } else {
                 location.reload();
             }
- });
+        });
 
-        
 
 //监听表格行点击
         table.on('tr', function (obj) {
@@ -176,37 +183,41 @@
         //监听行工具事件
         table.on('tool(onplan_table)', function (obj) {
             var data = obj.data;
-           
+
             if (obj.event === 'del') {
-				delOnplanList(data);
+                delOnplanList(data);
             } else if (obj.event === 'edit') {
                 editOnplanList(data);
             }
         });
-       function editOnplanList(data){
+
+        function editOnplanList(data) {
             layer.open({
-                title : "编辑上线计划",
-                type : 2,
+                title: "编辑上线计划",
+                type: 2,
                 maxmin: true,
                 skin: 'layui-layer-molv',
                 shadeClose: false,
                 shade: 0.3,
-                area:['580px', '520px'],
+                area: ['580px', '520px'],
                 boolean: true,
-                content:  '/onplan/edit',//跳转的页面
-                success : function(layero, index){
+                content: ['/onplan/edit?obj=' + encodeURIComponent(JSON.stringify(data)), 'yes'],//跳转的页面
+                success: function (layero, index) {
                     var body = layer.getChildFrame('body', index);
-                    body.find('button#close').on('click', function() {
+                    body.find('button#close').on('click', function () {
                         layer.close(index);
                         location.reload();//刷新
                     });
                     pubUtil.load(body, data);//填充表单
+                    if (getCookie("name") != null) {
+                        body.find("#opPerson").val(getCookie("name"));
+                    }
                 }
             })
         }
-      
-  		function delOnplanList(data) {
-            layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
+
+        function delOnplanList(data) {
+            layer.confirm('是否确定删除该条记录', {icon: 3, title: '提示信息'}, function (index) {
                 $.ajax({
                     url: '/deleteOnlinePlanById',
                     data: {
@@ -222,12 +233,12 @@
                             }, 1000);
                         } else {
                             pubUtil.msg("删除失败", layer, 2, function () {
-                      		}, 1000);  
-                    	}
- 					}
+                            }, 1000);
+                        }
+                    }
                 });
             });
-  		}
+        }
 
         //监听排序
         table.on('sort(onplan_table)', function (obj) {
@@ -244,12 +255,12 @@
             });
         });
 
-  //上线时间选择
-        var onplanDate= laydate.render({
+        //上线时间选择
+        var onplanDate = laydate.render({
             elem: '#onplanDate',//选择器结束时间
             theme: 'molv',
-            min:"1970-1-1",//设置min默认最小值
-            max:"2099-12-31",
+            min: "1970-1-1",//设置min默认最小值
+            max: "2099-12-31",
         });
 
         var $ = layui.jquery, active = {
