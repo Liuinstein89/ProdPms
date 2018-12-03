@@ -321,7 +321,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 		int count = dmdManageMapper.countRI(id.intValue(),reqNo, reqItemName);
 		return count;
 	}
- 
+     
 	@Override
 	public int findDupReq(String reqNo, String reqName) {
 		int count = dmdManageMapper.findDupReq(reqNo,reqName);
