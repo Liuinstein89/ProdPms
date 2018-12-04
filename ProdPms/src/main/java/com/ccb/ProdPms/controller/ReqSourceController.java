@@ -55,7 +55,8 @@ public class ReqSourceController {
         String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         ReqSourceEntity reqSourceEntity = new ReqSourceEntity( souceName , opPerson, createTime);
        
- int count =  reqSourceService.findByName(souceName);
+	   //判断数据库中是否有该记录，如有，就更新，如无，再新增
+        int count =  reqSourceService.findByName(souceName);
         if (count > 0) {
             String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             ReqSourceEntity reqSourceEntity2 = new  ReqSourceEntity( souceName, changeTime);
@@ -95,7 +96,7 @@ public class ReqSourceController {
     }
 
 
-    
+    // 数据导入主要涉及三个步骤 1.文件上传；2.Excel解析；3.数据插入。    
     @RequestMapping(value = "/importReqSourceExcel", method = RequestMethod.POST)
     public String importReqSourceExcel(MultipartFile file, @RequestParam(value = "userName") String userName) {
         if (file == null)

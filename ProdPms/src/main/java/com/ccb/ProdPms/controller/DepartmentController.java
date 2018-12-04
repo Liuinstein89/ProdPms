@@ -54,7 +54,7 @@ public class DepartmentController {
         String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         DepartmentEntity departmentEntity = new DepartmentEntity( dptName, dptCode , opPerson, createTime);
        
-//判断数据库中是否有该记录，如有，就更新，如无，再新增
+        //判断数据库中是否有该记录，如有，就更新，如无，再新增
         int count = departmentService.findByName(dptName);
         if (count > 0) {
             String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
