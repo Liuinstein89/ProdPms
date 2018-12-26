@@ -43,7 +43,7 @@ public class ProjectTeamController {
     }
 
 
- // 新增
+    // 新增
     @PostMapping("/addProTeam")
     public String addProTeam(HttpServletRequest request) {
     	 // Form接参
@@ -56,7 +56,8 @@ public class ProjectTeamController {
         String createTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         ProjectTeamEntity projectTeamEntity = new ProjectTeamEntity(teammateNum,teamName, belongDptCode,  teamLeader, teammate, opPerson, createTime);
        
- int count = projectTeamService.findByName(teamName);
+	    //判断数据库中是否有该记录，如有，就更新，如无，再新增
+        int count = projectTeamService.findByName(teamName);
         if (count > 0) {
             String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             ProjectTeamEntity projectTeamEntity2 = new  ProjectTeamEntity(teammateNum,teamName, belongDptCode, teamLeader, teammate, changeTime);
@@ -68,7 +69,7 @@ public class ProjectTeamController {
         return JSONObject.toJSONString(strSuc);
     }
 
- // 编辑
+    // 编辑
     @RequestMapping(value = "/updateProTeam", method = RequestMethod.POST)
     public String updateProTeam(HttpServletRequest request) throws IOException {
     	 // Form接参
@@ -81,7 +82,7 @@ public class ProjectTeamController {
         String changeTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
         ProjectTeamEntity projectTeamEntity = new ProjectTeamEntity(id,teammateNum, teamName, belongDptCode, teamLeader, teammate,changeTime);
 
-     // 修改需求主表项
+       // 修改需求主表项
         try {
             projectTeamService.updateProjectTeam(projectTeamEntity);
         } catch (Exception e) {
@@ -101,7 +102,7 @@ public class ProjectTeamController {
 
 
 
-    // ���ݵ�����Ҫ�漰�������� 1.�ļ��ϴ���2.Excel������3.���ݲ��롣
+   // 数据导入主要涉及三个步骤 1.文件上传；2.Excel解析；3.数据插入。
     @RequestMapping(value = "/importProjectTeamExcel", method = RequestMethod.POST)
     public String importProjectTeamExcel(MultipartFile file, @RequestParam(value = "userName") String userName) {
         if (file == null)
