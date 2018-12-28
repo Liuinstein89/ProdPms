@@ -129,7 +129,7 @@
             //监听提交
             form.on('submit(edit_form_btn)', function (data) {
                 // layer.alert("zzf");
-                layer.alert(JSON.stringify(data.field));
+                // layer.alert(JSON.stringify(data.field));
                 $.ajax({
                     url: '/updateReqItem',
                     data: data.field,
@@ -137,12 +137,12 @@
                     dataType: 'json',
                     success: function (obj) {
                         // layer.close(index);//关闭
-                        if (obj.success) {
-                            pubUtil.msg(obj.msg, layer, 1, function () {
+                        if (obj == 'success') {
+                            pubUtil.msg('需求项编辑成功', layer, 1, function () {
                                 $("#close").click();
                             }, 1000);
                         } else {
-                            pubUtil.msg(obj.msg, layer, 2, function () {
+                            pubUtil.msg('需求项编辑失败', layer, 2, function () {
                             }, 1000);
                         }
                     }
