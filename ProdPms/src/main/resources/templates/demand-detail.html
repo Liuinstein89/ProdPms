@@ -430,6 +430,7 @@
                     , limit: 5
                     , totalRow: false
                     , where: {id: data.id}
+                    , id: 'relateFunc'
                     , cellMinWidth: 80
                     , cols: [[
                         {field: 'funcName', title: '功能点名称'}
@@ -508,6 +509,15 @@
                                 reqNo: reqNoid, //搜索的关键字
                             },
                         });
+                        table.on('tool(demand_items)', function (obj) {
+                            var data = obj.data;
+                            table.reload("relateFunc", {
+                                where: {
+                                    id: data.id //搜索的关键字
+                                },
+                            });
+                        });
+
                     });
                     pubUtil.load(body, data);//填充表单
                     //添加操作人

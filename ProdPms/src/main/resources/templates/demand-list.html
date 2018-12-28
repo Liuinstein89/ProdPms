@@ -29,7 +29,7 @@ a {
         </div>
     </script>
 
-	<div class="layui-card" style="padding-bottom: 100px; border: 2px">
+	<div class="layui-card" style=" border: 2px">
 		<div class="layui-card-header" style="height: 55px">
 			<div class="demoTable layui-inline" style="margin-top: 6px">
 				<div class="layui-inline">
@@ -81,7 +81,7 @@ a {
             //渲染
             var tableIns = table.render({
                 elem: '#demand_table'
-                // , height: 535
+                , height: 435
                 , title: '需求主表'
                 , url:'/demand'
                 , page: true
@@ -96,9 +96,8 @@ a {
                     }
                 , cols: [[
                     {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
-                    
                     , {field: 'reqNo', title: '需求编号', width: 140, fixed: 'left', unresize: true, sort: true,align:'left'}
-                    , {field: 'reqName', title: '开发需求',width: 200,templet: '#reqnameTpl'}
+                    , {field: 'reqName', title: '开发需求',width: 250,fixed: 'left', unresize: true,templet: '#reqnameTpl'}
                     , {field: 'reqSource', title: '需求来源',  width: 100}
                     , {field: 'dept', title: '提出部门', width: 100}
                     , {field: 'reqStatus', title: '当前受理状态', width: 120}
