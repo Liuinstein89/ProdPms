@@ -509,13 +509,41 @@
                                 reqNo: reqNoid, //搜索的关键字
                             },
                         });
-                        table.on('tool(demand_items)', function (obj) {
-                            var data = obj.data;
-                            table.reload("relateFunc", {
-                                where: {
-                                    id: data.id //搜索的关键字
-                                },
-                            });
+                        // console.log("asasdas");
+                        // table.on('tool(demand_items)', function (obj) {
+                        //     var data = obj.data;
+                        //     // console.log("asasdas");
+                        //     table.reload("relateFunc", {
+                        //         where: {
+                        //             id: data.id //搜索的关键字
+                        //         },
+                        //     });
+                        // });
+                        table.render({
+                            elem: '#dfunction'
+                            , page: {}
+                            , title: '关联功能点表'
+                            , url: '/listReqRalateFunc'
+                            , limit: 5
+                            , totalRow: false
+                            , where: {id: data.id}
+                            , id: 'relateFunc'
+                            , cellMinWidth: 80
+                            , cols: [[
+                                {field: 'funcName', title: '功能点名称'}
+                                , {field: 'funcReformContent', title: '功能点改造内容'}
+                                , {field: 'desiPerson', title: '设计人员'}
+                                , {field: 'devPerson', title: '开发人员'}
+                                , {field: 'testPerson', title: '测试人员'}
+                            ]]
+                            , parseData: function (res) {
+                                return {
+                                    "code": res.code
+                                    , "msg": res.msg
+                                    , "count": res.data.total
+                                    , "data": res.data.list
+                                };
+                            }
                         });
 
                     });
