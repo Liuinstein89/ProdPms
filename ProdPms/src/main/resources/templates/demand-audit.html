@@ -1,114 +1,224 @@
 <!DOCTYPE html>
 <html>
-	<head>
-			<meta charset="UTF-8"/>
-	<meta name="renderer" content="webkit"/>
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>ProductMS</title>
-		<link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
-		<style type="text/css">
-			body{
-				padding: 20px;
-				/*padding-top: 10px;*/
-				padding-bottom: 0px;
-			}
-		</style>
-	</head>
-	<body>
-		<div class="wrap-container">
-			<form class="layui-form" style="width: 100%;" method="post" action="">
-				
-				<div class="layui-form-item">
-					<label class="layui-form-label">审核结果</label>
-					<div class="layui-input-block">
-							<select name="reqResult" lay-verify="required" class="form-control">
-					<option value="">请选择</option>
-					<option value="需求审核通过">需求审核通过</option>
-					<option value="不实施">不实施</option>
-					<option value="需求变更">变更</option>
-                    </select>
-					</div>
-					
-				</div>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>ProductMS</title>
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css"/>
+    <style type="text/css">
+        body {
+            padding: 20px;
+            /*padding-top: 10px;*/
+            padding-bottom: 0px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrap-container">
+    <form class="layui-form" style="width: 100%;" method="post" action="">
 
-				
+        <div class="layui-form-item" style="display: none">
+            <label class="layui-form-label">当前受理状态</label>
+            <div class="layui-input-block">
+                <input type="text" name="result" readonly="" id="curStatus"  autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
 
-				<div class="layui-form-item">
-					<label class="layui-form-label">后续受理人</label>
-					<div class="layui-input-block">
-						<select  name="nextUser" class="form-control">
-					<option value=""></option>
-					<option value="张三">张三</option>
-					<option value="李四">李四</option>
-					<option value="王五">王五</option>
-                        </select>
-					</div>
-				</div>
-				
-				<div class="layui-form-item">
-					<label class="layui-form-label">审核意见</label>
-					<div class="layui-input-block">
-						<textarea name="textarea" id="text_audit" lay-verify="audit_advice" placeholder="请输入需求审核意见" ></textarea>
-					</div>
-				</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">审核结果</label>
+            <div class="layui-input-block">
+                <select name="resultId" lay-verify="title" lay-filter="resultChange" class="form-control">
+                    <option value=""></option>
+                    <option value="1"  id="s1">需求变更</option>
+                    <option value="2"  id="s2">需求审核通过</option>
+                    <option value="4"  id="s3">设计审核通过</option>
+                    <option value="5"  id="s4">设计变更</option>
+                    <option value="6"  id="s5">关闭</option>
+                    <option value="7"  id="s6">同意开发</option>
+                </select>
+            </div>
+        </div>
 
-				
-				<div class="layui-form-item">
-					<div class="layui-input-block" style="float: right">
-						<button type="button" class="layui-btn layui-btn-primary" id="close">取消</button>
-							<button type="button" class="layui-btn " id="btnAudit" lay-submit="" lay-filter="btnAudit">审核提交</button>
-					</div>
-				</div>
-			</form>
-		</div>
+        <div class="layui-form-item" style="display: none">
+            <label class="layui-form-label">审核结果</label>
+            <div class="layui-input-block">
+                <input type="text" name="result" readonly="" id="result" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
 
-		<script src="../static/src/layui.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript">
-			//Demo
-		 layui.use(['form','layedit','jquery'], function() {
+        <div class="layui-form-item">
+            <label class="layui-form-label">后续受理人</label>
+            <div class="layui-input-block">
+                <select name="nextUser" id="nextUser" lay-verify="required" class="form-control" lay-search="">
+                </select>
+            </div>
+        </div>
+
+        <!--<div class="layui-form-item">-->
+            <!--<label class="layui-form-label">审核意见</label>-->
+            <!--<div class="layui-input-block">-->
+                <!--<textarea name="textarea" id="text_audit" lay-verify="audit_advice" placeholder="请输入需求审核意见"></textarea>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">审核意见</label>
+            <div class="layui-input-block">
+                <textarea name="comment"  lay-verify="required" class="layui-textarea" placeholder="请输入需求审核意见"></textarea>
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="display:none">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-input-block">
+                <input type="text" name="User" id="User" readonly='' autocomplete="off"
+                       class="layui-input"/>
+            </div>
+        </div>
+
+        <div class="layui-form-item " style="display:none">
+            <label class="layui-form-label">需求编号</label>
+            <div class="layui-input-block">
+                <input type="text" name="reqNo" readonly="" id="auditReqNo" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="float: right">
+                <button type="button" class="layui-btn layui-btn-primary" id="close">取消</button>
+                <button type="button" class="layui-btn " id="btnAudit" lay-submit="" lay-filter="btnAudit">审核提交</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    //Demo
+    layui.use(['form', 'layedit', 'jquery'], function () {
         var form = layui.form;
         var $ = layui.jquery;
         var layedit = layui.layedit;
+
+        form.verify({
+            title: function (value) {
+                var value1 = $('#curStatus').val();
+                var value2 = $('#result').val();
+
+                console.log("wjfbsjfbjaj:"+value2)
+                // if (valuee.length != 0) {
+                //     return '请输入需求标题';
+                // }
+
+                if(value1 == '已受理'){
+                    if(!(value2 == '需求变更'||value2 == '关闭'||value2 == '需求审核通过')){
+                        return "当前需求受理状态为“已受理”，请选择“需求变更”或者“关闭”"
+                    }
+                }
+
+                if(value1 == '需求变更'){
+                    if(!(value2 == '需求变更'||value2 == '关闭'||value2 == '需求审核通过')){
+                        return "当前需求受理状态为 “需求变更”，请选择“需求变更”,“需求审核通过”或者“关闭”"
+                    }
+                }
+                if(value1 == '需求审核通过'){
+                    if(!(value2 == '设计审核通过'||value2 == '关闭'||value2 == '设计变更')){
+                        return "当前需求受理状态为“需求审核通过”，请选择“设计审核通过”，“设计变更”或者“关闭”"
+                    }
+                }
+                if(value1 == '设计变更'){
+                        if(!(value2 == '设计变更'||value2 == '关闭'||value2 == '设计审核通过')){
+                        return "当前需求受理状态为“设计变更”，请选择“设计审核通过”，“设计变更”或者“关闭”"
+                    }
+                }
+                if(value1 == '设计审核通过'){
+                    if(!(value2 == '同意开发'||value2 == '关闭')){
+                        return "当前需求受理状态为“设计审核通过”，请选择“同意开发”或者“关闭”"
+                    }
+                }
+
+            }
+        });
         form.render();
         //富文本
-        var index=layedit.build('text_audit',{
-            height:180
+        // var index = layedit.build('text_audit', {
+        //     height: 180
+        // });
+        //
+        // form.verify({
+        //     audit_advice: function (value) {
+        //         layedit.sync(index);
+        //     }
+        // });
+
+        //获取cookie中的用户名
+        showName('User', 'name');
+
+        // 将下拉框的选项变为disabled或移除disabled属性
+        // var asd = true;
+        // if(asd){
+        //     $('#s1').removeAttr("disabled");
+        //     $('#s2').attr("disabled","disabled");
+        // }
+
+        // console.log("afa"+status);
+        // console.log("wode:"+$("#auditReqNo").val())
+
+        // function switchSelect(state){
+        //     switch(state){
+        //         case '已受理':
+        //             $('#s1').removeAttr("disabled");
+        //             break;
+        //     }
+        // }
+        // $('#s2').removeAttr("disabled");
+
+        // 下一位受理人
+        loadSelect(form, '/getAllUser', 'nextUser', 'userName', 'userName');
+
+        form.on('select(resultChange)', function(data){
+            // console.log("dsgasdgabsd:"+data)
+
+            console.log(data.elem[data.elem.selectedIndex].text);
+            var resultSelected = data.elem[data.elem.selectedIndex].text;
+            $('#result').val(resultSelected);
         });
-        form.verify({
-            audit_advice: function(value){
-                layedit.sync(index);
-            }
-});
-        				//监听提交
-			  form.on('submit(btnAudit)', function(data) {
+
+        //监听提交
+        form.on('submit(btnAudit)', function (data) {
             $.ajax({
-                url : '/auditSubmit',
-                data : data.field,
-                type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
-                dataType : 'json',
-                success : function(obj) {
+                url: '/auditSubmit',
+                data: data.field,
+                type: 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                dataType: 'json',
+                success: function (obj) {
                     //layer.close(index);//关闭
-                    if (obj=="success") {
-                        pubUtil.msg("审核提交成功", layer, 1, function() {
+                    // console.log("wjfbsjfbjaj:"+result)
+                    if (obj == "success") {
+                        pubUtil.msg("审核提交成功", layer, 1, function () {
                             $("#close").click();
                             location.reload();
                         }, 1000);
                     } else {
-                        pubUtil.msg("审核提交失败", layer, 2, function() {
+                        pubUtil.msg("审核提交失败", layer, 2, function () {
                         }, 1000);
                     }
                 }
             });
-					return false;
-				});
-		
-				});
-		
+            return false;
+        });
+        console.log("wode:"+$("#auditReqNo").val())
+    });
 
 
-		</script>
-		
-	</body>
+</script>
+
+</body>
 
 </html>

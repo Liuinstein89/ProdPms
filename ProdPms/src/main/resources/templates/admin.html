@@ -1,250 +1,259 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
-<meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
 
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-<meta http-equiv="X-UA-Compatible" content="ie=edge" />
-<title>ProductMS</title>
-<link rel="stylesheet" href="../static/src/css/layui.css" />
-<link rel="stylesheet" href="../static/css/index.css" />
-<script src="../static/src/layui.js"></script> 
-<style type="text/css">
-</style>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>ProductMS</title>
+    <link rel="stylesheet" href="../static/src/css/layui.css"/>
+    <link rel="stylesheet" href="../static/css/index.css"/>
+    <script src="../static/src/layui.js"></script>
+    <style type="text/css">
+    </style>
 </head>
 
 <body class="layui-layout-body" style="overflow: hidden;">
-	<div class="layui-layout layui-layout-admin">
-		<!-- 页面上部分一条，包括主页，刷新，人员和退出 -->
-		<div class="layui-header layui-bg-cyan">
-			<div class="layui-logo" style="font-size: 30px;">
-				<div class="layui-logo">
-						<a href="/admin">ProductMS</a>
-				</div>
-			</div>
-			<!-- 头部区域（可配合layui已有的水平导航） -->
-			<ul class="layui-nav layui-layout-left">
-				<div class="left_open layui-inline">
-					<i title="左侧栏" class="layui-icon">&#xe668;</i>
-				</div>
-				<div class="cur_fresh layui-inline">
-					<a href="javascript:;" class="refresh refreshThis"> <i
-						class="layui-icon">&#xe9aa;</i>
-					</a>
-				</div>
-			</ul>
-			<ul class="layui-nav layui-layout-right">
-				
-	<li class="layui-nav-item"><img src="../static/images/timg.jpg" class="layui-nav-img" /></li>
-			<li class="layui-nav-item ">
-				<a href="javascript:;" id="userInfo">未登录</a>
-					<dl class="layui-nav-child">
-						<dd>
-							<a href="">基本资料</a>
-						</dd>
-						<dd>
-							<a href="">安全设置</a>
-						</dd>
-					</dl></li>
-				<li class="layui-nav-item"  id="login_out"><a href="#">退出</a></li>
-			</ul>
-		</div>
+<div class="layui-layout layui-layout-admin">
+    <!-- 页面上部分一条，包括主页，刷新，人员和退出 -->
+    <div class="layui-header layui-bg-cyan">
+        <div class="layui-logo" style="font-size: 30px;">
+            <div class="layui-logo">
+                <a href="/admin">ProductMS</a>
+            </div>
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <div class="left_open layui-inline">
+                <i title="左侧栏" class="layui-icon">&#xe668;</i>
+            </div>
+            <div class="cur_fresh layui-inline">
+                <a href="javascript:;" class="refresh refreshThis"> <i
+                        class="layui-icon">&#xe9aa;</i>
+                </a>
+            </div>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
 
-		<!-- 页面左侧模块分类 -->
-		<div class="layui-side layui-bg-black">
-			<div class="layui-side-scroll">
-				<!-- 左侧垂直导航区域 -->
-				<ul class="layui-nav layui-nav-tree" lay-filter="test">
-					<li class="layui-nav-item">
-					<a class="fontset"	href="javascript:;" style="font-size: 16px;"> <i
-							class="layui-icon layui-icon-app"> </i> &nbsp;&nbsp;需求管理
-					</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:;" data-id="1" data-title="需求列表"
-									data-url="/admin/list" class="site-demo-active"
-									data-type="tabAdd"> <span class="l-line"></span>需求列表
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="2" data-title="上线计划"
-								   data-url="/onplan/list" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>上线计划
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="3" data-title="需求审查" data-url="/demand/audit"
-									class="site-demo-active" data-type="tabAdd"> <span
-									class="l-line"></span>需求审查
-								</a>
-							</dd>
-						</dl>
-					</li>
-					<li class="layui-nav-item"><a href="javascript:;"
-						class="fontset"> <i class="layui-icon layui-icon-tabs"></i>&nbsp;&nbsp;设计管理
-					</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:;" data-id="4" data-title="设计列表" data-url=""
-									class="site-demo-active" data-type="tabAdd"> <span
-									class="l-line"></span>设计列表
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;"><span class="l-line"></span>设计审查</a>
-							</dd>
-						</dl></li>
-					<li class="layui-nav-item"><a href="javascript:;"
-						class="fontset"> <i class="layui-icon layui-icon-code-circle"></i>&nbsp;&nbsp;开发管理
-					</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:;"><span class="l-line"></span>开发列表</a>
-							</dd>
-							<dd>
-								<a href="javascript:;"><span class="l-line"></span>开发任务</a>
-							</dd>
-							<dd>
-								<a href="javascript:;"><span class="l-line"></span>开发审查</a>
-							</dd>
-						</dl></li>
-					<li class="layui-nav-item"><a href="javascript:;"
-						class="fontset"> <i class="layui-icon layui-icon-find-fill"></i>&nbsp;&nbsp;测试管理
-					</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:;"><span class="l-line"></span>测试列表</a>
-							</dd>
-							<dd>
-								<a href="javascript:;"><span class="l-line"></span>测试任务</a>
-							</dd>
-							<dd>
-								<a href="javascript:;"><span class="l-line"></span>测试审查</a>
-							</dd>
-						</dl></li>
-					<li class="layui-nav-item"><a href="javascript:;"
-						class="fontset"><i class="layui-icon layui-icon-dialogue"></i>&nbsp;&nbsp;邮件系统</a>
-					</li>
-					<li class="layui-nav-item"><a href="javascript:;"
-						class="fontset"><i class="layui-icon layui-icon-friends"></i>&nbsp;&nbsp;个人信息</a></li>
-				
-	<li class="layui-nav-item">
-						<a class="fontset" href="javascript:;" style="font-size: 16px;"> <i
-								class="layui-icon layui-icon-form"> </i> &nbsp;&nbsp;基本信息管理
-						</a>
-						<dl class="layui-nav-child">
-							<dd>
-								<a href="javascript:;" data-id="20" data-title="部门管理"
-								   data-url="/basicinfo/dept" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>部门管理
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="21" data-title="用户管理"
-								   data-url="/basicinfo/user" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>用户管理
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="22" data-title="项目组管理"
-								    data-url="/basicinfo/proTeam" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>项目组管理
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="23" data-title="角色管理"
-								   data-url="" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>角色管理
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="24" data-title="权限管理"
-								   data-url="" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>权限管理
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="25" data-title="状态管理"
-								   data-url="/basicinfo/state" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>状态管理
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="26" data-title="需求来源"
-								  data-url="/basicinfo/reqSource" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>需求来源
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="27" data-title="实施方式"
-								   data-url="/basicinfo/exectype" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>实施方式
-								</a>
-							</dd>
-							<dd>
-								<a href="javascript:;" data-id="28" data-title="功能点管理"
-								   data-url="/basicInfo/func" class="site-demo-active"
-								   data-type="tabAdd"> <span class="l-line"></span>功能点管理
-								</a>
-							</dd>
+            <li class="layui-nav-item"><img src="../static/images/timg.jpg" class="layui-nav-img"/></li>
+            <li class="layui-nav-item ">
+                <a href="javascript:;" id="userInfo">未登录</a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="">基本资料</a>
+                    </dd>
+                    <dd>
+                        <a href="">安全设置</a>
+                    </dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item" id="login_out"><a href="#">退出</a></li>
+        </ul>
+    </div>
 
-						</dl>
-					
-					</li>
-					<li class="layui-nav-item"><a href="javascript:;"
-						class="fontset"><i class="layui-icon layui-icon-set-fill"></i>&nbsp;&nbsp;系统设置</a></li>
-				</ul>
-			</div>
-		</div>
+    <!-- 页面左侧模块分类 -->
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧垂直导航区域 -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item">
+                    <a class="fontset" href="javascript:;" style="font-size: 16px;"> <i
+                            class="layui-icon layui-icon-app"> </i> &nbsp;&nbsp;需求管理
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" data-id="1" data-title="需求列表"
+                               data-url="/admin/list" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>需求列表
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="2" data-title="上线计划"
+                               data-url="/onplan/list" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>上线计划
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="3" data-title="需求审查" data-url="/demand/audit"
+                               class="site-demo-active" data-type="tabAdd"> <span
+                                    class="l-line"></span>需求审查
+                            </a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;"
+                                              class="fontset"> <i class="layui-icon layui-icon-tabs"></i>&nbsp;&nbsp;设计管理
+                </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" data-id="4" data-title="设计列表" data-url=""
+                               class="site-demo-active" data-type="tabAdd"> <span
+                                    class="l-line"></span>设计列表
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;"><span class="l-line"></span>设计审查</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;"
+                                              class="fontset"> <i class="layui-icon layui-icon-code-circle"></i>&nbsp;&nbsp;开发管理
+                </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;"><span class="l-line"></span>开发列表</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;"><span class="l-line"></span>开发任务</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;"><span class="l-line"></span>开发审查</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;"
+                                              class="fontset"> <i class="layui-icon layui-icon-find-fill"></i>&nbsp;&nbsp;测试管理
+                </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;"><span class="l-line"></span>测试列表</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;"><span class="l-line"></span>测试任务</a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;"><span class="l-line"></span>测试审查</a>
+                        </dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;"
+                                              class="fontset"><i class="layui-icon layui-icon-dialogue"></i>&nbsp;&nbsp;邮件系统</a>
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;"
+                                              class="fontset"><i class="layui-icon layui-icon-friends"></i>&nbsp;&nbsp;个人信息</a>
+                </li>
 
-		<!--tab标签 -->
-		 <div class="page-content layui-body" style="height: 100%">
-			<div class="layui-tab layui-tab-brief main-layout-tab" lay-filter="demo" lay-allowclose="true">
-				<ul class="layui-tab-title"><li class="layui-this welcome">系统主页</li></ul>
-				<div class="layui-tab-content">
-					<div class="layui-tab-item layui-show">
-						<iframe src="/welcome.html" frameborder="0" name="iframe"
-							scrolling="yes" class="iframe" id="iframe_fresh"></iframe>
-					</div>
-				</div>
-			</div>
-		</div> 
-		<div class="page-content-bg"></div>
-		<!-- <div class="layui-footer" style="text-align: center">Copyright&nbsp;©&nbsp;2018&nbsp;&nbsp;产品开发团队</div> -->
-	</div>
-	 
-	<script type="text/javascript">
-		layui.use([ 'jquery', 'layer' ], function() {
-			var $ = layui.jquery;
-			var layer = layui.layer;
+                <li class="layui-nav-item">
+                    <a class="fontset" href="javascript:;" style="font-size: 16px;"> <i
+                            class="layui-icon layui-icon-form"> </i> &nbsp;&nbsp;基本信息管理
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd>
+                            <a href="javascript:;" data-id="20" data-title="部门管理"
+                               data-url="/basicinfo/dept" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>部门管理
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="21" data-title="用户管理"
+                               data-url="/basicinfo/user" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>用户管理
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="22" data-title="项目组管理"
+                               data-url="/basicinfo/proTeam" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>项目组管理
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="23" data-title="角色管理"
+                               data-url="" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>角色管理
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="24" data-title="权限管理"
+                               data-url="" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>权限管理
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="25" data-title="状态管理"
+                               data-url="/basicinfo/state" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>状态管理
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="26" data-title="需求来源"
+                               data-url="/basicinfo/reqSource" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>需求来源
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="27" data-title="实施方式"
+                               data-url="/basicinfo/exectype" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>实施方式
+                            </a>
+                        </dd>
+                        <dd>
+                            <a href="javascript:;" data-id="28" data-title="功能点管理"
+                               data-url="/basicInfo/func" class="site-demo-active"
+                               data-type="tabAdd"> <span class="l-line"></span>功能点管理
+                            </a>
+                        </dd>
+
+                    </dl>
+
+                </li>
+                <li class="layui-nav-item"><a href="javascript:;"
+                                              class="fontset"><i class="layui-icon layui-icon-set-fill"></i>&nbsp;&nbsp;系统设置</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!--tab标签 -->
+    <div class="page-content layui-body" style="height: 100%">
+        <div class="layui-tab layui-tab-brief main-layout-tab" lay-filter="demo" lay-allowclose="true">
+            <ul class="layui-tab-title">
+                <li class="layui-this welcome">系统主页</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <iframe src="/welcome.html" frameborder="0" name="iframe"
+                            scrolling="yes" class="iframe" id="iframe_fresh"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page-content-bg"></div>
+    <!-- <div class="layui-footer" style="text-align: center">Copyright&nbsp;©&nbsp;2018&nbsp;&nbsp;产品开发团队</div> -->
+</div>
+
+<script type="text/javascript">
+    layui.use(['jquery', 'layer'], function () {
+        var $ = layui.jquery;
+        var layer = layui.layer;
 
 //获取cookie中的用户名
-		if(getCookie("name")!=null){
+        if (getCookie("name") != null) {
             document.getElementById("userInfo").innerText = getCookie("name");
-		}
+        }
 
         // alert(getCookie("name"));
 
-        function getCookie(name)
-        {
-            var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)"); //正则匹配
-            if(arr=document.cookie.match(reg)){
+        function getCookie(name) {
+            var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)"); //正则匹配
+            if (arr = document.cookie.match(reg)) {
                 return unescape(arr[2]);
             }
-            else{
+            else {
                 return null;
             }
         }
+
         //系统退出
-        $('#login_out').on('click', function() {
+        $('#login_out').on('click', function () {
             layer.confirm('是否退出系统？', {
-                btn: ['退出','取消'], //按钮
-                title:"操作提示",
-                shade:0.5,
-                icon:3
-            }, function(){
+                btn: ['退出', '取消'], //按钮
+                title: "操作提示",
+                shade: 0.5,
+                icon: 3
+            }, function () {
                 location.href = '/login';
-            }, function(){
+            }, function () {
 
             });
 
@@ -258,124 +267,128 @@
             //     }
             // });
         });
-			//刷新当前
-			$(".refresh").on("click",function() {
-								if ($(this).hasClass("refreshThis")) {
-									$(this).removeClass("refreshThis");
-									$(".layui-tab-item.layui-show").find(	"iframe")[0].contentWindow.location.reload(true);
-									setTimeout(function() {
-										$(".refresh").addClass("refreshThis");
-									}, 50);
-								}
-							})
+        //刷新当前
+        $(".refresh").on("click", function () {
+            if ($(this).hasClass("refreshThis")) {
+                $(this).removeClass("refreshThis");
+                $(".layui-tab-item.layui-show").find("iframe")[0].contentWindow.location.reload(true);
+                setTimeout(function () {
+                    $(".refresh").addClass("refreshThis");
+                }, 50);
+            }
+        })
 
-		});
-	</script>
-	<!-- js有问题，排查 -->
-	 <script type="text/javascript">
-		layui.use([ 'jquery' ], function() {
-			var $ = layui.jquery;
-			// 左侧导航菜单的显示和隐藏
-			$('.layui-layout-left .left_open i').click(function(event) {
-				if ($('.layui-side').css('left') == '0px') {
-					//此处左侧菜单是显示状态，点击隐藏
-					$('.layui-side').animate({
-						left : '-200px'
-					}, 100);
-					$('.page-content').animate({
-						left : '0px'
-					}, 100);
-					$('.page-content-bg').hide();
-				} else {
-					//此处左侧菜单是隐藏状态，点击显示
-					$('.layui-side').animate({
-						left : '0px'
-					}, 100);
-					$('.page-content').animate({
-						left : '200px'
-					}, 100);
-					//点击显示后，判断屏幕宽度较小时显示遮罩背景;
-					/* 首尾增加这样的注释一样的声明，由于thymeleaf是采用xml解析的方式进行替换的，
-					所以javascript中大于小于等特殊的xml实体转义字符会被识别为转义，所以会出sax解析错误 */
-					/*<![CDATA[*/
-					if ($(window).width() < 768) {
-						$('.page-content-bg').show();
-					}
-					/*]]>*/
-				}
-			});
-			//点击遮罩背景，左侧菜单隐藏
-			$('.page-content-bg').click(function(event) {
-				$('.layui-side').animate({
-					left : '-200px'
-				}, 100);
-				$('.page-content').animate({
-					left : '0px'
-				}, 100);
-				$(this).hide();
-			});
-		});
-	</script>  
-	
-	<!--左侧树形目录折叠js-->
-	<script type="text/javascript">
-		layui.use([ 'element', 'layer', 'jquery' ], function() {
-			var element = layui.element;//Tab的切换功能，切换事件监听等，需要依赖element模块
-			var $ = layui.$;
-			// 配置tab实践在下面无法获取到菜单元素
-			$('.site-demo-active').on('click',function() {
-						var dataid = $(this);
-						//这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
-						/*<![CDATA[*/
-						if ($(".layui-tab-title li[lay-id]").length <= 0) {
-							//如果比零小，则直接打开新的tab项
-	active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
-						
-						} 
-else {
-							//否则判断该tab项是否以及存在
-							var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
-							$.each($(".layui-tab-title li[lay-id]"),function() {
-										//如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
-										if ($(this).attr("lay-id") == dataid.attr("data-id")) {isData = true;}})
-							if (isData == false) {
-								//标志为false 新增一个tab项
-								active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
-							}
-						}
-						/*]]>*/
-						//最后不管是否新增tab，最后都转到要打开的选项页面上
-						active.tabChange(dataid.attr("data-id"));
-					});
-			//触发事件
-			var active = {
-				//在这里给active绑定几项事件，后面可通过active调用这些事件
-				tabAdd : function(url, id, name) {
-					//新增一个Tab项 传入三个参数，分别对应其标题，tab页面的地址，还有一个规定的id，是标签中data-id的属性值
-					//关于tabAdd的方法所传入的参数可看layui的开发文档中基础方法部分
-					element.tabAdd('demo', {
-						title : name,
-						content : '<iframe data-frameid="' + id
-								+ '" scrolling="auto" frameborder="0" src="'
-								+ url
-								+ '" style="width:100%;height:99%;"></iframe>',
-						id : id//规定好的id
-					})
-					FrameWH(); //计算ifram层的大小
-				},
-				tabChange : function(id) {
-					//切换到指定Tab项
-					element.tabChange('demo', id); //根据传入的id传入到指定的tab项
-				},
-				tabDelete : function(id) {
-					element.tabDelete("demo", id);//删除
-				}
-			};
-			function FrameWH() {
-				var h = $(window).height();
-				$("iframe").css("height", h + "px");
-			}
-		});
-	</script>
+    });
+</script>
+<!-- js有问题，排查 -->
+<script type="text/javascript">
+    layui.use(['jquery'], function () {
+        var $ = layui.jquery;
+        // 左侧导航菜单的显示和隐藏
+        $('.layui-layout-left .left_open i').click(function (event) {
+            if ($('.layui-side').css('left') == '0px') {
+                //此处左侧菜单是显示状态，点击隐藏
+                $('.layui-side').animate({
+                    left: '-200px'
+                }, 100);
+                $('.page-content').animate({
+                    left: '0px'
+                }, 100);
+                $('.page-content-bg').hide();
+            } else {
+                //此处左侧菜单是隐藏状态，点击显示
+                $('.layui-side').animate({
+                    left: '0px'
+                }, 100);
+                $('.page-content').animate({
+                    left: '200px'
+                }, 100);
+                //点击显示后，判断屏幕宽度较小时显示遮罩背景;
+                /* 首尾增加这样的注释一样的声明，由于thymeleaf是采用xml解析的方式进行替换的，
+                所以javascript中大于小于等特殊的xml实体转义字符会被识别为转义，所以会出sax解析错误 */
+                /*<![CDATA[*/
+                if ($(window).width() < 768) {
+                    $('.page-content-bg').show();
+                }
+                /*]]>*/
+            }
+        });
+        //点击遮罩背景，左侧菜单隐藏
+        $('.page-content-bg').click(function (event) {
+            $('.layui-side').animate({
+                left: '-200px'
+            }, 100);
+            $('.page-content').animate({
+                left: '0px'
+            }, 100);
+            $(this).hide();
+        });
+    });
+</script>
+
+<!--左侧树形目录折叠js-->
+<script type="text/javascript">
+    layui.use(['element', 'layer', 'jquery'], function () {
+        var element = layui.element;//Tab的切换功能，切换事件监听等，需要依赖element模块
+        var $ = layui.$;
+        // 配置tab实践在下面无法获取到菜单元素
+        $('.site-demo-active').on('click', function () {
+            var dataid = $(this);
+            //这时会判断右侧.layui-tab-title属性下的有lay-id属性的li的数目，即已经打开的tab项数目
+            /*<![CDATA[*/
+            if ($(".layui-tab-title li[lay-id]").length <= 0) {
+                //如果比零小，则直接打开新的tab项
+                active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+
+            }
+            else {
+                //否则判断该tab项是否以及存在
+                var isData = false; //初始化一个标志，为false说明未打开该tab项 为true则说明已有
+                $.each($(".layui-tab-title li[lay-id]"), function () {
+                    //如果点击左侧菜单栏所传入的id 在右侧tab项中的lay-id属性可以找到，则说明该tab项已经打开
+                    if ($(this).attr("lay-id") == dataid.attr("data-id")) {
+                        isData = true;
+                    }
+                })
+                if (isData == false) {
+                    //标志为false 新增一个tab项
+                    active.tabAdd(dataid.attr("data-url"), dataid.attr("data-id"), dataid.attr("data-title"));
+                }
+            }
+            /*]]>*/
+            //最后不管是否新增tab，最后都转到要打开的选项页面上
+            active.tabChange(dataid.attr("data-id"));
+        });
+        //触发事件
+        var active = {
+            //在这里给active绑定几项事件，后面可通过active调用这些事件
+            tabAdd: function (url, id, name) {
+                //新增一个Tab项 传入三个参数，分别对应其标题，tab页面的地址，还有一个规定的id，是标签中data-id的属性值
+                //关于tabAdd的方法所传入的参数可看layui的开发文档中基础方法部分
+                element.tabAdd('demo', {
+                    title: name,
+                    content: '<iframe data-frameid="' + id
+                    + '" scrolling="auto" frameborder="0" src="'
+                    + url
+                    + '" style="width:100%;height:99%;"></iframe>',
+                    id: id//规定好的id
+                })
+                FrameWH(); //计算ifram层的大小
+            },
+            tabChange: function (id) {
+                //切换到指定Tab项
+                element.tabChange('demo', id); //根据传入的id传入到指定的tab项
+            },
+            tabDelete: function (id) {
+                element.tabDelete("demo", id);//删除
+            }
+        };
+
+        function FrameWH() {
+            var h = $(window).height();
+            $("iframe").css("height", h + "px");
+        }
+    });
+</script>
 </body>
 </html>

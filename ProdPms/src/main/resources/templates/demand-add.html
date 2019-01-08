@@ -1,306 +1,306 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8" />
-<meta name="renderer" content="webkit" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport"
-	content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-<title>ProductMS</title>
-<link rel="stylesheet" type="text/css"
-	href="../static/src/css/layui.css" />
-<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
-<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
-<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>ProductMS</title>
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css"/>
+    <script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
 
-<style type="text/css">
-body {
-	padding: 20px;
-	padding-top: 12px;
-}
+    <style type="text/css">
+        body {
+            padding: 20px;
+            padding-top: 12px;
+        }
 
-#sele_file_btn {
-	position: absolute;
-margin: 0;
-		margin-top: -20px;
-		float:right;
-		margin-left:8px;
-}
+        #sele_file_btn {
+            position: absolute;
+            margin: 0;
+            margin-top: -20px;
+            float: right;
+            margin-left: 8px;
+        }
 
-#sele_file {
-	position: relative;
-	width: 75px;
-		opacity: 0;
-		cursor: pointer;
-		/*left: -10px;*/
-		margin: 0;
-		padding: 0;
-}
-</style>
+        #sele_file {
+            position: relative;
+            width: 75px;
+            opacity: 0;
+            cursor: pointer;
+            /*left: -10px;*/
+            margin: 0;
+            padding: 0;
+        }
+    </style>
 </head>
 <body>
-	<div class="wrap-container">
-		<form class="layui-form" enctype="multipart/form-data" method="post" action="" id="add_demand_form" name="form">
+<div class="wrap-container">
+    <form class="layui-form" enctype="multipart/form-data" method="post" action="" id="add_demand_form" name="form">
 
-			<div class="layui-form-item">
-	<label class="layui-form-label">需求编号：</label>
-				<div class="layui-input-block">
-					<input type="text" name="reqNo" id="addDemReqNo" readonly='' autocomplete="off" class="layui-input" style="background-color: #e0e0e0"/>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求编号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="reqNo" id="addDemReqNo" readonly='' autocomplete="off" class="layui-input"
+                       style="background-color: #e0e0e0"/>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">需求标题：</label>
-				<div class="layui-input-block">
-					<input type="text" name="reqName" id="title" lay-verify="title"
-						placeholder="请输入需求标题" autocomplete="off" class="layui-input" />
-				</div>
-			</div>
-			<div class="layui-form-item">
-				<label class="layui-form-label">需求来源：</label>
-				<div class="layui-input-block">
-					<select name="reqSource" id="reqSource" lay-verify="pass" lay-search="">
-					</select>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求标题：</label>
+            <div class="layui-input-block">
+                <input type="text" name="reqName" id="title" lay-verify="title"
+                       placeholder="请输入需求标题" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求来源：</label>
+            <div class="layui-input-block">
+                <select name="reqSource" id="reqSource" lay-verify="pass" lay-search="">
+                </select>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">提出部门：</label>
-				<div class="layui-input-block">
-					<select name="dept" id="dept" lay-verify="pass" lay-search="">
-					</select>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">提出部门：</label>
+            <div class="layui-input-block">
+                <select name="dept" id="dept" lay-verify="pass" lay-search="">
+                </select>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">受理状态：</label>
-				<div class="layui-input-block">
-					<select name="reqStatus" id="reqStatus" lay-verify="pass" lay-search="">
-					</select>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">受理状态：</label>
+            <div class="layui-input-block">
+                <select name="reqStatus" id="reqStatus" lay-verify="pass" lay-search="">
+                </select>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">实施方式：</label>
-				<div class="layui-input-block">
-					<select name="execType" id="execType" lay-verify="pass" lay-search="">
-					</select>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">实施方式：</label>
+            <div class="layui-input-block">
+                <select name="execType" id="execType" lay-verify="pass" lay-search="">
+                </select>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">牵头组：</label>
-				<div class="layui-input-block">
-					<select name="leadTeam" id="leadTeam" lay-verify="pass" lay-search="">
-					</select>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">牵头组：</label>
+            <div class="layui-input-block">
+                <select name="leadTeam" id="leadTeam" lay-verify="pass" lay-search="">
+                </select>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">受理人：</label>
-				<div class="layui-input-block">
-				<select name="nextUser" id="nextUser" lay-verify="pass" lay-search="">
-					</select>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">受理人：</label>
+            <div class="layui-input-block">
+                <select name="nextUser" id="nextUser" lay-verify="pass" lay-search="">
+                </select>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-				<label class="layui-form-label">配合组：</label >
-				<div class="layui-input-block">
-				<select name="cooTeam" id="cooTeam" lay-search="">
-					</select>
-				</div>
-			</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">配合组：</label>
+            <div class="layui-input-block">
+                <select name="cooTeam" id="cooTeam" lay-search="">
+                </select>
+            </div>
+        </div>
 
-			<div class="layui-form-item">
-			
-	<label class="layui-form-label">文件上传：</label>
-				<div class="layui-input-block" >
-					<div class="layui-upload">
-						<button type="button" class="layui-btn" id="seleFileList">选择多文件</button>
-						<div class="layui-upload-list">
-							<table class="layui-table"  lay-size="sm">
-								<thead>
-									<th>文件名</th>
-									<th>操作</th>
-								</thead>
-								<tbody id="fileList"></tbody>
-							</table>
-						</div>
+        <div class="layui-form-item">
+
+            <label class="layui-form-label">文件上传：</label>
+            <div class="layui-input-block">
+                <div class="layui-upload">
+                    <button type="button" class="layui-btn" id="seleFileList">选择多文件</button>
+                    <div class="layui-upload-list">
+                        <table class="layui-table" lay-size="sm">
+                            <thead>
+                            <th>文件名</th>
+                            <th>操作</th>
+                            </thead>
+                            <tbody id="fileList"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="layui-form-item" style="display:none">
+            <label class="layui-form-label">创建人：</label>
+            <div class="layui-input-block">
+                <input type="text" name="createUser" id="createUser" readonly='' autocomplete="off"
+                       class="layui-input"/>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="float: right">
+                <button type="button" class="layui-btn layui-btn-primary" id="close">关闭</button>
+                <button class="layui-btn" id="add_form_btn" lay-submit="" lay-filter="add_form_btn">立即提交</button>
+            </div>
+        </div>
+    </form>
 </div>
-				
-				</div>
-</div>
-				
-	<div class="layui-form-item" style="diaplay:none">
-				<label class="layui-form-label">创建人：</label>
-				<div class="layui-input-block">
-					<input type="text" name="createUser" id="createUser" readonly='' autocomplete="off" class="layui-input" />
-				</div>
-			</div>
 
-			<div class="layui-form-item">
-				<div class="layui-input-block" style="float: right">
-					<button type="button" class="layui-btn layui-btn-primary" id="close">关闭</button>
-					<button class="layui-btn" id="add_form_btn" lay-submit="" lay-filter="add_form_btn">立即提交</button>
-				</div>
-			</div>
-		</form>
-	</div>
-	
-	<!-- 判断是否为空 -->
-	<script type="text/javascript">
-		layui.use([ 'form', 'jquery' ], function() {
-			var form = layui.form;
-			var $ = layui.jquery;
-			form.verify({
-				title : function(value) {
-					var valuee = $('#title').val();
-					if (valuee.length == 0) {
-						return '请输入需求标题';
-					}
-				},
-				pass : function(value) {
-					if (value.length == 0) {
-						return '此项为必输项';
-					}
-				}
-			});
-			form.render();
- 
- //获取cookie中的用户名
-			showName('createUser','name');
-			//监听提交
-			form.on('submit(add_form_btn)', function(data) {
-				//layer.alert(JSON.stringify(data.field));
-				var formData = new FormData($("#add_demand_form")[0]);
-				console.info(formData);
-				$.ajax({
-					url : '/submitMultiUpload',
-					data : formData,
-					multiple : true,
-					type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
-					cache : false,
-					contentType : false,
-					processData : false,
-						dataType : 'json', //不选json获取不到返回数据的值
-					success : function(obj) {
-						//layer.close(index);//关闭   
-							if (obj.code==0) {
-							pubUtil.msg("新增成功", layer, 1, function() {
-								$("#close").click();
-							}, 500);
-						} else {
-							pubUtil.msg("新增失败", layer, 2, function() {
-								$("#close").click();
-							}, 5 * 1000);
-						}
-					}
-				});
-				return false;
-			});
-		})
-	</script>
-	
-
-	
-	<!-- 使用 upload 模块必须与 upload.render(options) 方法打交道，其中的 options即为基础参数，它是一个对象 -->
-		<script>
-        layui.use('upload', function () {
-            var $ = layui.jquery
-			var upload = layui.upload;
-
-            //多文件列表
-            var fileListView = $('#fileList');
-            var uploadListIns = upload.render({
-                elem: '#seleFileList'
-                // , url: ''
-                , accept: 'file'
-                , multiple: true
-                , number: 0
-                , auto: false
-                // , bindAction: '#testListAction'
-                , choose: function (obj) {
-                    var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
-
-                    //读取本地文件
-                    obj.preview(function (index, file, result) {
-                        var tr = $(['<tr id="upload-' + index + '">'
-                            , '<td>' + file.name + '</td>'
-                            // , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
-                            // , '<td>等待上传</td>'
-                            , '<td>'
-                            // , '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
-                            , '<button class="layui-btn layui-btn-sm layui-btn-danger demo-delete">删除</button>'
-                            , '</td>'
-                            , '</tr>'].join(''));
-
-                        //单个重传
-                        tr.find('.demo-reload').on('click', function () {
-                            obj.upload(index, file);
-                        });
-
-                        //删除
-                        tr.find('.demo-delete').on('click', function () {
-                            delete files[index]; //删除对应的文件
-                            tr.remove();
-                            uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
-                        });
-
-                        fileListView.append(tr);
-                    });
+<!-- 判断是否为空 -->
+<script type="text/javascript">
+    layui.use(['form', 'jquery'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        form.verify({
+            title: function (value) {
+                var valuee = $('#title').val();
+                if (valuee.length == 0) {
+                    return '请输入需求标题';
                 }
-                , done: function (res, index, upload) {
-                    if (res.code == 0) { //上传成功
-                        var tr = fileListView.find('tr#upload-' + index)
-                            , tds = tr.children();
-                        tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
-                        tds.eq(3).html(''); //清空操作
-                        delete this.files[index]; //删除文件队列已经上传成功的文件
-                        return;
+            },
+            pass: function (value) {
+                if (value.length == 0) {
+                    return '此项为必输项';
+                }
+            }
+        });
+        form.render();
+
+        //获取cookie中的用户名
+        showName('createUser', 'name');
+        //监听提交
+        form.on('submit(add_form_btn)', function (data) {
+            //layer.alert(JSON.stringify(data.field));
+            var formData = new FormData($("#add_demand_form")[0]);
+            console.info(formData);
+            $.ajax({
+                url: '/submitMultiUpload',
+                data: formData,
+                multiple: true,
+                type: 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                cache: false,
+                contentType: false,
+                processData: false,
+                dataType: 'json', //不选json获取不到返回数据的值
+                success: function (obj) {
+                    //layer.close(index);//关闭
+                    if (obj.code == 0) {
+                        pubUtil.msg("新增成功", layer, 1, function () {
+                            $("#close").click();
+                        }, 500);
+                    } else {
+                        pubUtil.msg("新增失败", layer, 2, function () {
+                            $("#close").click();
+                        }, 5 * 1000);
                     }
-                    // this.error(index, upload);
                 }
-                , allDone: function (obj) {
-                    console.log(obj)
-                }
-                // , error: function (index, upload) {
-                //     var tr = fileListView.find('tr#upload-' + index)
-                //         , tds = tr.children();
-                //     tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
-                //     tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
-                // }
             });
-
+            return false;
         });
-	</script>
+    })
+</script>
+
+
+<!-- 使用 upload 模块必须与 upload.render(options) 方法打交道，其中的 options即为基础参数，它是一个对象 -->
 <script>
-        layui.use(["jquery","form"],function () {
-            var form = layui.form;
-            var $ = layui.jquery;
+    layui.use('upload', function () {
+        var $ = layui.jquery
+        var upload = layui.upload;
 
-            //加载下拉菜单
-            // id 下拉框id
-            // selval 下拉框每个选项的value
-            // selname 下拉框每个value对应的内容
-            // value 选中的值
-            //function loadSelect(form,url,id,selval,selname,value)
-              
-			// 需求来源
-            loadSelect(form, '/listReqSource','reqSource','souceName','souceName');
-            // 提出部门
-            loadSelect(form, '/listDept','dept','dptName','dptName');
-            // 受理状态
-            loadSelect(form, '/getAllState','reqStatus','stateName','stateName');
-            // 实施方式
-            loadSelect(form, '/getAllExecType','execType','typeName','typeName');
-            // 受理人
-            loadSelect(form, '/getAllUser','nextUser','userName','userName');
-            // 牵头项目组
-            loadSelect(form, '/listProTeam','leadTeam','teamName','teamName');
-            // 配合项目组
-            loadSelect(form, '/listProTeam','cooTeam','teamName','teamName');
+        //多文件列表
+        var fileListView = $('#fileList');
+        var uploadListIns = upload.render({
+            elem: '#seleFileList'
+            // , url: ''
+            , accept: 'file'
+            , multiple: true
+            , number: 0
+            , auto: false
+            // , bindAction: '#testListAction'
+            , choose: function (obj) {
+                var files = this.files = obj.pushFile(); //将每次选择的文件追加到文件队列
+
+                //读取本地文件
+                obj.preview(function (index, file, result) {
+                    var tr = $(['<tr id="upload-' + index + '">'
+                        , '<td>' + file.name + '</td>'
+                        // , '<td>' + (file.size / 1014).toFixed(1) + 'kb</td>'
+                        // , '<td>等待上传</td>'
+                        , '<td>'
+                        // , '<button class="layui-btn layui-btn-mini demo-reload layui-hide">重传</button>'
+                        , '<button class="layui-btn layui-btn-sm layui-btn-danger demo-delete">删除</button>'
+                        , '</td>'
+                        , '</tr>'].join(''));
+
+                    //单个重传
+                    tr.find('.demo-reload').on('click', function () {
+                        obj.upload(index, file);
+                    });
+
+                    //删除
+                    tr.find('.demo-delete').on('click', function () {
+                        delete files[index]; //删除对应的文件
+                        tr.remove();
+                        uploadListIns.config.elem.next()[0].value = ''; //清空 input file 值，以免删除后出现同名文件不可选
+                    });
+
+                    fileListView.append(tr);
+                });
+            }
+            , done: function (res, index, upload) {
+                if (res.code == 0) { //上传成功
+                    var tr = fileListView.find('tr#upload-' + index)
+                        , tds = tr.children();
+                    tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
+                    tds.eq(3).html(''); //清空操作
+                    delete this.files[index]; //删除文件队列已经上传成功的文件
+                    return;
+                }
+                // this.error(index, upload);
+            }
+            , allDone: function (obj) {
+                console.log(obj)
+            }
+            // , error: function (index, upload) {
+            //     var tr = fileListView.find('tr#upload-' + index)
+            //         , tds = tr.children();
+            //     tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
+            //     tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
+            // }
         });
-	</script>
+
+    });
+</script>
+<script>
+    layui.use(["jquery", "form"], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+
+        //加载下拉菜单
+        // id 下拉框id
+        // selval 下拉框每个选项的value
+        // selname 下拉框每个value对应的内容
+        // value 选中的值
+        //function loadSelect(form,url,id,selval,selname,value)
+
+        // 需求来源
+        loadSelect(form, '/listReqSource', 'reqSource', 'souceName', 'souceName');
+        // 提出部门
+        loadSelect(form, '/listDept', 'dept', 'dptName', 'dptName');
+        // 受理状态
+        loadSelect(form, '/getAllState', 'reqStatus', 'stateName', 'stateName');
+        // 实施方式
+        loadSelect(form, '/getAllExecType', 'execType', 'typeName', 'typeName');
+        // 受理人
+        loadSelect(form, '/getAllUser', 'nextUser', 'userName', 'userName');
+        // 牵头项目组
+        loadSelect(form, '/listProTeam', 'leadTeam', 'teamName', 'teamName');
+        // 配合项目组
+        loadSelect(form, '/listProTeam', 'cooTeam', 'teamName', 'teamName');
+    });
+</script>
 </body>
 </html>

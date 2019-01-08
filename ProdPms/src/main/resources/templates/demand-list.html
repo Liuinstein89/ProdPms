@@ -1,356 +1,355 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport"
-	content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></meta>
-<title>需求列表</title>
-<link rel="stylesheet" href="../static/src/css/layui.css" />
+    <meta charset="utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"></meta>
+    <title>需求列表</title>
+    <link rel="stylesheet" href="../static/src/css/layui.css"/>
 
-<style>
-body {
-	padding: 5px 20px 20px 20px;
-}
+    <style>
+        body {
+            padding: 5px 20px 20px 20px;
+        }
 
-a {
-	color: #1874CD;
-}
+        a {
+            color: #1874CD;
+        }
 
-.layui-card {
-	box-shadow: 3px 3px 8px 3px rgba(50, 50, 50, 0.25);
-}
-</style>
+        .layui-card {
+            box-shadow: 3px 3px 8px 3px rgba(50, 50, 50, 0.25);
+        }
+    </style>
 </head>
 <body>
-	<script type="text/html" id="toolbarDemo">
-        <div class="layui-btn-container layui-inline ">
-            <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add"><i class="layui-icon">&#xe654;</i></button>
-            <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i></button>
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container layui-inline ">
+        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="add"><i class="layui-icon">&#xe654;</i>
+        </button>
+        <button class="layui-btn layui-btn-sm layui-btn-danger" lay-event="delete"><i class="layui-icon">&#xe640;</i>
+        </button>
+    </div>
+</script>
+
+<div class="layui-card" style=" border: 2px">
+    <div class="layui-card-header" style="height: 55px">
+        <div class="demoTable layui-inline" style="margin-top: 6px">
+            <div class="layui-inline">
+                <input type="text" class="layui-input" id="reqName"
+                       style="width: 300px" autocomplete="off" placeholder="请输入需求标题"/>
+            </div>
+            <button class="layui-btn search_btn" id="demand_search" data-type="reload"><i class="layui-icon">查询</i>
+            </button>
+            <button class="layui-btn layui-btn-xs layui-btn-primary"
+                    data-method="offset" data-type="t" id="hSearch" type="button"
+                    style="margin-left: 8px">高级查询
+            </button>
         </div>
-    </script>
+        <a style="float: right; margin-top: 8px;"
+           href="javascript:location.replace(location.href);" title="刷新"> <i
+                class="layui-icon" style="font-size: 30px">&#xe9aa;</i>
+        </a>
+    </div>
+    <div class="layui-card-body" style="margin-top: -15px">
+        <table class="layui-hide" id="demand_table" lay-filter="demand_table"></table>
 
-	<div class="layui-card" style=" border: 2px">
-		<div class="layui-card-header" style="height: 55px">
-			<div class="demoTable layui-inline" style="margin-top: 6px">
-				<div class="layui-inline">
-					<input type="text" class="layui-input" id="reqName"
-						style="width: 300px" autocomplete="off" placeholder="请输入需求标题" />
-				</div>
-				<button class="layui-btn search_btn" id="demand_search" data-type="reload"><i class="layui-icon">查询</i>
-				</button>
-				<button class="layui-btn layui-btn-xs layui-btn-primary"
-					data-method="offset" data-type="t" id="hSearch" type="button"
-					style="margin-left: 8px">高级查询</button>
-			</div>
-			<a style="float: right; margin-top: 8px;"
-				href="javascript:location.replace(location.href);" title="刷新"> <i
-				class="layui-icon" style="font-size: 30px">&#xe9aa;</i>
-			</a>
-		</div>
-		<div class="layui-card-body" style="margin-top: -15px">
-			<table class="layui-hide" id="demand_table" lay-filter="demand_table"></table>
+    </div>
+</div>
 
-		</div>
-	</div>
+<script type="text/html" id="barDemo">
+    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
+    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
+</script>
+
+<script type="text/html" id="reqnameTpl">
+    <a href="/admin/detail?reqNo={{ d.reqNo}}" class="layui-table-link">{{ d.reqName }}</a>
+</script>
 
 
+<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    layui.use(['jquery', 'table', 'form', 'layer'], function () {
+        var table = layui.table;
+        var $ = layui.jquery;
+        var form = layui.form;
+        layer = parent.layer === undefined ? layui.layer : top.layer;
 
+        var index = layer.load(1);
+        //渲染
+        var tableIns = table.render({
+            elem: '#demand_table'
+            , height: 435
+            , title: '需求主表'
+            , url: '/demand'
+            , page: true
+            //,loading: false
+            , totalRow: false
+            , limit: 10
+            , toolbar: '#toolbarDemo'
+            , id: 'testReload'
+            , done: function (res, curr, count) {
+                //加载后回调
+                layer.close(index);//关闭
+            }
+            , cols: [[
+                {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
+                , {field: 'reqNo', title: '需求编号', width: 140, fixed: 'left', unresize: true, sort: true, align: 'left'}
+                , {field: 'reqName', title: '开发需求', width: 250, fixed: 'left', unresize: true, templet: '#reqnameTpl'}
+                , {field: 'reqSource', title: '需求来源', width: 100}
+                , {field: 'dept', title: '提出部门', width: 100}
+                , {field: 'reqStatus', title: '当前受理状态', width: 120}
+                , {field: 'id', title: '需求id', width: 80, hide: true}
+                , {field: 'nextUser', title: '后续受理人', width: 120}
+                , {field: 'execType', title: '实施方式', width: 100}
+                , {field: 'leadTeam', title: '产品团队牵头项目组', width: 120}
+                , {field: 'cooTeam', title: '配合项目组', width: 150}
+                , {field: 'createDate', title: '创建日期', sort: true, width: 150}
+                , {fixed: 'right', title: '操作', toolbar: '#barDemo', align: 'center', width: 140}
+            ]]
+            , parseData: function (res) {
+                return {
+                    "code": res.code
+                    , "msg": res.msg
+                    , "count": res.data.total
+                    , "data": res.data.list
+                };
+            }
+        });
 
+        //工具栏事件
+        table.on('toolbar(demand_table)', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id);
+            var data = obj.data;
+            switch (obj.event) {
+                case 'add':
+                    layer.msg('添加');
+                    layer.open({
+                        type: 2,
+                        maxmin: true,
+                        skin: 'layui-layer-molv',
+                        title: '创建需求',
+                        area: ['600px', '570px'],
+                        content: '/admin/add',
+                        success: function (layero, lockIndex) {
+                            var body = layer.getChildFrame('body', lockIndex);
+                            //绑定解锁按钮的点击事件
+                            body.find('button#close').on('click', function () {
+                                layer.close(lockIndex);
+                                location.reload();
+                            });
+                            $.ajax({
+                                url: "/getReqNo",
+                                type: "GET",
+                                // dataType:"json",
+                                success: function (data) {
+                                    body.contents().find("#addDemReqNo").val(data);
+                                    return false;
 
-	<script type="text/html" id="barDemo">
-        <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-        <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-    </script>
-
-	<script type="text/html" id="reqnameTpl">
-        <a href="/admin/detail?reqNo={{ d.reqNo}}" class="layui-table-link" >{{ d.reqName }}</a>
-    </script>
-
-
-		<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../static/src/public.js"  type="text/javascript" charset="utf-8"></script>
-	<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-        layui.use(['jquery','table','form','layer'], function () {
-            var table = layui.table;
-            var $ = layui.jquery;
-            var form = layui.form;
-            layer = parent.layer === undefined ? layui.layer : top.layer;
-
-             var index = layer.load(1);
-            //渲染
-            var tableIns = table.render({
-                elem: '#demand_table'
-                , height: 435
-                , title: '需求主表'
-                , url:'/demand'
-                , page: true
-                //,loading: false
-                , totalRow: false
-                , limit: 10
-                , toolbar: '#toolbarDemo'
-                , id:'testReload'
-                , done: function (res, curr, count) {
-                        //加载后回调
-                        layer.close(index);//关闭
-                    }
-                , cols: [[
-                    {type: 'checkbox', LAY_CHECKED: false, fixed: 'left'}
-                    , {field: 'reqNo', title: '需求编号', width: 140, fixed: 'left', unresize: true, sort: true,align:'left'}
-                    , {field: 'reqName', title: '开发需求',width: 250,fixed: 'left', unresize: true,templet: '#reqnameTpl'}
-                    , {field: 'reqSource', title: '需求来源',  width: 100}
-                    , {field: 'dept', title: '提出部门', width: 100}
-                    , {field: 'reqStatus', title: '当前受理状态', width: 120}
-                    , {field: 'id', title: '需求id', width: 80,hide : true}
-                    , {field: 'nextUser', title: '后续受理人', width: 120}
-                    , {field: 'execType', title: '实施方式', width: 100}
-                    , {field: 'leadTeam', title: '产品团队牵头项目组',  width: 120}
-                    , {field: 'cooTeam', title: '配合项目组',  width: 150}
-                    , {field: 'createDate', title: '创建日期',sort: true,width: 150}
-                    , {fixed: 'right', title: '操作', toolbar: '#barDemo',align:'center',  width: 140}
-                ]]
-                ,parseData: function(res){
-                	return {
-                     "code": res.code
-                     ,"msg": res.msg
-                     ,"count": res.data.total
-                     ,"data": res.data.list
-                   };
-                 }
-            });
-            
-            //工具栏事件
-            table.on('toolbar(demand_table)', function (obj) {
-                var checkStatus = table.checkStatus(obj.config.id);
-                var data = obj.data;
-                switch (obj.event) {
-                    case 'add':
-                        layer.msg('添加');
-                        layer.open({
-                            type:2,
-                            maxmin: true,
-                            skin: 'layui-layer-molv',
-                            title:'创建需求',
-                            area:['600px', '570px'],
-                            content: '/admin/add',
-                            success: function (layero, lockIndex) {
-                                var body = layer.getChildFrame('body', lockIndex);
-                                //绑定解锁按钮的点击事件
-                                body.find('button#close').on('click', function () {
-                                    layer.close(lockIndex);
-location.reload();
-                                });
-                                $.ajax({
-                                    url: "/getReqNo",
-                                    type: "GET",
-                                    // dataType:"json",
-                                    success: function (data) {
-										body.contents().find("#addDemReqNo").val(data);
-										return false;
-
-                                    }
-                                });
+                                }
+                            });
+                        }
+                    });
+                    break;
+                case 'update':
+                    layer.msg('编辑');
+                    break;
+                case 'delete':
+                    layer.msg('批量删除');
+                    break;
+                case 'getCheckData':
+                    var data = checkStatus.data;
+                    layer.alert(JSON.stringify(data));
+                    break;
+            }
+        });
+        //监听高级搜索
+        $("#hSearch").on('click', function () {
+            layer.open({
+                type: 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                title: '需求搜索',
+                area: ['600px', '560px'],
+                content: '/admin/search',
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
+                    body.find('button#close').on('click', function () {
+                        layer.close(index);
+                    });
+                    body.find('button#btnSearch').on('click', function () {
+                        var searchform = pubUtil.serializeObject(body.find('#searchform'));//查询页面表单ID
+                        //alert(JSON.stringify(searchform));
+                        table.reload('testReload', {
+                            where: searchform,
+                            url: '/search',
+                            method: 'GET',
+                            parseData: function (res) {//没有success，这一块不对
+                                //alert(obj.code)
+                                if (res.code == '0') {
+                                    pubUtil.msg("正在搜索...", layer, 6, function () {
+                                        layer.close(index);
+                                    }, 1000);
+                                } else {
+                                    pubUtil.msg(res.msg, layer, 2, function () {
+                                    }, 5 * 100);
+                                }
+                                return {
+                                    "code": res.code
+                                    , "msg": res.msg
+                                    , "count": res.data.total
+                                    , "data": res.data.list
+                                };
                             }
                         });
-                        break;
-                    case 'update':
-                        layer.msg('编辑');
-                        break;
-                    case 'delete':
-                        layer.msg('批量删除');
-                        break;
-                    case 'getCheckData':
-                        var data = checkStatus.data;
-                        layer.alert(JSON.stringify(data));
-                        break;
-                }
-            });
-            //监听高级搜索
-            $("#hSearch").on('click',function(){
-               layer.open({
-                    type:2,
-                    maxmin: true,
-                    skin: 'layui-layer-molv',
-                    title:'需求搜索',
-                    area:['600px', '560px'], 
-                    content: '/admin/search',
-                    success: function (layero, index) {
-                        var body = layer.getChildFrame('body', index);
-                        body.find('button#close').on('click', function() {
-                            layer.close(index);
-                        });
-                        body.find('button#btnSearch').on('click', function () {
-                            var searchform = pubUtil.serializeObject( body.find('#searchform'));//查询页面表单ID
-                            //alert(JSON.stringify(searchform));
-                            table.reload('testReload', {
-                                where: searchform,
-                                url:'/search',
-                                method:'GET',
-                                parseData : function(res) {//没有success，这一块不对
-                                    //alert(obj.code)
-                                    if (res.code == '0') {
-                                        pubUtil.msg("正在搜索...", layer, 6, function() {
-                                        	layer.close(index);
-                                        }, 1000);
-                                    } else {
-                                        pubUtil.msg(res.msg, layer, 2, function() {
-                                        }, 5 * 100);
-                                    }
-                                    return{
-                                        "code": res.code
-                                        ,"msg": res.msg
-                                        ,"count": res.data.total
-                                        ,"data": res.data.list
- 								   };
-                                }
-                            });
-                        });
-                    }
-                });
-            });
-            //普通搜索
-            $("#demand_search").on("click",function(){
-                 index = layer.load(1);//开启进度条
-                var reqName = $('#reqName').val();
-                if(reqName != ''){
-                    table.reload("testReload",{
-                        where: {
-                        	reqName: reqName  //搜索的关键字
-                        },
-                        url:'/search',
-                        method:'GET',
-                    })
-                }else{
-                    location.reload();
-				}
-            });
-            
-            //监听表格行点击
-            table.on('tr', function (obj) {
-                console.log(obj)
-            });
-
-            //监听表格复选框选择
-            table.on('checkbox(demand_table)', function (obj) {
-                console.log(obj)
-            });
-
-            //监听表格单选框选择
-            table.on('radio(demand_table)', function (obj) {
-                console.log(obj)
-            });
-
-            //监听表格单选框选择
-            table.on('rowDouble(demand_table)', function (obj) {
-                console.log(obj);
-            });
-
-            //监听单元格编辑
-            table.on('edit(demand_table)', function (obj) {
-                var value = obj.value //得到修改后的值
-                    , data = obj.data //得到所在行所有键值
-                    , field = obj.field; //得到字段
-
-                console.log(obj)
-            });
-
-            //监听行工具事件
-            table.on('tool(demand_table)', function (obj) {
-                var data = obj.data;
-                if (obj.event === 'del') {
-var nowUserDel =getCookie('name');
-                    	layer.confirm('是否确定删除该条记录',{icon:3, title:'提示信息'}, function (index) {
-                            $.ajax({
-                                url: '/delReqById',
-                                data: {
-                                    id: data.id ,//将需要删除的Id作为参数传入
-	nowUser: nowUserDel,//当前操作人 空值？？？？
-                                },
-                                type: 'GET',
-                                dataType: 'json',
-                                success: function (data) {
-                                   // layer.close(loadindex);//关闭进程对话框
-                                    
-                                   if (data == "success") {
-                                        pubUtil.msg("删除成功", layer, 1, function () {
-                                            location.reload();//刷新
-                                        }, 1000);
-                                    } else {
-                                        pubUtil.msg("删除失败", layer, 2, function () {
-                                        }, 1000);
-                                    }
-                                }
-                            });
-                        });
-                }else if (obj.event === 'edit') {
-                    	editDemandList(data);
-                }
-            });
-        
-            function editDemandList(data){
-               parent.layer.open({
-                    title : "编辑需求",
-                    type : 2,
-                    maxmin: true,
-                    skin: 'layui-layer-molv',
-                    shadeClose: false,
-                    shade: 0.3,
-                    area: ['600px', '580px'],
-                    boolean: true,
-                    content:  ['/admin/edit?obj=' + encodeURIComponent(JSON.stringify(data)),'yes'],//跳转的页面
-                    success : function(layero, index){
-                        var body = layer.getChildFrame('body', index);
-                        body.find('button#close').on('click', function() {
-                            layer.close(index);
-                            location.reload();//刷新
-                        });
-                        pubUtil.load(body, data);//填充表单
-  //获取cookie中的用户名
-                        if(getCookie("name")!=null){
-                            // document.getElementById("userInfo").innerText = getCookie("name");
-                            body.find("#nowUser").val(getCookie("name"));
-                        }
-                    }
-                })
-            }
-
-            //监听排序
-            table.on('sort(demand_table)', function (obj) {
-                console.log(this, obj.field, obj.type)
-
-                return;
-                //服务端排序
-                table.reload('demand_table', {
-                    initSort: obj
-                    //,page: {curr: 1} //重新从第一页开始
-                    , where: { //重新请求服务端
-                        key: obj.field //排序字段
-                        , order: obj.type //排序方式
-                    }
-                });
-            });
-
-
-            var $ = layui.jquery, active = {
-                parseTable: function () {
-                    table.init('parse-table-demo', {
-                        limit: 3
                     });
                 }
-                , add: function () {
-                    table.addRow('demand_table')
-                }
-            };
-            $('i').on('click', function () {
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
-            });
-            $('.layui-btn').on('click', function () {
-                var type = $(this).data('type');
-                active[type] ? active[type].call(this) : '';
             });
         });
-    </script>
+        //普通搜索
+        $("#demand_search").on("click", function () {
+            index = layer.load(1);//开启进度条
+            var reqName = $('#reqName').val();
+            if (reqName != '') {
+                table.reload("testReload", {
+                    where: {
+                        reqName: reqName  //搜索的关键字
+                    },
+                    url: '/search',
+                    method: 'GET',
+                })
+            } else {
+                location.reload();
+            }
+        });
+
+        //监听表格行点击
+        table.on('tr', function (obj) {
+            console.log(obj)
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(demand_table)', function (obj) {
+            console.log(obj)
+        });
+
+        //监听表格单选框选择
+        table.on('radio(demand_table)', function (obj) {
+            console.log(obj)
+        });
+
+        //监听表格单选框选择
+        table.on('rowDouble(demand_table)', function (obj) {
+            console.log(obj);
+        });
+
+        //监听单元格编辑
+        table.on('edit(demand_table)', function (obj) {
+            var value = obj.value //得到修改后的值
+                , data = obj.data //得到所在行所有键值
+                , field = obj.field; //得到字段
+
+            console.log(obj)
+        });
+
+        //监听行工具事件
+        table.on('tool(demand_table)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'del') {
+                var nowUserDel = getCookie('name');
+                layer.confirm('是否确定删除该条记录', {icon: 3, title: '提示信息'}, function (index) {
+                    $.ajax({
+                        url: '/delReqById',
+                        data: {
+                            id: data.id,//将需要删除的Id作为参数传入
+                            nowUser: nowUserDel,//当前操作人 空值？？？？
+                        },
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function (data) {
+                            // layer.close(loadindex);//关闭进程对话框
+
+                            if (data == "success") {
+                                pubUtil.msg("删除成功", layer, 1, function () {
+                                    location.reload();//刷新
+                                }, 1000);
+                            } else {
+                                pubUtil.msg("删除失败", layer, 2, function () {
+                                }, 1000);
+                            }
+                        }
+                    });
+                });
+            } else if (obj.event === 'edit') {
+                editDemandList(data);
+            }
+        });
+
+        function editDemandList(data) {
+            parent.layer.open({
+                title: "编辑需求",
+                type: 2,
+                maxmin: true,
+                skin: 'layui-layer-molv',
+                shadeClose: false,
+                shade: 0.3,
+                area: ['600px', '580px'],
+                boolean: true,
+                content: ['/admin/edit?obj=' + encodeURIComponent(JSON.stringify(data)), 'yes'],//跳转的页面
+                success: function (layero, index) {
+                    var body = layer.getChildFrame('body', index);
+                    body.find('button#close').on('click', function () {
+                        layer.close(index);
+                        location.reload();//刷新
+                    });
+                    pubUtil.load(body, data);//填充表单
+                    //获取cookie中的用户名
+                    if (getCookie("name") != null) {
+                        // document.getElementById("userInfo").innerText = getCookie("name");
+                        body.find("#nowUser").val(getCookie("name"));
+                    }
+                }
+            })
+        }
+
+        //监听排序
+        table.on('sort(demand_table)', function (obj) {
+            console.log(this, obj.field, obj.type)
+
+            return;
+            //服务端排序
+            table.reload('demand_table', {
+                initSort: obj
+                //,page: {curr: 1} //重新从第一页开始
+                , where: { //重新请求服务端
+                    key: obj.field //排序字段
+                    , order: obj.type //排序方式
+                }
+            });
+        });
+
+
+        var $ = layui.jquery, active = {
+            parseTable: function () {
+                table.init('parse-table-demo', {
+                    limit: 3
+                });
+            }
+            , add: function () {
+                table.addRow('demand_table')
+            }
+        };
+        $('i').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+        $('.layui-btn').on('click', function () {
+            var type = $(this).data('type');
+            active[type] ? active[type].call(this) : '';
+        });
+    });
+</script>
 
 </body>
 </html>
