@@ -621,12 +621,11 @@
             elem: '#aduitRecord'
             , title: '审核记录表'
             , url: '/listReqAudit'
-            , page: {}
+            , page: false
             , where: {
                 "reqNo": reqNoid
             }
-            , totalRow: false
-            , limit: 10
+            // , totalRow: false
             , cols: [[
                 {field: 'auditTeam', title: '审核团队', fixed: 'left', unresize: true, align: 'center', width: 120}
                 , {field: 'result', title: '审核结果', width: 130, sort: true}
@@ -637,10 +636,10 @@
             ]]
             , parseData: function (res) {
                 return {
-                    "code": res.code
-                    , "msg": res.msg
-                    , "count": res.data.total
-                    , "data": res.data.list
+                    "code": 0
+                    // , "msg": res.msg
+                    // , "count": res.data.total
+                    , "data": res
                 };
             }
         });
