@@ -2,6 +2,7 @@ package com.ccb.ProdPms.mapper;
 
 import java.util.List;
 
+import com.ccb.ProdPms.dto.DmdAuditDto;
 import com.ccb.ProdPms.entity.FunctionEntity;
 
 public interface FuncMapper {
@@ -21,4 +22,6 @@ public interface FuncMapper {
 	void updateExcelFunc(FunctionEntity functionEntity2);
 
 	List<FunctionEntity> getReqItemFunc(Integer reqItemId);
+
+	List<DmdAuditDto> getReqAudit(String reqNo);
 }

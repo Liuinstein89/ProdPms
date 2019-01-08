@@ -49,7 +49,8 @@
 		from
 		func a LEFT
 		JOIN reqitem_func b on a.id = b.func_id
-		where a.is_deleted = 0 and b.reqitem_id = #{reqItemId,jdbcType=INTEGER}
+		where a.is_deleted = 0 and
+		b.reqitem_id = #{reqItemId,jdbcType=INTEGER}
 	</select>
 	<!-- 获取指定功能点数目 -->
 	<select id="findByName" parameterType="java.lang.String"
@@ -59,6 +60,16 @@
 		from func
 		where is_deleted = 0 and func_name =
 		#{funcName,jdbcType=VARCHAR}
+	</select>
+
+	<!-- 获取全部需求审核列表 -->
+	<select id="getReqAudit" parameterType="java.lang.String"
+		resultType="com.ccb.ProdPms.dto.DmdAuditDto">
+		select
+		ar.*,u.user_dep
+		from audit_result ar inner join user u
+		on ar.audit_person = u.user_name
+		where req_no = #{reqNo,jdbcType=VARCHAR}
 	</select>
 
 	<!-- 添加需求信息，参数的初始值在代码中做处理 -->

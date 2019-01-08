@@ -101,7 +101,8 @@
 		select
 		*
 		from upload_file
-		where is_deleted = 0 and id = #{id,jdbcType=INTEGER}
+		where is_deleted = 0 and id =
+		#{id,jdbcType=INTEGER}
 	</select>
 	<!-- 获取需求总数 -->
 	<select id="selectCount" resultType="java.lang.Integer">
@@ -277,12 +278,36 @@
 		(#{reqitemId,jdbcType=INTEGER},
 		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
 	</insert>
+
+	<!-- 插入需求的审核意见表 -->
+	<insert id="insertAudit"
+		parameterType="com.ccb.ProdPms.entity.AuditResultEntity">
+		insert into
+		audit_result
+		(req_no,result,audit_time,comment,audit_person,next_user,is_deleted)
+		values
+		(#{reqNo,jdbcType=VARCHAR},
+		#{result,jdbcType=VARCHAR},now(),#{comment,jdbcType=VARCHAR},#{auditPerson,jdbcType=VARCHAR},#{nextUser,jdbcType=VARCHAR},0)
+	</insert>
+
+	<!-- 根据审核结果，更新需求状态 -->
+	<update id="updateReqStatus" parameterType="java.lang.String">
+		update
+		req set
+		req_status = #{reqStatus,jdbcType=VARCHAR}
+		where
+		req_no =
+		#{reqNo,jdbcType=VARCHAR}
+		)
+	</update>
+
 	<!-- 循环插入需求项与功能点对应关系表，这里是一个多对多的关系联结表 ,一定要注意数据库字段与bean对应 -->
 	<update id="updateDmdItemFunc"
 		parameterType="com.ccb.ProdPms.entity.DmdItemFuncEntity">
 		update
 		reqitem_func set
-		func_id = #{funcId,jdbcType=INTEGER},
+		func_id =
+		#{funcId,jdbcType=INTEGER},
 		modi_date,
 		op_person,
 		is_deleted
@@ -316,7 +341,8 @@
 		parameterType="java.lang.Integer">
 		delete from reqitem_func
 		where
-		reqitem_id = #{Id,jdbcType=INTEGER}
+		reqitem_id =
+		#{Id,jdbcType=INTEGER}
 	</delete>
 	<!-- 假删除上传文件 -->
 	<update id="deleteUpById" parameterType="java.lang.Integer">
@@ -366,18 +392,18 @@
 		from req
 		where is_deleted = 0 and req_name
 		=
-		#{reqName,jdbcType=VARCHAR} 
+		#{reqName,jdbcType=VARCHAR}
 	</select>
 	<!-- 获取某需求全部需求项列表 -->
- 	<select id="findDupReq" resultType="java.lang.Integer"
- 		parameterType="java.lang.String">
- 		select
- 		count(*)
- 		from req
- 		where is_deleted = 0 and req_name
- 		!=
- 		#{reqName,jdbcType=VARCHAR} and req_no=#{reqNo,jdbcType=VARCHAR}
- 	</select>
+	<select id="findDupReq" resultType="java.lang.Integer"
+		parameterType="java.lang.String">
+		select
+		count(*)
+		from req
+		where is_deleted = 0 and req_name
+		!=
+		#{reqName,jdbcType=VARCHAR} and req_no=#{reqNo,jdbcType=VARCHAR}
+	</select>
 	<!-- 获取某需求全部需求项列表 -->
 	<select id="countRI" resultType="java.lang.Integer">
 		select
@@ -385,7 +411,9 @@
 		from req_item
 		where is_deleted = 0 and
 		req_no =
-		#{reqNo,jdbcType=VARCHAR} and req_item_name =
-		#{reqItemName,jdbcType=VARCHAR} and id != #{id,jdbcType=INTEGER}
+		#{reqNo,jdbcType=VARCHAR} and
+		req_item_name =
+		#{reqItemName,jdbcType=VARCHAR} and id !=
+		#{id,jdbcType=INTEGER}
 	</select>
 </mapper>

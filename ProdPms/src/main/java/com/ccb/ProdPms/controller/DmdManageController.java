@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ccb.ProdPms.dto.DmdAuditDto;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
@@ -447,15 +448,15 @@ public class DmdManageController {
 				cooTeam, nowUser, nextUser, modiDate);
 		// 修改需求主表项
 		try {
-			int count = dmdManageService.findDupReq(reqNo,reqName);
+			int count = dmdManageService.findDupReq(reqNo, reqName);
 			if (count != 0) {
- 				strSuc = "check list";
- 			} else {
- 				dmdManageService.updateReq(dmdManageEntity);
- 			}
+				strSuc = "check list";
+			} else {
+				dmdManageService.updateReq(dmdManageEntity);
+			}
 		} catch (Exception e) {
 			e.getMessage();
-			strSuc= "update req failed! ";
+			strSuc = "update req failed! ";
 		}
 		return JSONObject.toJSONString(strSuc);
 	}
@@ -500,7 +501,7 @@ public class DmdManageController {
 	public String updateReqItem(DmdItemFuncDto dmdItemFuncDto) {
 		try {
 			int count = dmdManageService.findSame(dmdItemFuncDto);
-			System.out.println("!!!!!!!!!"+count);
+			System.out.println("!!!!!!!!!" + count);
 			if (count != 0) {
 				strSuc = "already have same";
 			} else {
@@ -570,12 +571,12 @@ public class DmdManageController {
 		String reqNo = request.getParameter("reqNo");
 		String result = request.getParameter("result");
 		String comment = request.getParameter("comment");
-		String nowUser = request.getParameter("User");
+		String auditPerson = request.getParameter("User");
 		String nextUser = request.getParameter("nextUser");
-		AuditResultEntity auditResultEntity = new AuditResultEntity(reqNo, result, comment, nextUser);
+		AuditResultEntity auditResultEntity = new AuditResultEntity(reqNo, result, comment, nextUser,auditPerson);
 		// 新增需求主表项
 		try {
-			dmdManageService.auditSubmitAdd(auditResultEntity, nowUser);
+			dmdManageService.auditSubmitAdd(auditResultEntity);
 			map.put("code", 0);
 			map.put("msg", "success");
 		} catch (Exception e) {
@@ -584,6 +585,13 @@ public class DmdManageController {
 			map.put("msg", "error");
 		}
 		return JSONObject.toJSONString(map);
+	}
+
+	@GetMapping("/listReqAudit")
+	@ResponseBody
+	public List<DmdAuditDto> listReqAudit(@RequestParam(value = "reqNo") String reqNo) {
+		List<DmdAuditDto> list = dmdManageService.getReqAudit(reqNo);
+		return list;
 	}
 
 	// 获取参数几种常用的注解

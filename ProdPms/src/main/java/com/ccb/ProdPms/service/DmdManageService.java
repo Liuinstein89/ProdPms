@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ccb.ProdPms.dto.DmdAuditDto;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
@@ -39,7 +40,7 @@ public interface DmdManageService {
 
 	void deleteUploadById(Integer id);
 
-	void auditSubmitAdd(AuditResultEntity auditResultEntity, String nowUser);
+	void auditSubmitAdd(AuditResultEntity auditResultEntity);
 
 	List<FunctionEntity> getReqItemFunc(Integer reqItemId);
 
@@ -52,6 +53,8 @@ public interface DmdManageService {
 	int findSame(DmdItemFuncDto dmdItemFuncDto);
 
 	int findDupReq(String reqNo, String reqName);
+
+	List<DmdAuditDto> getReqAudit(String reqNo);
 
 	
 

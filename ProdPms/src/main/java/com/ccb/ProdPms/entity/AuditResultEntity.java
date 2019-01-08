@@ -13,11 +13,12 @@ public class AuditResultEntity implements Serializable {
 	private Date auditTime;
 	private int isDeleted;
 
-	public AuditResultEntity(String reqNo, String result, String comment, String nextUser) {
+	public AuditResultEntity(String reqNo, String result, String comment, String nextUser,String auditPerson) {
 		this.reqNo = reqNo;
 		this.result = result;
 		this.comment = comment;
 		this.nextUser = nextUser;
+		this.auditPerson = auditPerson;
 	}
 
 	public AuditResultEntity() {

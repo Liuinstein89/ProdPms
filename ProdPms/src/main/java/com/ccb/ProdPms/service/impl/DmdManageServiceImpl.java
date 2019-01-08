@@ -1,7 +1,6 @@
 package com.ccb.ProdPms.service.impl;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import com.ccb.ProdPms.dto.DmdAuditDto;
 import com.ccb.ProdPms.dto.DmdItemFuncDto;
 import com.ccb.ProdPms.entity.AuditResultEntity;
 import com.ccb.ProdPms.entity.DmdItemEntity;
@@ -19,11 +19,9 @@ import com.ccb.ProdPms.entity.DmdManageEntity;
 import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
 import com.ccb.ProdPms.entity.FunctionEntity;
 import com.ccb.ProdPms.entity.UploadFileEntity;
-import com.ccb.ProdPms.entity.UserEntity;
 import com.ccb.ProdPms.exception.ResourceNotFoundException;
 import com.ccb.ProdPms.mapper.DmdManageMapper;
 import com.ccb.ProdPms.mapper.FuncMapper;
-import com.ccb.ProdPms.mapper.UserMapper;
 import com.ccb.ProdPms.service.DmdManageService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -38,8 +36,8 @@ import lombok.extern.slf4j.Slf4j;
 public class DmdManageServiceImpl implements DmdManageService {
 	@Autowired
 	private DmdManageMapper dmdManageMapper;
-	@Autowired
-	private UserMapper userMapper;
+	/*@Autowired
+	private UserMapper userMapper;*/
 	@Autowired
 	private FuncMapper funcMapper;
 
@@ -110,7 +108,7 @@ public class DmdManageServiceImpl implements DmdManageService {
 	public String getReqNo() {
 		String reqNo = null;
 		try {
-			reqNo = String.valueOf(dmdManageMapper.getLastId()+1);
+			reqNo = String.valueOf(dmdManageMapper.getLastId() + 1);
 			if (StringUtils.isEmpty(reqNo))
 				return "0";
 		} catch (Exception e) {
@@ -203,50 +201,64 @@ public class DmdManageServiceImpl implements DmdManageService {
 	}
 
 	@Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.DEFAULT, readOnly = false)
-	public void auditSubmitAdd(AuditResultEntity auditResultEntity, String nowUser) {
-		String reqStatus = null;
-		String comment = null;
-		String result = null;
-		Date time = null;
+	public void auditSubmitAdd(AuditResultEntity auditResultEntity) {
+		String result = auditResultEntity.getResult();
+		String reqNo = auditResultEntity.getReqNo();
 		AuditResultEntity ar = new AuditResultEntity();
-		UserEntity user = userMapper.getByName(nowUser);
-		if ("".equals(user.getUserType()) || user.getUserType() == null) {
-			throw new ResourceNotFoundException("找不到该用户" + nowUser + "的类别");
-		}
-		if ("需求审核通过".equals(auditResultEntity.getResult())) {
-			if ("req".equals(user.getUserType())) {
-				reqStatus = "需求审核通过";
-				comment = auditResultEntity.getComment();
-				result = auditResultEntity.getResult();
-				time = auditResultEntity.getAuditTime();
-			} else if ("dev".equals(user.getUserType())) {
-				reqStatus = "同意开发";
-				comment = auditResultEntity.getComment();
-				result = auditResultEntity.getResult();
-				time = auditResultEntity.getAuditTime();
-			} else if ("design".equals(user.getUserType())) {
-				reqStatus = "设计审核通过";
-				comment = auditResultEntity.getComment();
-				result = auditResultEntity.getResult();
-				time = auditResultEntity.getAuditTime();
-			}
-			ar.setComment(comment);
-			ar.setAuditPerson(nowUser);
-			ar.setResult(result);
-			ar.setAuditTime(time);
-			ar.setReqNo(auditResultEntity.getReqNo());
-			ar.setNextUser(auditResultEntity.getNextUser());
-			try {
-				dmdManageMapper.insertAudit(ar);
-				dmdManageMapper.updateReqStatus(reqStatus);
-			} catch (Exception e) {
-				e.getMessage();
-			}
-		} else if ("不实施".equals(auditResultEntity.getResult())) {
+		ar.setComment(auditResultEntity.getComment());
+		ar.setAuditPerson(auditResultEntity.getAuditPerson());
+		ar.setResult(result);
+		ar.setReqNo(reqNo);
+		ar.setNextUser(auditResultEntity.getNextUser());
 
-		} else if ("变更".equals(auditResultEntity.getResult())) {
-
+		try {
+			dmdManageMapper.insertAudit(ar);
+			if ("需求变更".equals(result))
+				result = "已受理";
+			if ("设计变更".equals(result))
+				result = "需求审核通过";
+			if ("需求不实施".equals(result))
+				result = "关闭";
+			dmdManageMapper.updateReqStatus(result,reqNo);
+		} catch (Exception e) {
+			e.getMessage();
 		}
+		/*
+		 * UserEntity user = userMapper.getByName(nowUser); if
+		 * ("".equals(user.getUserType()) || user.getUserType() == null) { throw new
+		 * ResourceNotFoundException("找不到该用户" + nowUser + "的类别"); } if
+		 * ("需求审核通过".equals(auditResultEntity.getResult())) { if
+		 * ("req".equals(user.getUserType())) { reqStatus = "需求审核通过"; comment =
+		 * auditResultEntity.getComment(); result = auditResultEntity.getResult(); time
+		 * = auditResultEntity.getAuditTime(); } else if
+		 * ("dev".equals(user.getUserType())) { reqStatus = "同意开发"; comment =
+		 * auditResultEntity.getComment(); result = auditResultEntity.getResult(); time
+		 * = auditResultEntity.getAuditTime(); } else if
+		 * ("design".equals(user.getUserType())) { reqStatus = "设计审核通过"; comment =
+		 * auditResultEntity.getComment(); result = auditResultEntity.getResult(); time
+		 * = auditResultEntity.getAuditTime(); } ar.setComment(comment);
+		 * ar.setAuditPerson(nowUser); ar.setResult(result); ar.setAuditTime(time);
+		 * ar.setReqNo(auditResultEntity.getReqNo());
+		 * ar.setNextUser(auditResultEntity.getNextUser()); try {
+		 * dmdManageMapper.insertAudit(ar); dmdManageMapper.updateReqStatus(reqStatus);
+		 * } catch (Exception e) { e.getMessage(); } } else if
+		 * ("不实施".equals(auditResultEntity.getResult())) {
+		 * 
+		 * } else if ("变更".equals(auditResultEntity.getResult())) {
+		 * 
+		 * }
+		 */
+	}
+
+	@Override
+	public List<DmdAuditDto> getReqAudit(String reqNo) {
+		List<DmdAuditDto> reqAuditList = new ArrayList<DmdAuditDto>();
+		try {
+			reqAuditList = funcMapper.getReqAudit(reqNo);
+		} catch (Exception e) {
+			e.getMessage();
+		}
+		return reqAuditList;
 	}
 
 	@Override
@@ -318,13 +330,14 @@ public class DmdManageServiceImpl implements DmdManageService {
 		Long id = dmdItemFuncDto.getId();
 		String reqNo = dmdItemFuncDto.getReqNo();
 		String reqItemName = dmdItemFuncDto.getReqItemName();
-		int count = dmdManageMapper.countRI(id.intValue(),reqNo, reqItemName);
+		int count = dmdManageMapper.countRI(id.intValue(), reqNo, reqItemName);
 		return count;
 	}
-       
+
 	@Override
 	public int findDupReq(String reqNo, String reqName) {
-		int count = dmdManageMapper.findDupReq(reqNo,reqName);
- 		return count;
+		int count = dmdManageMapper.findDupReq(reqNo, reqName);
+		return count;
 	}
+
 }
