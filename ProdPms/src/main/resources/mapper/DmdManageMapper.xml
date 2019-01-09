@@ -298,7 +298,6 @@
 		where
 		req_no =
 		#{reqNo,jdbcType=VARCHAR}
-		)
 	</update>
 
 	<!-- 循环插入需求项与功能点对应关系表，这里是一个多对多的关系联结表 ,一定要注意数据库字段与bean对应 -->
@@ -308,13 +307,11 @@
 		reqitem_func set
 		func_id =
 		#{funcId,jdbcType=INTEGER},
-		modi_date,
-		op_person,
-		is_deleted
+		modi_date=now(),
+		op_person=#{opPerson,jdbcType=VARCHAR},
+		is_deleted=#{isDeleted,jdbcType=INTEGER}
 		where
 		reqitem_id = #{id,jdbcType=INTEGER}
-		(#{reqitemId,jdbcType=INTEGER},
-		#{funcId,jdbcType=INTEGER},now(),null,#{opPerson,jdbcType=VARCHAR},#{isDeleted,jdbcType=INTEGER})
 	</update>
 
 

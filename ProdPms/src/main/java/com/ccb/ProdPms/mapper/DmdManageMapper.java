@@ -94,7 +94,7 @@ public interface DmdManageMapper {
 
 	void deleteUpById(Integer id);
 
-	void updateReqStatus(String reqStatus, String reqNo);
+	void updateReqStatus(@Param("result") String result, @Param("reqNo")String reqNo);
 
 	void insertAudit(AuditResultEntity ar);
 
