@@ -200,7 +200,7 @@
                 success: function (obj) {
                     //layer.close(index);//关闭
                     // console.log("wjfbsjfbjaj:"+result)
-                    if (obj == "success") {
+                    if (obj.msg == "success") {
                         pubUtil.msg("审核提交成功", layer, 1, function () {
                             $("#close").click();
                             location.reload();
