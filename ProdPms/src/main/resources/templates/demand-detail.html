@@ -189,7 +189,7 @@
 
 <script type="text/javascript">
     layui.use(['laytpl', 'jquery'], function () {
-        var laytpl = layui.laytpl;
+        laytpl = layui.laytpl;
         var $ = layui.jquery;
         status = '';
         // reqNoid = "PR18113011185";
@@ -491,7 +491,6 @@
                     body.contents().find("#demandItemReqNo").val(reqNoid);
                 }
             })
-
         }
 
         //编辑需求项
@@ -608,6 +607,39 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('button#close').on('click', function () {
                         layer.close(index);
+                        var getTpl = detail_tpl.innerHTML;
+                        var view = document.getElementById('view');
+                        /*   laytpl(getTpl).render(data, function(html){
+                              view.innerHTML = html;
+                          }); */
+                        $.ajax({
+                            url: "/search",
+                            data: {
+                                "reqNo": reqNoid,
+                                "page": "1",
+                                "limit": "1"
+                            },
+                            type: "GET",
+                            dataType: "json",
+                            success: function (data) {
+                                if (!data == "success") {
+                                    alert(data.data);
+                                    return false;
+                                }
+                                laytpl(getTpl).render(data, function (html) {
+                                    view.innerHTML = html;
+                                });
+                                console.log(data.data.list[0].reqStatus)
+                                status = data.data.list[0].reqStatus;
+                                console.log("FHS:"+status);
+                            }
+                        });
+
+                        table.reload("auditRecordTable", {
+                            where: {
+                                reqNo: reqNoid, //搜索的关键字
+                            },
+                        });
                     });
                     body.contents().find("#auditReqNo").val(reqNoid);
                     body.contents().find("#curStatus").val(status);//注意执行顺序，如果放在success外面是接收不到的
@@ -621,6 +653,7 @@
             elem: '#aduitRecord'
             , title: '审核记录表'
             , url: '/listReqAudit'
+            , id: 'auditRecordTable'
             , page: false
             , where: {
                 "reqNo": reqNoid
