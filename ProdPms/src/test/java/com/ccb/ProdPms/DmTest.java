@@ -59,7 +59,8 @@ public class DmTest {
 		 * list); dmdManageController.addReqItem(dmdItemFuncDto);
 		 */
 		//System.out.println(onlinePlanMapper.countOp(6,"44", "plan3"));
-		System.out.println(dmdManageService.getReqAudit("5"));
+		System.out.println(dmdManageService.getReqAudit("2"));
+		System.out.println("@@@@@@@"+funcMapper.getReqAudit("2"));
 		// System.out.println(onlinePlanMapper.getByParams("a", null));
 	}
 

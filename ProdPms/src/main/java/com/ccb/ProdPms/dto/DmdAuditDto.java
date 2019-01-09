@@ -1,24 +1,23 @@
 package com.ccb.ProdPms.dto;
 
-import com.ccb.ProdPms.entity.AuditResultEntity;
+import java.util.Date;
 
-@SuppressWarnings("serial")
-public class DmdAuditDto extends AuditResultEntity {
+import lombok.Data;
 
-	private String userDept;
+@Data
+public class DmdAuditDto {
 
-	public String getUserDept() {
-		return userDept;
-	}
-
-	public void setUserDept(String userDept) {
-		this.userDept = userDept;
-	}
-
+	private String userDep,reqNo,result,comment,nextUser,auditPerson;
+	private Date auditTime;
 	public DmdAuditDto(String reqNo, String result, String comment, String nextUser, String auditPerson,
-			String userDept) {
-		super(reqNo, result, comment, nextUser, auditPerson);
-		this.userDept = userDept;
+			String userDep,Date auditTime) {
+		this.reqNo = reqNo;
+		this.userDep = userDep;
+		this.result = result;
+		this.comment = comment;
+		this.nextUser = nextUser;
+		this.auditPerson =auditPerson;
+		this.auditTime =auditTime;
 	}
 
 	public DmdAuditDto() {

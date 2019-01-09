@@ -294,7 +294,7 @@
 	<update id="updateReqStatus" parameterType="java.lang.String">
 		update
 		req set
-		req_status = #{reqStatus,jdbcType=VARCHAR}
+		req_status = #{result,jdbcType=VARCHAR}
 		where
 		req_no =
 		#{reqNo,jdbcType=VARCHAR}
