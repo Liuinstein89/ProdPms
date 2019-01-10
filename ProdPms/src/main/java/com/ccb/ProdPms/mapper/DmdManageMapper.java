@@ -103,7 +103,7 @@ public interface DmdManageMapper {
 
 	void updateDmdItem(DmdItemEntity itemEntity);
 
-	void updateDmdItemFunc(DmdItemFuncEntity dmdItemFuncEntity);
+	//void updateDmdItemFunc(DmdItemFuncEntity dmdItemFuncEntity);
 
 	void deleteItemFuncById(int id);
 
