@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="renderer" content="webkit" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>ProductMS</title>
     <link rel="stylesheet" type="text/css"
-          href="../static/src/css/layui.css" />
+          href="../static/src/css/layui.css"/>
     <script src="../static/src/layui.js" type="text/javascript"
             charset="utf-8"></script>
     <script src="../static/src/public.js" type="text/javascript"
@@ -28,85 +28,87 @@
         <div class="layui-form-item">
             <label class="layui-form-label">序号：</label>
             <div class="layui-input-block">
-                <input type="text" name="id" readonly="" placeholder="序号" autocomplete="off" class="layui-input" />
+                <input type="text" name="id" readonly="" placeholder="序号" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">用户名：</label>
             <div class="layui-input-block">
-                <input type="text" name="userName"  placeholder="用户名" autocomplete="off" class="layui-input" />
+                <input type="text" name="userName" placeholder="用户名" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">密码：</label>
             <div class="layui-input-block">
-                <input type="text" name="userPassword"  placeholder="密码" autocomplete="off" class="layui-input" />
+                <input type="text" name="userPassword" placeholder="密码" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">所在部门：</label>
             <div class="layui-input-block">
-                <input type="text" name="userDep" placeholder="所在部门" autocomplete="off" class="layui-input" />
+                <input type="text" name="userDep" placeholder="所在部门" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">邮箱：</label>
             <div class="layui-input-block">
-                <input type="text" name="email" placeholder="邮箱" autocomplete="off" class="layui-input" />
+                <input type="text" name="email" placeholder="邮箱" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">手机号码：</label>
             <div class="layui-input-block">
-                <input type="text" name="call" placeholder="手机号码" autocomplete="off" class="layui-input" />
+                <input type="text" name="call" placeholder="手机号码" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">性别：</label>
             <div class="layui-input-block">
-                <input type="text" name="sex"  placeholder="性别" autocomplete="off" class="layui-input" />
+                <input type="text" name="sex" placeholder="性别" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block" style="float: right">
                 <button type="button" class="layui-btn layui-btn-primary"
-                        id="close">取消</button>
+                        id="close">取消
+                </button>
                 <button class="layui-btn" id="edit_form_btn" lay-submit=""
-                        lay-filter="edit_form_btn">立即提交</button>
+                        lay-filter="edit_form_btn">立即提交
+                </button>
             </div>
         </div>
     </form>
 </div>
 <!-- 判断是否为空 -->
 <script>
-    layui.use([ 'form', 'jquery' ], function() {
+    layui.use(['form', 'jquery'], function () {
         var form = layui.form;
         var $ = layui.jquery;
         form.render();
         //监听提交
-        form.on('submit(edit_form_btn)', function(data) {
+        form.on('submit(edit_form_btn)', function (data) {
             layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : '/updateUser',
-                data : data.field,
-                type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                url: '/updateUser',
+                data: data.field,
+                type: 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
                 dataType: 'json',
-                success : function(obj) {
+                success: function (obj) {
                     // layer.close(index);//关闭
-                    if (obj=="success") {
-                        pubUtil.msg("编辑成功！", layer, 1, function() {
+                    if (obj == "success") {
+                        pubUtil.msg("编辑成功！", layer, 1, function () {
                             $("#close").click();
                             location.reload();
                         }, 1000);
                     } else {
-                        pubUtil.msg("编辑失败！", layer, 2, function() {
+                        pubUtil.msg("编辑失败！", layer, 2, function () {
                         }, 1000);
                     }
                 }

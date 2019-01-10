@@ -23,7 +23,7 @@
         <div class="layui-form-item" style="display: none">
             <label class="layui-form-label">当前受理状态</label>
             <div class="layui-input-block">
-                <input type="text" name="result" readonly="" id="curStatus"  autocomplete="off" class="layui-input"/>
+                <input type="text" name="result" readonly="" id="curStatus" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
@@ -32,12 +32,13 @@
             <div class="layui-input-block">
                 <select name="resultId" lay-verify="title" lay-filter="resultChange" class="form-control">
                     <option value=""></option>
-                    <option value="1"  id="s1">需求变更</option>
-                    <option value="2"  id="s2">需求审核通过</option>
-                    <option value="4"  id="s3">设计审核通过</option>
-                    <option value="5"  id="s4">设计变更</option>
-                    <option value="6"  id="s5">关闭</option>
-                    <option value="7"  id="s6">同意开发</option>
+                    <option value="1" id="s1">需求审核通过</option>
+                    <option value="2" id="s2">需求变更</option>
+                    <option value="3" id="s3">设计审核通过</option>
+                    <option value="4" id="s4">设计变更</option>
+                    <option value="5" id="s5">需求不实施</option>
+                    <option value="6" id="s6">同意开发</option>
+                    <option value="7" id="s7">关闭</option>
                 </select>
             </div>
         </div>
@@ -58,16 +59,17 @@
         </div>
 
         <!--<div class="layui-form-item">-->
-            <!--<label class="layui-form-label">审核意见</label>-->
-            <!--<div class="layui-input-block">-->
-                <!--<textarea name="textarea" id="text_audit" lay-verify="audit_advice" placeholder="请输入需求审核意见"></textarea>-->
-            <!--</div>-->
+        <!--<label class="layui-form-label">审核意见</label>-->
+        <!--<div class="layui-input-block">-->
+        <!--<textarea name="textarea" id="text_audit" lay-verify="audit_advice" placeholder="请输入需求审核意见"></textarea>-->
+        <!--</div>-->
         <!--</div>-->
 
         <div class="layui-form-item">
             <label class="layui-form-label">审核意见</label>
             <div class="layui-input-block">
-                <textarea name="comment"  lay-verify="required" class="layui-textarea" placeholder="请输入需求审核意见"></textarea>
+                <textarea name="comment" lay-verify="required" class="layui-textarea"
+                          placeholder="请输入需求审核意见"></textarea>
             </div>
         </div>
 
@@ -111,37 +113,37 @@
                 var value1 = $('#curStatus').val();
                 var value2 = $('#result').val();
 
-                console.log("wjfbsjfbjaj:"+value2)
+                console.log("wjfbsjfbjaj:" + value2)
                 // if (valuee.length != 0) {
                 //     return '请输入需求标题';
                 // }
 
-                if(value1 == '已受理'){
-                    if(!(value2 == '需求审核通过')){
+                if (value1 == '已受理') {
+                    if (!(value2 == '需求审核通过')) {
                         return "当前需求受理状态为“已受理”，请选择“需求审核通过”"
                     }
                 }
-                if(value1 == '需求审核通过'){
-                    if(!(value2 == '设计审核通过'||value2 == '关闭'||value2 == '需求变更')){
-                        return "当前需求受理状态为“需求审核通过”，请选择“设计审核通过”，“需求变更”或者“关闭”"
-                    }
-                }
-                if(value1 == '需求变更'){
-                    if(!(value2 == '需求变更'||value2 == '需求审核通过')){
-                        return "当前需求受理状态为 “需求变更”，请选择“需求审核通过”"
-                    }
-                }
-                if(value1 == '设计审核通过'){
-                    if(!(value2 == '同意开发'||value2 == '关闭'||value2 == '设计变更'||value2 == '需求变更')){
-                        return "当前需求受理状态为“设计审核通过”，请选择“同意开发”，“需求变更”，“设计变更”或者“关闭”"
-                    }
-                }
-                if(value1 == '设计变更'){
-                    if(!(value2 == '关闭'||value2 == '设计审核通过')){
-                        return "当前需求受理状态为“设计变更”，请选择“设计审核通过”"
+                if (value1 == '需求审核通过') {
+                    if (!(value2 == '设计审核通过' || value2 == '需求不实施' || value2 == '需求变更')) {
+                        return "当前需求受理状态为“需求审核通过”，请选择“设计审核通过”，“需求变更”或者“需求不实施”"
                     }
                 }
 
+                if (value1 == '设计审核通过') {
+                    if (!(value2 == '同意开发' || value2 == '需求不实施' || value2 == '设计变更' || value2 == '需求变更')) {
+                        return "当前需求受理状态为“设计审核通过”，请选择“同意开发”，“需求变更”，“设计变更”或者“需求不实施”"
+                    }
+                }
+                if (value1 == '同意开发') {
+                    if (!( value2 == '需求不实施')) {
+                        return "当前需求受理状态为“同意开发”，请选择“需求不实施”"
+                    }
+                }
+
+                if (value1 == '关闭') {
+                    return "当前需求受理状态为“关闭”，无法进行审核"
+
+                }
 
             }
         });
@@ -182,7 +184,7 @@
         // 下一位受理人
         loadSelect(form, '/getAllUser', 'nextUser', 'userName', 'userName');
 
-        form.on('select(resultChange)', function(data){
+        form.on('select(resultChange)', function (data) {
             // console.log("dsgasdgabsd:"+data)
 
             console.log(data.elem[data.elem.selectedIndex].text);
@@ -213,7 +215,7 @@
             });
             return false;
         });
-        console.log("wode:"+$("#auditReqNo").val())
+        console.log("wode:" + $("#auditReqNo").val())
     });
 
 

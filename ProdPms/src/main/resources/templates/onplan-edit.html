@@ -165,7 +165,7 @@
         });
 
         // 请求之前添加的功能点
-        namestr=[];
+        namestr = [];
         // $.ajax({
         //     url: "/",
         //     type: "GET",
@@ -189,31 +189,31 @@
             theme: 'molv',
             min: "1970-1-1",//设置min默认最小值
             max: "2099-12-31",
-            done:function(value,date,endate){
+            done: function (value, date, endate) {
                 console.log(value);
                 onplanDate = value;
-                if(value.length!=0){
+                if (value.length != 0) {
 
                     $("#onplan_date").css('background', '#f2f2f2');
-                    document.getElementById("onplan_date").disabled=true;
+                    document.getElementById("onplan_date").disabled = true;
 
-                    document.getElementById("funcId").disabled=false;
+                    document.getElementById("funcId").disabled = false;
                     // $("#onplan_date").css('background', '#fff')
                     //直接放在点击监听判断语句里就不生效？？？
-                    layui.formSelects.data('selectFunc','server',{
-                        url:"/listFunc"
-                        ,data:{
-                            page:1,
-                            limit:10000,
-                            onplanDate : value
+                    layui.formSelects.data('selectFunc', 'server', {
+                        url: "/listFunc"
+                        , data: {
+                            page: 1,
+                            limit: 10000,
+                            onplanDate: value
                         }
-                        ,keyVal:'id'
-                        ,keyName:'funcName'
-                        ,beforeSuccess: function(id, url, searchVal, result){
+                        , keyVal: 'id'
+                        , keyName: 'funcName'
+                        , beforeSuccess: function (id, url, searchVal, result) {
                             result = result.data.list;
                             return result;
                         }
-                        ,success: function(id, url, searchVal, result){      //使用远程方式的success回调
+                        , success: function (id, url, searchVal, result) {      //使用远程方式的success回调
 
                             formSelects.value(id, namestr);
                         },
@@ -223,7 +223,7 @@
         });
 
         // 监听下拉框的关闭
-        layui.formSelects.closed('selectFunc', function(id){
+        layui.formSelects.closed('selectFunc', function (id) {
             console.log(layui.formSelects.value('selectFunc', 'nameStr'));
             $('#funcItem').val(layui.formSelects.value('selectFunc', 'nameStr'));
         });

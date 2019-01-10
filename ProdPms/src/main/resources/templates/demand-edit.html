@@ -1,183 +1,185 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8"/>
-		<meta name="renderer" content="webkit"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
-		<title>ProductMS</title>
-		<link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
-		<style type="text/css">
-			body{
-				padding: 20px;
-				padding-left: 0px;
-				
-			}
-		</style>
-	</head>
-	<body>
-		<div class="wrap-container">
-			<form class="layui-form" style="width: 100%;" method = "post" action = "" name = "form">
-				
-				<div class="layui-form-item">
-					<label class="layui-form-label">需求编号：</label>
-					<div class="layui-input-block">
-							<input type="text" name="reqNo" id="edit_id" readonly="" autocomplete="off" class="layui-input" style="background-color: #f2f2f2"/>
-					</div>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>ProductMS</title>
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css"/>
+    <style type="text/css">
+        body {
+            padding: 20px;
+            padding-left: 0px;
 
-				</div>
+        }
+    </style>
+</head>
+<body>
+<div class="wrap-container">
+    <form class="layui-form" style="width: 100%;" method="post" action="" name="form">
 
-				<div class="layui-form-item">
-					<label class="layui-form-label">标题：</label>
-					<div class="layui-input-block">
-						<input type="text" name="reqName" id="edit_name"   autocomplete="off" class="layui-input"/>
-					</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求编号：</label>
+            <div class="layui-input-block">
+                <input type="text" name="reqNo" id="edit_id" readonly="" autocomplete="off" class="layui-input"
+                       style="background-color: #f2f2f2"/>
+            </div>
 
-				</div>
+        </div>
 
-				<div class="layui-form-item">
-					<label class="layui-form-label">需求来源：</label>
-					<div class="layui-input-block">
-						<select name="reqSource" id="reqSource" lay-verify="pass" lay-search="">
-						</select>				
-	</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">标题：</label>
+            <div class="layui-input-block">
+                <input type="text" name="reqName" id="edit_name" autocomplete="off" class="layui-input"/>
+            </div>
 
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">提出部门：</label>
-					<div class="layui-input-block">
-						<select name="dept" id="dept" lay-verify="pass" lay-search="">
-						</select>
-					</div>
+        </div>
 
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">受理状态：</label>
-					<div class="layui-input-block">
-					<select name="reqStatus" id="reqStatus" lay-verify="pass" lay-search="">
-						</select>
-					</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">需求来源：</label>
+            <div class="layui-input-block">
+                <select name="reqSource" id="reqSource" lay-verify="pass" lay-search="">
+                </select>
+            </div>
 
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">实施方式：</label>
-					<div class="layui-input-block">
-							<select name="execType" id="execType" lay-verify="pass" lay-search="">
-						</select>
-					</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">提出部门：</label>
+            <div class="layui-input-block">
+                <select name="dept" id="dept" lay-verify="pass" lay-search="">
+                </select>
+            </div>
 
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">受理人：</label>
-					<div class="layui-input-block">
-						<select name="nextUser" id="nextUser" lay-verify="pass" lay-search="">
-						</select>
-					</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">受理状态：</label>
+            <div class="layui-input-block">
+                <select name="reqStatus" id="reqStatus" lay-verify="pass" lay-search="">
+                </select>
+            </div>
 
-				</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">实施方式：</label>
+            <div class="layui-input-block">
+                <select name="execType" id="execType" lay-verify="pass" lay-search="">
+                </select>
+            </div>
 
-				<div class="layui-form-item">
-					<label class="layui-form-label">牵头组：</label>
-					<div class="layui-input-block">
-							<select name="leadTeam" id="leadTeam" lay-verify="pass" lay-search="">
-						</select>
-					</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">受理人：</label>
+            <div class="layui-input-block">
+                <select name="nextUser" id="nextUser" lay-verify="pass" lay-search="">
+                </select>
+            </div>
 
-				</div>
-				<div class="layui-form-item">
-					<label class="layui-form-label">配合组：</label>
-					<div class="layui-input-block">
-						<select name="cooTeam" id="cooTeam" lay-search="">
-						</select>
-	</div>
-			</div>
+        </div>
 
-			<div class="layui-form-item" style="display: none">
-				<label class="layui-form-label">修改人：</label>
-				<div class="layui-input-block">
-					<input type="text" name="nowUser" id="nowUser" autocomplete="off" class="layui-input" />
-					</div>
-				</div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">牵头组：</label>
+            <div class="layui-input-block">
+                <select name="leadTeam" id="leadTeam" lay-verify="pass" lay-search="">
+                </select>
+            </div>
 
-				<div class="layui-form-item">
-						<div class="layui-input-block" style="float: right">
-						<button type="button" class="layui-btn layui-btn-primary" id="close">关闭</button>
-						<button class="layui-btn" id="edit_form_btn" lay-submit="" lay-filter="edit_form_btn">立即提交</button>
-					</div>
-				</div>
-			</form>
-		</div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">配合组：</label>
+            <div class="layui-input-block">
+                <select name="cooTeam" id="cooTeam" lay-search="">
+                </select>
+            </div>
+        </div>
 
-		<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
-	<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
-		<script type="text/javascript">
-			//Demo
-			layui.use(['form', 'jquery'], function() {
-				var form = layui.form;
-				var $ = layui.jquery;
-				form.render();
-				//监听提交
-				form.on('submit(edit_form_btn)', function(data) {
-                    $.ajax({
-                        url : '/updateReq',
-                        data : data.field,
-                        type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
-                        dataType : 'json',
-                        success : function(obj) {
-                            //layer.close(index);//关闭
-                            if (obj=="success") {
-                                pubUtil.msg("编辑成功", layer, 1, function() {
-                                    $("#close").click();
-                                    location.reload();
-                                }, 1000);
-                            } else {
-                                pubUtil.msg("编辑失败", layer, 2, function() {
-                                }, 1000);
-                            }
-                        }
-                    });
-					return false;
-				});
-			});
+        <div class="layui-form-item" style="display: none">
+            <label class="layui-form-label">修改人：</label>
+            <div class="layui-input-block">
+                <input type="text" name="nowUser" id="nowUser" autocomplete="off" class="layui-input"/>
+            </div>
+        </div>
 
-		</script>
-		<script>
-layui.use(["jquery","form"],function () {
-			var form = layui.form;
-			var $ = layui.jquery;
-			//获取data
-			var redata =JSON.parse(decodeURIComponent(getRequestParam().obj));
-			// var redata =decodeURIComponent(getRequestParam().obj);
-			// console.log(redata);
-			// console.log(redata.reqSource);
-			// alert(redata.reqSource);
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="float: right">
+                <button type="button" class="layui-btn layui-btn-primary" id="close">关闭</button>
+                <button class="layui-btn" id="edit_form_btn" lay-submit="" lay-filter="edit_form_btn">立即提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
+<script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    //Demo
+    layui.use(['form', 'jquery'], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        form.render();
+        //监听提交
+        form.on('submit(edit_form_btn)', function (data) {
+            $.ajax({
+                url: '/updateReq',
+                data: data.field,
+                type: 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                dataType: 'json',
+                success: function (obj) {
+                    //layer.close(index);//关闭
+                    if (obj == "success") {
+                        pubUtil.msg("编辑成功", layer, 1, function () {
+                            $("#close").click();
+                            location.reload();
+                        }, 1000);
+                    } else {
+                        pubUtil.msg("编辑失败", layer, 2, function () {
+                        }, 1000);
+                    }
+                }
+            });
+            return false;
+        });
+    });
+
+</script>
+<script>
+    layui.use(["jquery", "form"], function () {
+        var form = layui.form;
+        var $ = layui.jquery;
+        //获取data
+        var redata = JSON.parse(decodeURIComponent(getRequestParam().obj));
+        // var redata =decodeURIComponent(getRequestParam().obj);
+        // console.log(redata);
+        // console.log(redata.reqSource);
+        // alert(redata.reqSource);
 
 //加载下拉菜单
-                // id 下拉框id
-                // selval 下拉框每个选项的value
-                // selname 下拉框每个value对应的内容
-                // value 选中的值
-                //function loadSelect(form,url,id,selval,selname,value)
-                  
-  // 需求来源
-                loadSelect(form, '/listReqSource','reqSource','souceName','souceName',redata.reqSource);
-                // 提出部门
-                loadSelect(form, '/listDept','dept','dptName','dptName',redata.dept);
-                // 受理状态
-                loadSelect(form, '/getAllState','reqStatus','stateName','stateName',redata.reqStatus);
-                // 实施方式
-                loadSelect(form, '/getAllExecType','execType','typeName','typeName',redata.execType);
-                // 受理人
-                loadSelect(form, '/getAllUser','nextUser','userName','userName',redata.nextUser);
-                // 牵头项目组
-                loadSelect(form, '/listProTeam','leadTeam','teamName','teamName',redata.leadTeam);
-                // 配合项目组
-                loadSelect(form, '/listProTeam','cooTeam','teamName','teamName',redata.cooTeam);
+        // id 下拉框id
+        // selval 下拉框每个选项的value
+        // selname 下拉框每个value对应的内容
+        // value 选中的值
+        //function loadSelect(form,url,id,selval,selname,value)
+
+        // 需求来源
+        loadSelect(form, '/listReqSource', 'reqSource', 'souceName', 'souceName', redata.reqSource);
+        // 提出部门
+        loadSelect(form, '/listDept', 'dept', 'dptName', 'dptName', redata.dept);
+        // 受理状态
+        loadSelect(form, '/getAllState', 'reqStatus', 'stateName', 'stateName', redata.reqStatus);
+        // 实施方式
+        loadSelect(form, '/getAllExecType', 'execType', 'typeName', 'typeName', redata.execType);
+        // 受理人
+        loadSelect(form, '/getAllUser', 'nextUser', 'userName', 'userName', redata.nextUser);
+        // 牵头项目组
+        loadSelect(form, '/listProTeam', 'leadTeam', 'teamName', 'teamName', redata.leadTeam);
+        // 配合项目组
+        loadSelect(form, '/listProTeam', 'cooTeam', 'teamName', 'teamName', redata.cooTeam);
 
 
-            });
-		</script>
-	</body>
+    });
+</script>
+</body>
 
 </html>

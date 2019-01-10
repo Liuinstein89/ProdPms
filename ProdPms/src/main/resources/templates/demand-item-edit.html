@@ -122,7 +122,7 @@
             var laydate = layui.laydate;
             form.render();
 
-             redata = JSON.parse(decodeURIComponent(getRequestParam().obj));
+            redata = JSON.parse(decodeURIComponent(getRequestParam().obj));
             // console.log(redata);
             // console.log(redata.funcId);
 
@@ -150,17 +150,17 @@
                 return false;
             });
 
-            namestr=[];
+            namestr = [];
             $.ajax({
                 url: "/listReqRalateFunc",
                 type: "GET",
-                data:{
-                    id:redata.id, page:1, limit:10000
+                data: {
+                    id: redata.id, page: 1, limit: 10000
                 },
-                dataType:"json",
+                dataType: "json",
                 success: function (resData) {
                     /*<![CDATA[*/
-                    for(var i =0;i<resData.data.total;i++){
+                    for (var i = 0; i < resData.data.total; i++) {
                         namestr.push(resData.data.list[i].id);
                     }
                     /*]]>*/
@@ -183,7 +183,7 @@
                     result = result.data.list;
                     return result;  //必须return一个结果, 这个结果要符合对应的数据结构
                 },
-                success: function(id, url, searchVal, result){      //使用远程方式的success回调
+                success: function (id, url, searchVal, result) {      //使用远程方式的success回调
                     // console.log(namestr);
                     formSelects.value(id, namestr);
                 },

@@ -8,9 +8,8 @@ body{
 	background-size: cover;
 }
 .inset{
-	margin-top: 12%;
-	margin-left:40%;
-	width:350px;
+	margin: 10% auto ;
+	width:400px;
 	border-radius:20px;
 
 }
@@ -26,6 +25,7 @@ body{
 	font-family: 'Droid Sans', sans-serif;
 	text-align: center;
 	margin: 0 20px;
+	line-height: 50px;
 }
 form {
 	padding: 3em 2em;
@@ -45,7 +45,7 @@ form li{
 .username {
 	font-family: 'Droid Sans', sans-serif;
 	width:70%;
-	padding: 0.5em 2em 0.5em 1em;
+	padding: 0.5em 3em 0.5em 1em;
 	font-size:20px;
 	outline: none;
 	border:none;
@@ -55,7 +55,7 @@ form li{
 .password {
 	font-family: 'Droid Sans', sans-serif;
 	width:70%;
-	padding: 0.5em 2em 0.5em 1em;
+	padding: 0.5em 3em 0.5em 1em;
 	font-size:20px;
 	outline: none;
 	border:0;

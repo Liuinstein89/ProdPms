@@ -69,7 +69,7 @@
                         <a class="layui-btn layui-btn-fluid" id="dem_audit_btn" style="border-radius: 5px;">
                             <i class="layui-icon">进入需求审查</i>
                         </a>
-                        <a class="layui-btn layui-btn-fluid" id="dem_audit_text"  onclick="javascript:goBottom();"
+                        <a class="layui-btn layui-btn-fluid" id="dem_audit_text" onclick="javascript:goBottom();"
                            style="border-radius: 5px;margin-left: 0;margin-top: 10px"><i class="layui-icon">查看审查记录</i>
                         </a>
                     </div>
@@ -213,6 +213,7 @@
             }
             return value;
         }
+
         // console.log(location.href);
         /*]]>*/
         var getTpl = detail_tpl.innerHTML;
@@ -239,7 +240,7 @@
                 });
                 console.log(data.data.list[0].reqStatus)
                 status = data.data.list[0].reqStatus;
-                console.log("FHS:"+status);
+                console.log("FHS:" + status);
             }
         });
     });
@@ -631,7 +632,7 @@
                                 });
                                 console.log(data.data.list[0].reqStatus)
                                 status = data.data.list[0].reqStatus;
-                                console.log("FHS:"+status);
+                                console.log("FHS:" + status);
                             }
                         });
 
@@ -693,8 +694,9 @@
     function goAuditDiv() {
         window.location.hash = "#aduitRecord";
     }
+
     function goBottom() {
-        window.scrollTo(0, document.documentElement.scrollHeight-document.documentElement.clientHeight);
+        window.scrollTo(0, document.documentElement.scrollHeight - document.documentElement.clientHeight);
     }
 </script>
 </body>

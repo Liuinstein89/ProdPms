@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="renderer" content="webkit" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>增加上线计划</title>
-    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
-    <link rel="stylesheet" type="text/css" href="../static/css/formSelects-v4.css" />
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/formSelects-v4.css"/>
     <script src="../static/src/layui.all.js" type="text/javascript" charset="utf-8"></script>
     <script src="../static/src/public.js" type="text/javascript" charset="utf-8"></script>
     <script src="../static/js/common.js" type="text/javascript" charset="utf-8"></script>
@@ -21,7 +22,7 @@
 </head>
 <body>
 <div class="wrap-container">
-    <form name="form" class="layui-form"  method="post" action="" id="add_onplan_form">
+    <form name="form" class="layui-form" method="post" action="" id="add_onplan_form">
 
         <!--看着是标题，传的实际是reqNo-->
         <div class="layui-form-item">
@@ -35,14 +36,15 @@
         <div class="layui-form-item" style="display: none;">
             <label class="layui-form-label">需求标题：</label>
             <div class="layui-input-block">
-                <input type="text" name="reqName" id="reqName" autocomplete="off" class="layui-input" />
+                <input type="text" name="reqName" id="reqName" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">上线时间：</label>
             <div class="layui-input-block">
-                <input type="text" id="onplan_date"  placeholder="选择完上线时间后才能选择功能点"  name="onlineDatetime" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="onplan_date" placeholder="选择完上线时间后才能选择功能点" name="onlineDatetime"
+                       autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
@@ -50,7 +52,7 @@
             <label class="layui-form-label">功能点：</label>
             <div class="layui-input-block">
                 <select name="funcId" id="funcId" xm-select="selectFunc" disabled="" xm-select-show-count="4"
-                        xm-select-height="36px" >
+                        xm-select-height="36px">
                 </select>
             </div>
         </div>
@@ -58,7 +60,7 @@
         <div class="layui-form-item" style="display:none">
             <label class="layui-form-label">功能点名称:</label>
             <div class="layui-input-block">
-                <input type="text" name="funcItem" id="funcItem" autocomplete="off" class="layui-input" />
+                <input type="text" name="funcItem" id="funcItem" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
@@ -80,7 +82,7 @@
             <label class="layui-form-label">计划名称：</label>
             <div class="layui-input-block">
                 <input type="text" name="onlinePlanName" lay-verify="title"
-                       placeholder="请输入计划名称" autocomplete="off" class="layui-input" />
+                       placeholder="请输入计划名称" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
@@ -88,7 +90,7 @@
             <label class="layui-form-label">计划描述：</label>
             <div class="layui-input-block">
                 <input type="text" id="onlinePlanDesc" name="onlinePlanDesc" lay-verify="title"
-                       placeholder="请输入计划描述" autocomplete="off" class="layui-input" />
+                       placeholder="请输入计划描述" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
@@ -109,7 +111,7 @@
         <div class="layui-form-item" style="display:none">
             <label class="layui-form-label">创建人：</label>
             <div class="layui-input-block">
-                <input type="text" name="opPerson" id="opPerson" readonly='' autocomplete="off" class="layui-input" />
+                <input type="text" name="opPerson" id="opPerson" readonly='' autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
@@ -124,12 +126,12 @@
 
 <!-- 判断是否为空 -->
 <script>
-    layui.use([ 'form', 'jquery','laydate'], function() {
+    layui.use(['form', 'jquery', 'laydate'], function () {
         var form = layui.form;
         var $ = layui.jquery;
         var laydate = layui.laydate;
         form.verify({
-            pass : function(value) {
+            pass: function (value) {
                 if (value.length == 0) {
                     return '此项为必输项';
                 }
@@ -138,10 +140,10 @@
         form.render();
 
         //获取cookie中的用户名
-        showName('opPerson','name');
+        showName('opPerson', 'name');
 
         // 需求编号
-        loadSelect(form, '/demand','reqNo','reqNo','reqName');
+        loadSelect(form, '/demand', 'reqNo', 'reqNo', 'reqName');
 
         // 监听需求选择改变 layui常规方法不生效
         // $("#reqNo").change(function() {
@@ -149,7 +151,7 @@
         //     console.log(selectText);
         // });
 
-        form.on('select(reqNoChange)', function(data){
+        form.on('select(reqNoChange)', function (data) {
             console.log(data.elem[data.elem.selectedIndex].text);
             var reqNameSelected = data.elem[data.elem.selectedIndex].text;
             $('#reqName').val(reqNameSelected);
@@ -158,21 +160,21 @@
         // var options=$("#reqNo option:selected");//获取当前选择项.
         // console.log(options.text());
         //监听提交
-        form.on('submit(add_form_btn)', function(data) {
+        form.on('submit(add_form_btn)', function (data) {
             // layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : '/addOnlinePlan',
-                data : data.field,
-                type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
-                dataType : 'json',
-                success : function(obj) {
+                url: '/addOnlinePlan',
+                data: data.field,
+                type: 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                dataType: 'json',
+                success: function (obj) {
 
-                    if (obj=='success') {
-                        pubUtil.msg("新增成功", layer, 1, function() {
+                    if (obj == 'success') {
+                        pubUtil.msg("新增成功", layer, 1, function () {
                             $("#close").click();
                         }, 1000);
                     } else {
-                        pubUtil.msg("新增失败", layer, 2, function() {
+                        pubUtil.msg("新增失败", layer, 2, function () {
 
                         }, 1000);
                     }
@@ -181,32 +183,32 @@
             return false;
         });
         // 上线时间选择
-        var onplanDate= laydate.render({
+        var onplanDate = laydate.render({
             elem: '#onplan_date',//选择器结束时间
             theme: 'molv',
-            min:"1970-1-1",//设置min默认最小值
-            max:"2099-12-31",
-            done:function(value,date,endate){
+            min: "1970-1-1",//设置min默认最小值
+            max: "2099-12-31",
+            done: function (value, date, endate) {
                 console.log(value);
                 onplanDate = value;
-                if(value.length!=0){
+                if (value.length != 0) {
 
                     $("#onplan_date").css('background', '#f2f2f2');
-                    document.getElementById("onplan_date").disabled=true;
+                    document.getElementById("onplan_date").disabled = true;
 
-                    document.getElementById("funcId").disabled=false;
+                    document.getElementById("funcId").disabled = false;
                     // $("#onplan_date").css('background', '#fff')
                     //直接放在点击监听判断语句里就不生效？？？
-                    layui.formSelects.data('selectFunc','server',{
-                        url:"/listFunc"
-                        ,data:{
-                            page:1,
-                            limit:10000,
-                            onplanDate : value
+                    layui.formSelects.data('selectFunc', 'server', {
+                        url: "/listFunc"
+                        , data: {
+                            page: 1,
+                            limit: 10000,
+                            onplanDate: value
                         }
-                        ,keyVal:'id'
-                        ,keyName:'funcName'
-                        ,beforeSuccess: function(id, url, searchVal, result){
+                        , keyVal: 'id'
+                        , keyName: 'funcName'
+                        , beforeSuccess: function (id, url, searchVal, result) {
                             result = result.data.list;
                             return result;
                         }
@@ -216,7 +218,7 @@
         });
 
         //监听下拉框的关闭
-        layui.formSelects.closed('selectFunc', function(id){
+        layui.formSelects.closed('selectFunc', function (id) {
             console.log(layui.formSelects.value('selectFunc', 'nameStr'));
             $('#funcItem').val(layui.formSelects.value('selectFunc', 'nameStr'));
         });
