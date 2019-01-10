@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <meta name="renderer" content="webkit" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta charset="UTF-8"/>
+    <meta name="renderer" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <meta name="viewport"
-          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>ProductMS</title>
     <link rel="stylesheet" type="text/css"
-          href="../static/src/css/layui.css" />
+          href="../static/src/css/layui.css"/>
     <script src="../static/src/layui.js" type="text/javascript"
             charset="utf-8"></script>
     <script src="../static/src/public.js" type="text/javascript"
@@ -18,7 +18,7 @@
             padding: 20px;
             padding-top: 20px;
         }
-        
+
     </style>
 </head>
 <body>
@@ -28,78 +28,80 @@
         <div class="layui-form-item">
             <label class="layui-form-label">序号：</label>
             <div class="layui-input-block">
-                <input type="text" name="id" readonly="" placeholder="序号" autocomplete="off" class="layui-input" />
+                <input type="text" name="id" readonly="" placeholder="序号" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">项目组名称：</label>
             <div class="layui-input-block">
-                <input type="text" name="teamName"  placeholder="项目组名称" autocomplete="off" class="layui-input" />
+                <input type="text" name="teamName" placeholder="项目组名称" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">所属部门代码：</label>
             <div class="layui-input-block">
-                <input type="text" name="belongDptCode"  placeholder="所属部门代码" autocomplete="off" class="layui-input" />
+                <input type="text" name="belongDptCode" placeholder="所属部门代码" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">项目组长：</label>
             <div class="layui-input-block">
-                <input type="text" name="teamLeader"  placeholder="项目组长" autocomplete="off" class="layui-input" />
+                <input type="text" name="teamLeader" placeholder="项目组长" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">项目组成员：</label>
             <div class="layui-input-block">
-                <input type="text" name="teammate" placeholder="项目组成员" autocomplete="off" class="layui-input" />
+                <input type="text" name="teammate" placeholder="项目组成员" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">成员数：</label>
             <div class="layui-input-block">
-                <input type="text" name="teammateNum" placeholder="成员数" autocomplete="off" class="layui-input" />
+                <input type="text" name="teammateNum" placeholder="成员数" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <div class="layui-input-block" style="float: right">
                 <button type="button" class="layui-btn layui-btn-primary"
-                        id="close">取消</button>
+                        id="close">取消
+                </button>
                 <button class="layui-btn" id="edit_form_btn" lay-submit=""
-                        lay-filter="edit_form_btn">立即提交</button>
+                        lay-filter="edit_form_btn">立即提交
+                </button>
             </div>
         </div>
     </form>
 </div>
 <!-- 判断是否为空 -->
 <script>
-    layui.use([ 'form', 'jquery' ], function() {
+    layui.use(['form', 'jquery'], function () {
         var form = layui.form;
         var $ = layui.jquery;
         form.render();
         //监听提交
-        form.on('submit(edit_form_btn)', function(data) {
+        form.on('submit(edit_form_btn)', function (data) {
             layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : '/updateProTeam',
-                data : data.field,
-                type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                url: '/updateProTeam',
+                data: data.field,
+                type: 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
                 dataType: 'json',
-                success : function(obj) {
+                success: function (obj) {
                     // layer.close(index);//关闭
-                    if (obj=="success") {
-                        pubUtil.msg("编辑成功！", layer, 1, function() {
+                    if (obj == "success") {
+                        pubUtil.msg("编辑成功！", layer, 1, function () {
                             $("#close").click();
-location.reload();
+                            location.reload();
                         }, 1000);
                     } else {
-                        pubUtil.msg("编辑失败！", layer, 2, function() {
+                        pubUtil.msg("编辑失败！", layer, 2, function () {
                         }, 1000);
                     }
                 }

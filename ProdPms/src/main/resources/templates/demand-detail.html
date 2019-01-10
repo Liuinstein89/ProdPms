@@ -69,7 +69,7 @@
                         <a class="layui-btn layui-btn-fluid" id="dem_audit_btn" style="border-radius: 5px;">
                             <i class="layui-icon">进入需求审查</i>
                         </a>
-                        <a class="layui-btn layui-btn-fluid" id="dem_audit_text"  onclick="javascript:goBottom();"
+                        <a class="layui-btn layui-btn-fluid" id="dem_audit_text" onclick="javascript:goBottom();"
                            style="border-radius: 5px;margin-left: 0;margin-top: 10px"><i class="layui-icon">查看审查记录</i>
                         </a>
                     </div>
@@ -189,7 +189,7 @@
 
 <script type="text/javascript">
     layui.use(['laytpl', 'jquery'], function () {
-        var laytpl = layui.laytpl;
+        laytpl = layui.laytpl;
         var $ = layui.jquery;
         status = '';
         // reqNoid = "PR18113011185";
@@ -213,6 +213,7 @@
             }
             return value;
         }
+
         // console.log(location.href);
         /*]]>*/
         var getTpl = detail_tpl.innerHTML;
@@ -239,7 +240,7 @@
                 });
                 console.log(data.data.list[0].reqStatus)
                 status = data.data.list[0].reqStatus;
-                console.log("FHS:"+status);
+                console.log("FHS:" + status);
             }
         });
     });
@@ -491,7 +492,6 @@
                     body.contents().find("#demandItemReqNo").val(reqNoid);
                 }
             })
-
         }
 
         //编辑需求项
@@ -608,6 +608,39 @@
                     var body = layer.getChildFrame('body', index);
                     body.find('button#close').on('click', function () {
                         layer.close(index);
+                        var getTpl = detail_tpl.innerHTML;
+                        var view = document.getElementById('view');
+                        /*   laytpl(getTpl).render(data, function(html){
+                              view.innerHTML = html;
+                          }); */
+                        $.ajax({
+                            url: "/search",
+                            data: {
+                                "reqNo": reqNoid,
+                                "page": "1",
+                                "limit": "1"
+                            },
+                            type: "GET",
+                            dataType: "json",
+                            success: function (data) {
+                                if (!data == "success") {
+                                    alert(data.data);
+                                    return false;
+                                }
+                                laytpl(getTpl).render(data, function (html) {
+                                    view.innerHTML = html;
+                                });
+                                console.log(data.data.list[0].reqStatus)
+                                status = data.data.list[0].reqStatus;
+                                console.log("FHS:" + status);
+                            }
+                        });
+
+                        table.reload("auditRecordTable", {
+                            where: {
+                                reqNo: reqNoid, //搜索的关键字
+                            },
+                        });
                     });
                     body.contents().find("#auditReqNo").val(reqNoid);
                     body.contents().find("#curStatus").val(status);//注意执行顺序，如果放在success外面是接收不到的
@@ -621,6 +654,7 @@
             elem: '#aduitRecord'
             , title: '审核记录表'
             , url: '/listReqAudit'
+            , id: 'auditRecordTable'
             , page: false
             , where: {
                 "reqNo": reqNoid
@@ -660,8 +694,9 @@
     function goAuditDiv() {
         window.location.hash = "#aduitRecord";
     }
+
     function goBottom() {
-        window.scrollTo(0, document.documentElement.scrollHeight-document.documentElement.clientHeight);
+        window.scrollTo(0, document.documentElement.scrollHeight - document.documentElement.clientHeight);
     }
 </script>
 </body>

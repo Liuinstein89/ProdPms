@@ -4,12 +4,13 @@
     <meta charset="UTF-8"/>
     <meta name="renderer" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>ProductMS</title>
-    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css" />
-    <link rel="stylesheet" type="text/css" href="../static/css/formSelects-v4.css" />
+    <link rel="stylesheet" type="text/css" href="../static/src/css/layui.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/formSelects-v4.css"/>
     <style type="text/css">
-        body{
+        body {
             padding: 20px;
             /*padding-left: 0px;*/
         }
@@ -22,28 +23,29 @@
         <div class="layui-form-item ">
             <label class="layui-form-label">需求编号</label>
             <div class="layui-input-block">
-                <input type="text" name="reqNo" readonly="" id="demandItemReqNo" autocomplete="off" class="layui-input" style="background-color: #e0e0e0"/>
+                <input type="text" name="reqNo" readonly="" id="demandItemReqNo" autocomplete="off" class="layui-input"
+                       style="background-color: #e0e0e0"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">需求项</label>
             <div class="layui-input-block">
-                <input type="text" name="reqItemName"  autocomplete="off" class="layui-input"/>
+                <input type="text" name="reqItemName" autocomplete="off" class="layui-input"/>
             </div>
         </div>
 
         <div class="layui-form-item">
             <label class="layui-form-label">需求项描述</label>
             <div class="layui-input-block">
-                <input type="text" name="reqItemDesc"   autocomplete="off" class="layui-input"/>
+                <input type="text" name="reqItemDesc" autocomplete="off" class="layui-input"/>
             </div>
 
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label">上线日期</label>
             <div class="layui-input-block">
-                <input type="text" id="onplan_date" name="onlineDatetime" autocomplete="off"  class="layui-input"/>
+                <input type="text" id="onplan_date" name="onlineDatetime" autocomplete="off" class="layui-input"/>
             </div>
 
         </div>
@@ -54,14 +56,14 @@
             </div>
 
         </div>
-        
-         <div class="layui-form-item" style="display:none">
+
+        <div class="layui-form-item" style="display:none">
             <label class="layui-form-label">操作人</label>
             <div class="layui-input-block">
                 <input type="text" name="opPerson" value="admin" autocomplete="off" class="layui-input"/>
             </div>
         </div>
-        
+
         <div class="layui-form-item">
             <label class="layui-form-label">需求项状态</label>
             <div class="layui-input-block">
@@ -73,8 +75,9 @@
         <div class="layui-form-item">
             <label class="layui-form-label">功能点</label>
             <div class="layui-input-block">
-                <select name="funcId"  id="funcId"  xm-select="select2" xm-select-direction="up" xm-select-show-count="4" xm-select-height="36px">
-                  
+                <select name="funcId" id="funcId" xm-select="select2" xm-select-direction="up" xm-select-show-count="4"
+                        xm-select-height="36px">
+
 
                 </select>
             </div>
@@ -84,9 +87,11 @@
         <div class="layui-form-item">
             <div class="layui-input-block" style="float: right">
                 <button type="button" class="layui-btn layui-btn-primary"
-                        id="close">关闭</button>
+                        id="close">关闭
+                </button>
                 <button class="layui-btn" id="edit_form_btn" lay-submit=""
-                        lay-filter="edit_form_btn">确认</button>
+                        lay-filter="edit_form_btn">确认
+                </button>
             </div>
         </div>
     </form>
@@ -99,29 +104,29 @@
 <script src="../static/js/formSelects-v4.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     //Demo
-    layui.use(['form', 'jquery','laydate','element','util'], function() {
+    layui.use(['form', 'jquery', 'laydate', 'element', 'util'], function () {
         var form = layui.form;
         var $ = layui.jquery;
         var laydate = layui.laydate;
         form.render();
 
         //监听提交
-        form.on('submit(edit_form_btn)', function(data) {
+        form.on('submit(edit_form_btn)', function (data) {
             // layer.alert("zzf");
             layer.alert(JSON.stringify(data.field));
             $.ajax({
-                url : '/addReqItem',
-                data : data.field,
-                type : 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
-                dataType : 'json',
-                success : function(obj) {
+                url: '/addReqItem',
+                data: data.field,
+                type: 'POST',//默认以get提交，以get提交如果是中文后台会出现乱码
+                dataType: 'json',
+                success: function (obj) {
                     // layer.close(index);//关闭
                     if (obj == 'success') {
-                        pubUtil.msg("新增成功", layer, 1, function() {
+                        pubUtil.msg("新增成功", layer, 1, function () {
                             $("#close").click();
                         }, 1000);
                     } else {
-                        pubUtil.msg("新增失败", layer, 2, function() {
+                        pubUtil.msg("新增失败", layer, 2, function () {
 
                         }, 1000);
                     }
@@ -132,33 +137,31 @@
 
         //多选下拉框
         var formSelects = layui.formSelects;
-         // formSelects.render('select2');
+        // formSelects.render('select2');
         // 多选功能点
         // loadSelect(form, '/listFunc','funcId','id','funcName');
         //server
-        formSelects.data('select2','server',{
-            url:"/listFunc"
-            ,data:{
-                page:1,
-                limit:10000,
+        formSelects.data('select2', 'server', {
+            url: "/listFunc"
+            , data: {
+                page: 1,
+                limit: 10000,
             }
-            ,keyVal:'id'
-            ,keyName:'funcName'
-            ,beforeSuccess: function(id, url, searchVal, result){  //success之前的回调, 干嘛呢? 处理数据的, 如果后台不想修改数据, 你也不想修改源码, 那就用这种方式处理下数据结构吧
+            , keyVal: 'id'
+            , keyName: 'funcName'
+            , beforeSuccess: function (id, url, searchVal, result) {  //success之前的回调, 干嘛呢? 处理数据的, 如果后台不想修改数据, 你也不想修改源码, 那就用这种方式处理下数据结构吧
                 result = result.data.list;
                 return result;  //必须return一个结果, 这个结果要符合对应的数据结构
             },
 
 
-       
-
- });
+        });
         //上线时间选择
-        var onplanDate= laydate.render({
+        var onplanDate = laydate.render({
             elem: '#onplan_date',//选择器结束时间
             theme: 'molv',
-            min:"1970-1-1",//设置min默认最小值
-            max:"2099-12-31",
+            min: "1970-1-1",//设置min默认最小值
+            max: "2099-12-31",
         });
 
     });
