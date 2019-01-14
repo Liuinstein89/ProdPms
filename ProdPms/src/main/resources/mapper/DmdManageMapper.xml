@@ -85,7 +85,7 @@
 		select
 		<include refid="Basic_Req_Columns" />
 		from req
-		where is_deleted = 0
+		where is_deleted = 0 order by create_date desc
 	</select>
 	<!-- 获取全部需求列表 -->
 	<select id="findOne" resultMap="DmdManageMap"
@@ -211,7 +211,7 @@
 				and create_date between #{beginDate,jdbcType=DATE} and
 				#{endDate,jdbcType=DATE}
 			</if>
-			and is_deleted = 0
+			and is_deleted = 0 order by create_date desc
 		</where>
 	</select>
 
