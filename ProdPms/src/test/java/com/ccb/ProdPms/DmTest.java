@@ -1,32 +1,22 @@
 package com.ccb.ProdPms;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.servlet.http.HttpServletResponse;
-
-import org.jboss.jandex.Main;
+import com.ccb.ProdPms.controller.DesiController;
+import com.ccb.ProdPms.controller.DmdManageController;
+import com.ccb.ProdPms.controller.UploadFileController;
+import com.ccb.ProdPms.entity.DmdManageEntity;
+import com.ccb.ProdPms.mapper.DmdManageMapper;
+import com.ccb.ProdPms.mapper.FuncMapper;
+import com.ccb.ProdPms.mapper.OnlinePlanMapper;
+import com.ccb.ProdPms.service.DmdManageService;
+import com.ccb.ProdPms.service.OnlinePlanService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import com.ccb.ProdPms.controller.DmdManageController;
-import com.ccb.ProdPms.controller.UploadFileController;
-import com.ccb.ProdPms.dto.DmdItemFuncDto;
-import com.ccb.ProdPms.entity.DmdItemEntity;
-import com.ccb.ProdPms.entity.DmdManageEntity;
-import com.ccb.ProdPms.entity.DmdQueryParamsEntity;
-import com.ccb.ProdPms.entity.OnlinePlanEntity;
-import com.ccb.ProdPms.entity.UploadFileEntity;
-import com.ccb.ProdPms.mapper.DmdManageMapper;
-import com.ccb.ProdPms.mapper.FuncMapper;
-import com.ccb.ProdPms.mapper.OnlinePlanMapper;
-import com.ccb.ProdPms.service.DmdManageService;
-import com.ccb.ProdPms.service.OnlinePlanService;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -40,6 +30,8 @@ public class DmTest {
 	private UploadFileController uploadFileController;
 	@Autowired
 	private DmdManageService dmdManageService;
+	@Autowired
+	private DesiController desiController;
 	@Autowired
 	FuncMapper funcMapper;
 	@Autowired
@@ -60,7 +52,7 @@ public class DmTest {
 		 */
 		//System.out.println(onlinePlanMapper.countOp(6,"44", "plan3"));
 		//System.out.println(dmdManageService.getReqAudit("2"));
-		dmdManageMapper.updateReqStatus("123","2");
+		desiController.getAll(1, 10);
 		//System.out.println("@@@@@@@"+funcMapper.getReqAudit("2"));
 		// System.out.println(onlinePlanMapper.getByParams("a", null));
 	}
